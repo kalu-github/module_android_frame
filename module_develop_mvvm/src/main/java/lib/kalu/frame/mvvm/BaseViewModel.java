@@ -12,59 +12,64 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
 
+import io.reactivex.disposables.Disposable;
+
 /**
  * @author zhanghang
- * @description:
+ * @description: mvvm => vm
  * @date :2022-01-17
  */
 @Keep
-public abstract class BaseViewModel<T> extends AndroidViewModel {
+public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> extends AndroidViewModel {
 
-    private final WeakHashMap<String, BaseLiveData> mWHM = new WeakHashMap<>(1);
+    private V mV;
+    private M mM;
 
     @Keep
-    public BaseViewModel(@NonNull Application application) {
+    public BaseViewModel(@NonNull Application application, @NonNull V v, @NonNull M m) {
         super(application);
+        this.mV = v;
+        this.mM = m;
     }
-
-    private final <T> BaseLiveData<T> create(@NonNull String key) {
-
-        boolean contains = mWHM.containsKey(key);
-        if (!contains) {
-            BaseLiveData<T> tBaseLiveData = new BaseLiveData<>();
-            mWHM.put(key, tBaseLiveData);
-        }
-        BaseLiveData liveData = mWHM.get(key);
-        return liveData;
-    }
-
-    public final <T> void attach(@NonNull LifecycleOwner owner, @NonNull String key, @NonNull Observer<T> observer) {
-        BaseLiveData<T> liveData = create(key);
-        liveData.observe(owner, observer);
-    }
-
-    public final <T> void put(@NonNull String key, @NonNull T value) {
-        BaseLiveData liveData = mWHM.get(key);
-        liveData.postValue(value);
-    }
-
-    private final LinkedList<T> mT = new LinkedList<T>();
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (null == mT || mT.size() == 0)
+
+        BaseModel model = getModel();
+        if (null == model)
             return;
-        for (T t : mT) {
-            onRelease(t);
+
+        LinkedList<Disposable> disposables = model.getDisposables();
+        if (null == disposables || disposables.size() == 0)
+            return;
+
+        for (Disposable t : disposables) {
+            if (null == t)
+                continue;
+            t.dispose();
         }
     }
 
-    protected final void addDisposable(@NonNull T disposable) {
-        if (null == disposable)
-            return;
-        mT.add(disposable);
+    @Keep
+    protected V getView() {
+        if (null == mV)
+            throw new IllegalArgumentException("BaseViewModel => getView => view is null");
+        return this.mV;
     }
 
-    protected abstract void onRelease(@NonNull T t);
+    @Keep
+    protected M getModel() {
+        if (null == mM)
+            throw new IllegalArgumentException("BaseViewModel => getModel => model is null");
+        return this.mM;
+    }
+
+    @Keep
+    public final <T> void regist(@NonNull LifecycleOwner owner, @NonNull String key, @NonNull Observer<T> observer) {
+        M model = getModel();
+        if (null == model)
+            return;
+        model.regist(owner, key, observer);
+    }
 }

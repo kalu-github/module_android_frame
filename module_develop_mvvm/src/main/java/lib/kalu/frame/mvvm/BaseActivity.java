@@ -2,10 +2,13 @@ package lib.kalu.frame.mvvm;
 
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 /**
@@ -13,63 +16,59 @@ import java.lang.reflect.ParameterizedType;
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseActivity<K extends BaseViewModel, M extends BasePresenter> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<M extends BaseModel, VM extends BaseViewModel> extends AppCompatActivity implements BaseView {
 
-    private M mP = null;
-    private K mVM = null;
+    private VM mVM = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();
         setContentView(initLayout());
-
         mVM = initViewModel();
-        mP = initPresenter();
-
         initData();
     }
 
     @Override
-    public K getViewModel() {
+    public VM getViewModel() {
         if (null != mVM) {
             return mVM;
         } else {
-            throw new IllegalArgumentException("mBaseViewModel is null");
+            throw new IllegalArgumentException("view-model is null");
         }
     }
 
     @Override
-    public <K extends BaseViewModel> K initViewModel() {
+    public <VM extends BaseViewModel> VM initViewModel() {
         try {
-            Class<K> clazz = (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            Constructor constructor = clazz.getDeclaredConstructor(new Class[]{Application.class});
-            constructor.setAccessible(true);
-            return (K) constructor.newInstance(getApplication());
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
 
-    @Override
-    public M getPresenter() {
-        if (null != mP) {
-            return mP;
-        } else {
-            throw new IllegalArgumentException("mBasePresenter is null");
-        }
-    }
+            // model
+            Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            M m = clazzM.newInstance();
 
-    @Override
-    public <M extends BasePresenter> M initPresenter() {
-        try {
-            Class<M> clazz = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            Constructor constructor = clazz.getDeclaredConstructor(BaseView.class, BaseViewModel.class);
-            constructor.setAccessible(true);
-            return (M) constructor.newInstance(this, getViewModel());
+            // view-model
+            Class<VM> clazzVM = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            Constructor constructorVM = clazzVM.getDeclaredConstructor(new Class[]{Application.class, BaseView.class, clazzM});
+            constructorVM.setAccessible(true);
+            return (VM) constructorVM.newInstance(getApplication(), this, m);
+//
+//            // init model setViewModel
+//            Method setViewModel = m.getClass().getDeclaredMethod("setViewModel", BaseViewModel.class);
+//            setViewModel.setAccessible(true);
+//            setViewModel.invoke(m, vm);
+
+//            // init view-model setModel
+//            Method setModel = vm.getClass().getDeclaredMethod("setModel", BaseModel.class);
+//            setModel.setAccessible(true);
+//            setModel.invoke(vm, m);
+//
+//            // init view-model setView
+//            Method setView = vm.getClass().getDeclaredMethod("setView", BaseView.class);
+//            setView.setAccessible(true);
+//            setView.invoke(vm, this);
+
         } catch (Exception e) {
-//            Log.d("BaseActivity", "initViewModel => " + getClass().getName());
-//            Log.d("BaseActivity", "initPresenter => " + e.getMessage(), e);
+            Log.d("BaseActivity", "initViewModel => " + e.getMessage(), e);
             throw new IllegalArgumentException(e.getMessage());
         }
     }
