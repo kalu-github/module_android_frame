@@ -14,7 +14,7 @@ import java.lang.reflect.ParameterizedType;
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseFragment<M extends BaseModel, VM extends BaseViewModel> extends Fragment implements BaseView {
+public abstract class BaseFragment<M extends BaseModel, V extends BaseView, VM extends BaseViewModel> extends Fragment implements BaseView {
 
     private VM mVM = null;
 
@@ -45,8 +45,9 @@ public abstract class BaseFragment<M extends BaseModel, VM extends BaseViewModel
         try {
             Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             M m = clazzM.newInstance();
-            Class<VM> clazzVM = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            Constructor constructorVM = clazzVM.getDeclaredConstructor(new Class[]{Application.class, BaseView.class, clazzM});
+            Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            Class<VM> clazzVM = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+            Constructor constructorVM = clazzVM.getDeclaredConstructor(new Class[]{Application.class, clazzV, clazzM});
             constructorVM.setAccessible(true);
             return (VM) constructorVM.newInstance(getActivity().getApplication(), this, m);
         } catch (Exception e) {

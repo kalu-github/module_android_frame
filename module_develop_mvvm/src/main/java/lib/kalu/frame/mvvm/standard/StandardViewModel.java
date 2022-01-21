@@ -19,7 +19,17 @@ import lib.kalu.frame.mvvm.BaseViewModel;
 public class StandardViewModel<V extends BaseView, M extends BaseModel> extends BaseViewModel {
 
     @Keep
-    public StandardViewModel(@NonNull Application application, @NonNull BaseView baseView, @NonNull BaseModel baseModel) {
-        super(application, baseView, baseModel);
+    public StandardViewModel(@NonNull Application application, @NonNull V v, @NonNull M m) {
+        super(application, v, m);
+    }
+
+    @Override
+    protected M getModel() {
+        return (M) super.getModel();
+    }
+
+    @Override
+    protected V getView() {
+        return (V) super.getView();
     }
 }

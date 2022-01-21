@@ -10,13 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 
 /**
  * @author zhanghang
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseActivity<M extends BaseModel, VM extends BaseViewModel> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<M extends BaseModel, V extends BaseView, VM extends BaseViewModel> extends AppCompatActivity implements BaseView {
 
     private VM mVM = null;
 
@@ -43,8 +45,9 @@ public abstract class BaseActivity<M extends BaseModel, VM extends BaseViewModel
         try {
             Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             M m = clazzM.newInstance();
-            Class<VM> clazzVM = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            Constructor constructorVM = clazzVM.getDeclaredConstructor(new Class[]{Application.class, BaseView.class, clazzM});
+            Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            Class<VM> clazzVM = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+            Constructor constructorVM = clazzVM.getDeclaredConstructor(new Class[]{Application.class, clazzV, clazzM});
             constructorVM.setAccessible(true);
             return (VM) constructorVM.newInstance(getApplication(), this, m);
         } catch (Exception e) {
