@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -39,16 +40,10 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
         BaseModel model = getModel();
         if (null == model)
             return;
-
-        LinkedList<Disposable> disposables = model.getDisposables();
+        CompositeDisposable disposables = model.getDisposables();
         if (null == disposables || disposables.size() == 0)
             return;
-
-        for (Disposable t : disposables) {
-            if (null == t)
-                continue;
-            t.dispose();
-        }
+        disposables.dispose();
     }
 
     @Keep

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -33,15 +34,15 @@ public abstract class BaseModel {
 
     /*****************/
 
-    private final Map<String, BaseLiveData> mWHM = new HashMap<>(1);
+    private final Map<String, BaseLiveData> mMap = new HashMap<>(1);
 
     private final <T> BaseLiveData<T> create(@NonNull String key) {
-        boolean contains = mWHM.containsKey(key);
+        boolean contains = mMap.containsKey(key);
         if (!contains) {
             BaseLiveData<T> tBaseLiveData = new BaseLiveData<>();
-            mWHM.put(key, tBaseLiveData);
+            mMap.put(key, tBaseLiveData);
         }
-        BaseLiveData liveData = mWHM.get(key);
+        BaseLiveData liveData = mMap.get(key);
         return liveData;
     }
 
@@ -51,21 +52,21 @@ public abstract class BaseModel {
     }
 
     protected final <T> void update(@NonNull String key, @NonNull T value) {
-        BaseLiveData liveData = mWHM.get(key);
+        BaseLiveData liveData = mMap.get(key);
         liveData.postValue(value);
     }
 
     /***********************/
 
-    private final LinkedList<Disposable> mT = new LinkedList<Disposable>();
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
-    protected final LinkedList<Disposable> getDisposables() {
-        return mT;
+    protected final CompositeDisposable getDisposables() {
+        return mCompositeDisposable;
     }
 
     protected final void addDisposable(@NonNull Disposable disposable) {
         if (null == disposable)
             return;
-        mT.add(disposable);
+        mCompositeDisposable.add(disposable);
     }
 }

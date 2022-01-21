@@ -41,34 +41,13 @@ public abstract class BaseActivity<M extends BaseModel, VM extends BaseViewModel
     @Override
     public <VM extends BaseViewModel> VM initViewModel() {
         try {
-
-            // model
             Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             M m = clazzM.newInstance();
-
-            // view-model
             Class<VM> clazzVM = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
             Constructor constructorVM = clazzVM.getDeclaredConstructor(new Class[]{Application.class, BaseView.class, clazzM});
             constructorVM.setAccessible(true);
             return (VM) constructorVM.newInstance(getApplication(), this, m);
-//
-//            // init model setViewModel
-//            Method setViewModel = m.getClass().getDeclaredMethod("setViewModel", BaseViewModel.class);
-//            setViewModel.setAccessible(true);
-//            setViewModel.invoke(m, vm);
-
-//            // init view-model setModel
-//            Method setModel = vm.getClass().getDeclaredMethod("setModel", BaseModel.class);
-//            setModel.setAccessible(true);
-//            setModel.invoke(vm, m);
-//
-//            // init view-model setView
-//            Method setView = vm.getClass().getDeclaredMethod("setView", BaseView.class);
-//            setView.setAccessible(true);
-//            setView.invoke(vm, this);
-
         } catch (Exception e) {
-            Log.d("BaseActivity", "initViewModel => " + e.getMessage(), e);
             throw new IllegalArgumentException(e.getMessage());
         }
     }
