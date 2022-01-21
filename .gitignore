@@ -1,0 +1,10 @@
+# Project exclude paths
+/.gradle/
+/.idea/
+/app/.gradle/
+/app/build/
+/module_develop_mvp/.gradle/
+/module_develop_mvp/build/
+/module_develop_mvvm/.gradle/
+/module_develop_mvvm/build/
+local.properties
