@@ -29,7 +29,7 @@ public abstract class BaseModel {
     }
 
     private final void init() {
-        Log.d("BasePresenter", "init =>");
+        Log.d("BaseModel", "init =>");
     }
 
     /*****************/
