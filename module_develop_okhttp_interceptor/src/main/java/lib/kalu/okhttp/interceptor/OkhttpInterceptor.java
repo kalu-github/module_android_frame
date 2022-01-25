@@ -4,13 +4,16 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Connection;
 import okhttp3.FormBody;
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
@@ -33,13 +36,26 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
     @NonNull
     @Override
     default Response intercept(@NonNull Chain chain) {
+        String extra = "";
         long requestTime = System.nanoTime();
         try {
             Connection connection = chain.connection();
             Request request = chain.request();
+
+            extra = request.url().queryParameter(EXTRA);
+            if (null != extra && extra.length() > 0) {
+                HttpUrl url = request.url();
+                HttpUrl.Builder builder = url.newBuilder();
+                String path = url.encodedPath();
+                builder.encodedPath(path);
+                builder.removeAllQueryParameters(EXTRA);
+                builder.removeAllEncodedQueryParameters(EXTRA);
+                request = request.newBuilder().url(builder.build()).build();
+            }
+
             Request newRequest = analysisRequest(requestTime, connection, request);
             Response response = chain.proceed(newRequest);
-            Response newResponse = analysisResponse(requestTime, newRequest, response);
+            Response newResponse = analysisResponse(requestTime, extra, newRequest, response);
             return newResponse;
         } catch (Exception e) {
             HashMap<CharSequence, CharSequence> map = new HashMap<>();
@@ -47,7 +63,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             map.put(MESSAGE, MESSAGE_DEFAULT);
             Request request = chain.request();
             Response response = createResponse(request, map);
-            Response newResponse = analysisResponse(requestTime, request, response);
+            Response newResponse = analysisResponse(requestTime, extra, request, response);
             return newResponse;
         }
     }
@@ -151,15 +167,16 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
      * @param request
      * @return
      */
-    default String processResponse(@NonNull String text, @NonNull Request request) {
+    default String processResponse(@NonNull String text, @NonNull String get, @NonNull Request request) {
         try {
             JSONObject object = new JSONObject(text);
-            String parameter = request.url().queryParameter(EXTRA);
-            String extra = request.headers().get(EXTRA);
-            if (null != parameter && parameter.length() > 0) {
-                object.putOpt(EXTRA, parameter);
-            } else if (null != extra && extra.length() > 0) {
-                object.putOpt(EXTRA, extra);
+            if (null != get && get.length() > 0) {
+                object.putOpt(EXTRA, get);
+            } else {
+                String extra = request.headers().get(EXTRA);
+                if (null != extra && extra.length() > 0) {
+                    object.putOpt(EXTRA, extra);
+                }
             }
             return object.toString();
         } catch (Exception e) {

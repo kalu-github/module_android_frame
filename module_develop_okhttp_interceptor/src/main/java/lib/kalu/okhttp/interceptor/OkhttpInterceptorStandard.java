@@ -83,7 +83,7 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
     }
 
     @Override
-    public Response analysisResponse(@NonNull long requestTime, @NonNull Request request, @NonNull Response response) {
+    public Response analysisResponse(@NonNull long requestTime, @NonNull String get, @NonNull Request request, @NonNull Response response) {
 
         // log
         logsResponse(requestTime, response);
@@ -103,7 +103,7 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
             // log
             logsResponseBody(requestTime, text);
 
-            text = processResponse(text, request);
+            text = processResponse(text, get, request);
             // log
             logsResponseBody(requestTime, text);
         }
