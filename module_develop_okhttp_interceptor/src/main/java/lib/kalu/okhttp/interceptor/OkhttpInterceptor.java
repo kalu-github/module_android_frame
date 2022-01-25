@@ -46,7 +46,6 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             if (null != extra && extra.length() > 0) {
                 HttpUrl.Builder builder = request.url().newBuilder();
                 builder.removeAllQueryParameters(EXTRA);
-                builder.removeAllEncodedQueryParameters(EXTRA);
                 request = request.newBuilder().url(builder.build()).build();
             }
 
