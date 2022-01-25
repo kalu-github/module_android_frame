@@ -103,7 +103,7 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
             // log
             logsResponseBody(requestTime, text);
 
-            text = processResponse(text, get, request);
+            text = processResponse(text, get);
             // log
             logsResponseBody(requestTime, text);
         }

@@ -42,10 +42,11 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             Connection connection = chain.connection();
             Request request = chain.request();
 
-            extra = request.url().queryParameter(EXTRA);
-            if (null != extra && extra.length() > 0) {
+            String queryParameter = request.url().queryParameter(TEMP_URL_QUERY_PARAMETER);
+            if (null != queryParameter && queryParameter.length() > 0) {
+                extra = queryParameter;
                 HttpUrl.Builder builder = request.url().newBuilder();
-                builder.removeAllQueryParameters(EXTRA);
+                builder.removeAllQueryParameters(TEMP_URL_QUERY_PARAMETER);
                 request = request.newBuilder().url(builder.build()).build();
             }
 
@@ -160,19 +161,14 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
      * 处理加工 => 响应报文
      *
      * @param text
-     * @param request
+     * @param get
      * @return
      */
-    default String processResponse(@NonNull String text, @NonNull String get, @NonNull Request request) {
+    default String processResponse(@NonNull String text, @NonNull String get) {
         try {
             JSONObject object = new JSONObject(text);
             if (null != get && get.length() > 0) {
-                object.putOpt(EXTRA, get);
-            } else {
-                String extra = request.headers().get(EXTRA);
-                if (null != extra && extra.length() > 0) {
-                    object.putOpt(EXTRA, extra);
-                }
+                object.putOpt(TEMP_URL_QUERY_PARAMETER, get);
             }
             return object.toString();
         } catch (Exception e) {
