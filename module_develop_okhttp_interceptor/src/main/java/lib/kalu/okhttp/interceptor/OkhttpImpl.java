@@ -107,15 +107,15 @@ interface OkhttpImpl {
     /**
      * code
      */
-    String CODE_DEDAULT = "1000";
+    String CODE_DEDAULT = "200";
     /**
      * message
      */
-    String MESSAGE = "message";
+    String MESSAGE = "status";
     /**
      * message
      */
-    String MESSAGE_DEFAULT = "网络异常, 请稍后重试";
+    String MESSAGE_DEFAULT = "custom exception";
 
     Request analysisRequest(
             @NonNull long requestTime,
