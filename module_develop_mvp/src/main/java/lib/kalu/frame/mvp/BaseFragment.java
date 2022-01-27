@@ -14,16 +14,14 @@ import java.lang.reflect.ParameterizedType;
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseFragment<K extends BaseViewModel, M extends BasePresenter> extends Fragment implements BaseView {
+public abstract class BaseFragment<M extends BaseModel, V extends BaseView, P extends BasePresenter> extends Fragment implements BaseView {
 
-    private M mP = null;
-    private K mVM = null;
+    private P mP = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();
-        mVM = initViewModel();
         mP = initPresenter();
     }
 
@@ -34,42 +32,24 @@ public abstract class BaseFragment<K extends BaseViewModel, M extends BasePresen
     }
 
     @Override
-    public K getViewModel() {
-        if (null != mVM) {
-            return mVM;
-        } else {
-            throw new IllegalArgumentException("mBaseViewModel is null");
-        }
-    }
-
-    @Override
-    public <K extends BaseViewModel> K initViewModel() {
-        try {
-            Class<K> clazz = (Class<K>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            Constructor constructor = clazz.getDeclaredConstructor(new Class[]{Application.class});
-            constructor.setAccessible(true);
-            return (K) constructor.newInstance(getActivity().getApplication());
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-    }
-
-    @Override
-    public M getPresenter() {
+    public P getPresenter() {
         if (null != mP) {
             return mP;
         } else {
-            throw new IllegalArgumentException("mBasePresenter is null");
+            throw new IllegalArgumentException("view-model is null");
         }
     }
 
     @Override
-    public <M extends BasePresenter> M initPresenter() {
+    public P initPresenter() {
         try {
-            Class<M> clazz = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            Constructor constructor = clazz.getDeclaredConstructor(new Class[]{BaseView.class, BaseViewModel.class});
-            constructor.setAccessible(true);
-            return (M) constructor.newInstance(this, getViewModel());
+            Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            M m = clazzM.newInstance();
+            Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+            Constructor constructorP = clazzP.getDeclaredConstructor(new Class[]{clazzV, clazzM});
+            constructorP.setAccessible(true);
+            return (P) constructorP.newInstance(this, m);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }

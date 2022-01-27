@@ -11,10 +11,6 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="WelcomeTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/ic_background</item>
-    </style>
-
     <style name="DialogTheme" parent="@android:style/Theme.Dialog">
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>

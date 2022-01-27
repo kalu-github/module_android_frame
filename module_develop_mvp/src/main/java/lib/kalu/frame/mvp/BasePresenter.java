@@ -1,45 +1,56 @@
 package lib.kalu.frame.mvp;
 
-import android.util.Log;
-
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * @author zhanghang
- * @description:
+ * @description: mvp => p
  * @date :2022-01-17
  */
 @Keep
-public abstract class BasePresenter<K extends BaseView, M extends BaseViewModel> {
+public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
 
-    private K mBaseView;
-    private M mBaseViewModel;
+    private V mV;
+    private M mM;
 
     @Keep
-    public BasePresenter(@NonNull K k, @NonNull M m) {
-        this.mBaseView = k;
-        this.mBaseViewModel = m;
-        init();
+    public BasePresenter(@NonNull V v, @NonNull M m) {
+        this.mV = v;
+        this.mM = m;
     }
 
-    protected K getBaseView() {
-        if (null != mBaseView) {
-            return mBaseView;
-        } else {
-            throw new IllegalArgumentException("mBaseView is null");
-        }
+    @Keep
+    protected void dispose() {
+        BaseModel model = getModel();
+        if (null == model)
+            return;
+        CompositeDisposable disposables = model.getDisposables();
+        if (null == disposables || disposables.size() == 0)
+            return;
+        disposables.dispose();
     }
 
-    protected M getBaseViewModel() {
-        if (null != mBaseViewModel) {
-            return mBaseViewModel;
-        } else {
-            throw new IllegalArgumentException("mBaseViewModel is null");
-        }
+    @Keep
+    protected final <T> void onCall(@NonNull String key, @NonNull T t) {
+
     }
 
-    private final void init() {
-        Log.d("BasePresenter", "init => mBaseView = " + mBaseView + ", mBaseViewModel = " + mBaseViewModel);
+    @Keep
+    protected V getView() {
+        if (null == mV)
+            throw new IllegalArgumentException("BaseViewModel => getView => view is null");
+        return this.mV;
+    }
+
+    @Keep
+    protected M getModel() {
+        if (null == mM)
+            throw new IllegalArgumentException("BaseViewModel => getModel => model is null");
+        return this.mM;
     }
 }

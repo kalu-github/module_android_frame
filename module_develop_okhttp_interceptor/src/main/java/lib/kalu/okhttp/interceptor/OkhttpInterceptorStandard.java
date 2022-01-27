@@ -124,9 +124,4 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
                 .body(null == text ? body : ResponseBody.create(MediaType.parse(APPLICATION_JSON_CHARSET_UTF8), text))
                 .build();
     }
-
-    @Override
-    public boolean enableLogs() {
-        return true;
-    }
 }
