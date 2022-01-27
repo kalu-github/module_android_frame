@@ -44,7 +44,7 @@ android {
 dependencies {
 
     // aar
-    api files('libs/lib_frame_mvvm_release_20220121.aar')
+//    api files('libs/lib_frame_mvvm_release_20220121.aar')
 
     // core
     implementation 'androidx.multidex:multidex:2.0.1'

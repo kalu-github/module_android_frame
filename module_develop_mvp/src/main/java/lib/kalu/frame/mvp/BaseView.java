@@ -5,8 +5,9 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
-import lib.kalu.frame.mvvm.impl.BaseViewFindViewById;
-import lib.kalu.frame.mvvm.impl.BaseViewIntent;
+import lib.kalu.frame.mvp.impl.BaseViewFindViewById;
+import lib.kalu.frame.mvp.impl.BaseViewIntent;
+
 
 /**
  * @author zhanghang

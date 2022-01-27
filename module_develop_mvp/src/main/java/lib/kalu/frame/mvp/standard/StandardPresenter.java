@@ -3,9 +3,9 @@ package lib.kalu.frame.mvp.standard;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.BasePresenter;
-import lib.kalu.frame.mvvm.BaseView;
-import lib.kalu.frame.mvvm.BaseViewModel;
+import lib.kalu.frame.mvp.BasePresenter;
+import lib.kalu.frame.mvp.BaseView;
+import lib.kalu.frame.mvp.BaseViewModel;
 
 /**
  * @author zhanghang
