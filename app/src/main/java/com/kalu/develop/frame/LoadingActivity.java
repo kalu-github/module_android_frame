@@ -1,21 +1,20 @@
 package com.kalu.develop.frame;
 
-import lib.kalu.frame.mvvm.BaseActivity;
-import lib.kalu.frame.mvvm.standard.StandardPresenter;
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @author zhanghang
  * @description: 启动页
  * @date :2022-01-17
  */
-public class LoadingActivity extends BaseActivity<LoadingViewModel, StandardPresenter> {
+public class LoadingActivity extends AppCompatActivity {
 
     @Override
-    public int initLayout() {
-        return R.layout.activity_loading;
-    }
-
-    @Override
-    public void initData() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_loading);
     }
 }
