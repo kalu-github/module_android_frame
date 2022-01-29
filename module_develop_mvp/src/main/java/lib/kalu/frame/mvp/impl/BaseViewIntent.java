@@ -133,6 +133,42 @@ public interface BaseViewIntent {
         }
     }
 
+    default void putIntExtra(@NonNull String name, @NonNull int value) {
+
+        try {
+
+            // activiy
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                putIntExtra(activity, name, value);
+            }
+            // fragment
+            else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                putIntExtra(fragment, name, value);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    default void putIntExtra(@NonNull Activity activity, @NonNull String name, @NonNull int value) {
+
+        try {
+            Intent intent = activity.getIntent();
+            intent.putExtra(name, value);
+        } catch (Exception e) {
+        }
+    }
+
+    default void putIntExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull int value) {
+
+        try {
+            Bundle bundle = fragment.getArguments();
+            bundle.putInt(name, value);
+        } catch (Exception e) {
+        }
+    }
+
     default String getStringExtra(@NonNull String name) {
 
         try {
@@ -173,6 +209,42 @@ public interface BaseViewIntent {
             return bundle.getString(name, null);
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    default void putStringExtra(@NonNull String name, @NonNull String value) {
+
+        try {
+
+            // activiy
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                putStringExtra(activity, name, value);
+            }
+            // fragment
+            else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                putStringExtra(fragment, name, value);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    default void putStringExtra(@NonNull Activity activity, @NonNull String name, @NonNull String value) {
+
+        try {
+            Intent intent = activity.getIntent();
+            intent.putExtra(name, value);
+        } catch (Exception e) {
+        }
+    }
+
+    default void putStringExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull String value) {
+
+        try {
+            Bundle bundle = fragment.getArguments();
+            bundle.putString(name, value);
+        } catch (Exception e) {
         }
     }
 }
