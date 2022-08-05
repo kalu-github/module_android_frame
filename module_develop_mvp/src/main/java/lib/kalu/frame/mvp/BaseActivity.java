@@ -13,7 +13,7 @@ import java.lang.reflect.ParameterizedType;
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseActivity<M extends BaseModel, V extends BaseView, P extends BasePresenter> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> extends AppCompatActivity implements BaseView {
 
     private P mP = null;
 
@@ -38,13 +38,11 @@ public abstract class BaseActivity<M extends BaseModel, V extends BaseView, P ex
     @Override
     public P initPresenter() {
         try {
-            Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            M m = clazzM.newInstance();
-            Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-            Constructor constructorP = clazzP.getDeclaredConstructor(new Class[]{clazzV, clazzM});
+            Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+            Constructor constructorP = clazzP.getDeclaredConstructor(new Class[]{clazzV});
             constructorP.setAccessible(true);
-            return (P) constructorP.newInstance(this, m);
+            return (P) constructorP.newInstance(this);
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage());
         }

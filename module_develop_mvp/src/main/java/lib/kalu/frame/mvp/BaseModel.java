@@ -19,14 +19,14 @@ import io.reactivex.disposables.Disposable;
  * @date :2022-01-17
  */
 @Keep
-public abstract class BaseModel {
+public class BaseModel {
 
     @Keep
     public BaseModel() {
         init();
     }
 
-    private final void init() {
+    protected void init() {
         Log.d("BaseModel", "init =>");
     }
 

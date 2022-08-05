@@ -36,9 +36,33 @@ android {
 }
 
 dependencies {
+//    implementation project(path: ':module_develop_okhttp_interceptor')
     compileOnly 'androidx.appcompat:appcompat:1.4.0'
 
-    // rxjava
-    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.21'
-    compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api files('libs/okhttp-3.12.0.jar')
+    api files('libs/okio-1.15.0.jar')
+    api files('libs/retrofit-2.6.4.jar')
+    api files('libs/rxjava-2.2.21.jar')
+    api files('libs/rxandroid-2.1.1.jar')
+    api files('libs/reactive-streams-1.0.3.jar')
+    api files('libs/animal-sniffer-annotations-1.14.jar')
+    api files('libs/gson-2.9.1.jar')
+    api files('libs/converter-gson-2.6.4.jar')
+    api files('libs/adapter-rxjava2-2.6.4.jar')
+
+//    // rxjava
+//    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.21'
+//    compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'
+//
+//    // retrofit2
+//    compileOnly 'com.squareup.retrofit2:retrofit:2.6.4'
+//    compileOnly 'com.squareup.retrofit2:adapter-rxjava2:2.6.4'
+//    compileOnly 'com.squareup.retrofit2:converter-gson:2.6.4'
+//
+//    // okhttp
+//    compileOnly 'com.squareup.okio:okio:1.15.0'
+//    compileOnly 'com.squareup.okhttp3:okhttp:3.12.0'
+//
+//    // gson
+//    compileOnly 'com.google.code.gson:gson:2.8.9'
 }

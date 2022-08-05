@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author zhanghang
@@ -13,15 +14,37 @@ import io.reactivex.disposables.CompositeDisposable;
  * @date :2022-01-17
  */
 @Keep
-public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
+public class BasePresenter<V extends BaseView> {
 
     private V mV;
-    private M mM;
+    private BaseModel mM;
 
     @Keep
-    public BasePresenter(@NonNull V v, @NonNull M m) {
+    public BasePresenter(@NonNull V v) {
         this.mV = v;
-        this.mM = m;
+        this.mM = new BaseModel();
+    }
+
+    @Keep
+    protected V getView() {
+        if (null == mV)
+            throw new IllegalArgumentException("BaseViewModel => getView => view is null");
+        return this.mV;
+    }
+
+    @Keep
+    protected BaseModel getModel() {
+        if (null == mM)
+            throw new IllegalArgumentException("BaseViewModel => getModel => model is null");
+        return this.mM;
+    }
+
+    @Keep
+    protected final void addDisposable(@NonNull Disposable disposable) {
+        BaseModel model = getModel();
+        if (null == model)
+            return;
+        model.addDisposable(disposable);
     }
 
     @Keep
@@ -38,19 +61,5 @@ public abstract class BasePresenter<V extends BaseView, M extends BaseModel> {
     @Keep
     protected final <T> void onCall(@NonNull String key, @NonNull T t) {
 
-    }
-
-    @Keep
-    protected V getView() {
-        if (null == mV)
-            throw new IllegalArgumentException("BaseViewModel => getView => view is null");
-        return this.mV;
-    }
-
-    @Keep
-    protected M getModel() {
-        if (null == mM)
-            throw new IllegalArgumentException("BaseViewModel => getModel => model is null");
-        return this.mM;
     }
 }
