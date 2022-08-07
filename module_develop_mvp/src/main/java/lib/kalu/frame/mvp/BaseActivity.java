@@ -44,6 +44,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
             constructorP.setAccessible(true);
             return (P) constructorP.newInstance(this);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
     }

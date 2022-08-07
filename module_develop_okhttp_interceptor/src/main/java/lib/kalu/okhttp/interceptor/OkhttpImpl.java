@@ -95,7 +95,7 @@ interface OkhttpImpl {
     /**
      * extra
      */
-    String TEMP_URL_QUERY_PARAMETER = "tempUrlQueryParameter";
+    String EXTRA = "extra";
     /**
      * data
      */

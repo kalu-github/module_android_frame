@@ -1,4 +1,4 @@
-package lib.kalu.frame.mvp.in;
+package lib.kalu.frame.mvp.interceptor;
 
 import androidx.annotation.NonNull;
 

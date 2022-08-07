@@ -1,4 +1,4 @@
-package lib.kalu.frame.mvp.in;
+package lib.kalu.frame.mvp.interceptor;
 
 import androidx.annotation.NonNull;
 
@@ -95,7 +95,7 @@ interface OkhttpImpl {
     /**
      * extra
      */
-    String TEMP_URL_QUERY_PARAMETER = "tempUrlQueryParameter";
+    String EXTRA = "extra";
     /**
      * data
      */

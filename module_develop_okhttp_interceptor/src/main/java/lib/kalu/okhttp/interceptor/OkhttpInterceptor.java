@@ -42,11 +42,11 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             Connection connection = chain.connection();
             Request request = chain.request();
 
-            String queryParameter = request.url().queryParameter(TEMP_URL_QUERY_PARAMETER);
+            String queryParameter = request.url().queryParameter(EXTRA);
             if (null != queryParameter && queryParameter.length() > 0) {
                 extra = queryParameter;
                 HttpUrl.Builder builder = request.url().newBuilder();
-                builder.removeAllQueryParameters(TEMP_URL_QUERY_PARAMETER);
+                builder.removeAllQueryParameters(EXTRA);
                 request = request.newBuilder().url(builder.build()).build();
             }
 
@@ -171,7 +171,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
         try {
             JSONObject object = new JSONObject(text);
             if (null != get && get.length() > 0) {
-                object.putOpt(TEMP_URL_QUERY_PARAMETER, get);
+                object.putOpt(EXTRA, get);
             }
             return object.toString();
         } catch (Exception e) {

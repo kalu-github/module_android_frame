@@ -1,10 +1,13 @@
 package lib.kalu.frame.mvp;
 
-import android.app.Application;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
@@ -25,9 +28,20 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
         mP = initPresenter();
     }
 
+    @Nullable
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        ViewGroup viewGroup = (ViewGroup) container.getParent();
+//        if (null != viewGroup) {
+//            viewGroup.removeAllViews();
+//        }
+        View inflate = inflater.inflate(initLayout(), container, false);
+        return inflate;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initData();
     }
 
@@ -49,6 +63,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
             constructorP.setAccessible(true);
             return (P) constructorP.newInstance(this);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IllegalArgumentException(e.getMessage());
         }
     }
