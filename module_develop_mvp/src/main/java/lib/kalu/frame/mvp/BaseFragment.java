@@ -56,7 +56,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
     }
 
     @Override
-    public P getPresenter() {
+    public final P getPresenter() {
         if (null != mP) {
             return mP;
         } else {
@@ -64,8 +64,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
         }
     }
 
-    @Override
-    public P initPresenter() {
+    private final P initPresenter() {
         try {
             Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];

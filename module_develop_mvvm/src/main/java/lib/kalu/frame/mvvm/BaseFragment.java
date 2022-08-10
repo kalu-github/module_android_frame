@@ -42,7 +42,7 @@ public abstract class BaseFragment<M extends BaseModel, V extends BaseView, VM e
     }
 
     @Override
-    public VM getViewModel() {
+    public final VM getViewModel() {
         if (null != mVM) {
             return mVM;
         } else {
@@ -50,8 +50,7 @@ public abstract class BaseFragment<M extends BaseModel, V extends BaseView, VM e
         }
     }
 
-    @Override
-    public <VM extends BaseViewModel> VM initViewModel() {
+    private final <VM extends BaseViewModel> VM initViewModel() {
         try {
             Class<M> clazzM = (Class<M>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             M m = clazzM.newInstance();

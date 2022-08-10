@@ -29,10 +29,6 @@ public interface BaseView extends BaseViewFindViewById, BaseViewIntent {
         throw new IllegalArgumentException("not implements method getViewModel()");
     }
 
-    default <T extends BaseViewModel> T initViewModel() {
-        throw new IllegalArgumentException("not implements method initViewModel()");
-    }
-
     default void onCall(@NonNull int code, @NonNull JSONObject object) {
     }
 

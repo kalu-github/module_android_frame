@@ -20,10 +20,6 @@ public interface BaseView extends BaseViewFindViewById, BaseViewIntent {
         throw new IllegalArgumentException("not implements method getPresenter()");
     }
 
-    default <T extends BasePresenter> T initPresenter() {
-        throw new IllegalArgumentException("not implements method initPresenter()");
-    }
-
     default void onCall(@NonNull int code, @NonNull JSONObject object) {
     }
 
