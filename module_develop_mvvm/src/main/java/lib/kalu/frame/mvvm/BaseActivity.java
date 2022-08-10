@@ -23,6 +23,26 @@ public abstract class BaseActivity<M extends BaseModel, V extends BaseView, VM e
     private VM mVM = null;
 
     @Override
+    public void onBackPressed() {
+        try {
+            mVM.onCleared();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+        try {
+            mVM.onCleared();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.finish();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();

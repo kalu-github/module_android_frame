@@ -19,6 +19,16 @@ public abstract class BaseFragment<M extends BaseModel, V extends BaseView, VM e
     private VM mVM = null;
 
     @Override
+    public void onDestroyView() {
+        try {
+            mVM.onCleared();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onDestroyView();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();

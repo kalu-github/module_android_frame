@@ -67,4 +67,13 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
             return;
         model.regist(owner, key, observer);
     }
+
+
+    @Keep
+    protected final void addDisposable(@NonNull Disposable disposable) {
+        BaseModel model = getModel();
+        if (null == model)
+            return;
+        model.addDisposable(disposable);
+    }
 }

@@ -22,6 +22,16 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
     private P mP = null;
 
     @Override
+    public void onDestroyView() {
+        try {
+            mP.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onDestroyView();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();

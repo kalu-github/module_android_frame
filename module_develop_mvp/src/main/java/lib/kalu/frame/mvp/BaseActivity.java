@@ -18,6 +18,26 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     private P mP = null;
 
     @Override
+    public void onBackPressed() {
+        try {
+            mP.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void finish() {
+        try {
+            mP.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.finish();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();

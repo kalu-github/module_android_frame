@@ -57,9 +57,4 @@ public class BasePresenter<V extends BaseView> {
             return;
         disposables.dispose();
     }
-
-    @Keep
-    protected final <T> void onCall(@NonNull String key, @NonNull T t) {
-
-    }
 }
