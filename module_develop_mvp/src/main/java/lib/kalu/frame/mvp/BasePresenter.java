@@ -5,8 +5,16 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import lib.kalu.frame.mvp.listener.OnRequestChangeListener;
+import lib.kalu.frame.mvp.model.RequestModel;
+import lib.kalu.frame.mvp.transformer.ComposeSchedulers;
 
 /**
  * @author zhanghang
@@ -56,5 +64,60 @@ public class BasePresenter<V extends BaseView> {
         if (null == disposables || disposables.size() == 0)
             return;
         disposables.dispose();
+    }
+
+    protected final <T> void request(@NonNull Observable<? extends RequestModel<T>> observable, @NonNull OnRequestChangeListener<T> listener) {
+        request(observable, listener, true);
+    }
+
+    protected final <T> void request(@NonNull Observable<? extends RequestModel<T>> observable, @NonNull OnRequestChangeListener<T> listener, @NonNull boolean loading) {
+
+        addDisposable(observable
+                .compose(ComposeSchedulers.io_main())
+                .delay(40, TimeUnit.MILLISECONDS)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) {
+                        if (loading) {
+                            getView().showLoading();
+                        }
+                        listener.onStart();
+                    }
+                })
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        if (loading) {
+                            getView().hideLoading();
+                        }
+                        listener.onError(null == throwable ? "not message" : throwable.getMessage());
+                    }
+                })
+                .doOnComplete(new Action() {
+                    @Override
+                    public void run() {
+                        if (loading) {
+                            getView().hideLoading();
+                        }
+                        listener.onComplete();
+                    }
+                })
+                .doOnNext(new Consumer<RequestModel<T>>() {
+                    @Override
+                    public void accept(RequestModel<T> model) {
+                        try {
+                            boolean next = model.isNext();
+                            if (next) {
+                                listener.onNext(model.getNext());
+                            } else {
+                                listener.onError("not succ");
+                            }
+                        } catch (Exception e) {
+                            listener.onError(e.getMessage());
+                        }
+                    }
+                })
+                .subscribe()
+        );
     }
 }
