@@ -1,9 +1,9 @@
-package lib.kalu.frame.mvp.model;
+package lib.kalu.frame.mvp.bean;
 
 import androidx.annotation.Keep;
 
 @Keep
-public interface RequestModel<T> {
+public interface RequestBean<T> {
 
     int getCode();
 

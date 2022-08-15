@@ -1,11 +1,11 @@
-package lib.kalu.frame.mvp.model;
+package lib.kalu.frame.mvp.bean;
 
 import androidx.annotation.Keep;
 
 import java.io.Serializable;
 
 @Keep
-public class ExtraModel implements Serializable {
+public class ExtraBean implements Serializable {
     private String extra = null;
 
     public String getExtra() {

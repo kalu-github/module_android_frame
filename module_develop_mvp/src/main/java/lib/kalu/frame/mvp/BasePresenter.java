@@ -2,8 +2,6 @@ package lib.kalu.frame.mvp;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +11,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import lib.kalu.frame.mvp.listener.OnRequestChangeListener;
-import lib.kalu.frame.mvp.model.RequestModel;
+import lib.kalu.frame.mvp.bean.RequestBean;
 import lib.kalu.frame.mvp.transformer.ComposeSchedulers;
 
 /**
@@ -66,15 +64,16 @@ public class BasePresenter<V extends BaseView> {
         disposables.dispose();
     }
 
-    protected final <T> void request(@NonNull Observable<? extends RequestModel<T>> observable, @NonNull OnRequestChangeListener<T> listener) {
+    protected final <T> void request(@NonNull Observable<? extends RequestBean<T>> observable, @NonNull OnRequestChangeListener<T> listener) {
         request(observable, listener, true);
     }
 
-    protected final <T> void request(@NonNull Observable<? extends RequestModel<T>> observable, @NonNull OnRequestChangeListener<T> listener, @NonNull boolean loading) {
+    protected final <T> void request(@NonNull Observable<? extends RequestBean<T>> observable, @NonNull OnRequestChangeListener<T> listener, @NonNull boolean loading) {
 
         addDisposable(observable
-                .compose(ComposeSchedulers.io_main())
+                .compose(ComposeSchedulers.io_io())
                 .delay(40, TimeUnit.MILLISECONDS)
+                .compose(ComposeSchedulers.io_main())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) {
@@ -102,9 +101,9 @@ public class BasePresenter<V extends BaseView> {
                         listener.onComplete();
                     }
                 })
-                .doOnNext(new Consumer<RequestModel<T>>() {
+                .doOnNext(new Consumer<RequestBean<T>>() {
                     @Override
-                    public void accept(RequestModel<T> model) {
+                    public void accept(RequestBean<T> model) {
                         try {
                             boolean next = model.isNext();
                             if (next) {
