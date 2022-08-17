@@ -104,6 +104,9 @@ public class BasePresenter<V extends BaseView> {
                 .doOnNext(new Consumer<RequestBean<T>>() {
                     @Override
                     public void accept(RequestBean<T> model) {
+                        if (loading) {
+                            getView().hideLoading();
+                        }
                         try {
                             boolean next = model.isNext();
                             if (next) {

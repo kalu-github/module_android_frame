@@ -110,7 +110,7 @@ public interface BaseViewFindViewById {
     default void setVisibility(@IdRes int id,
                                boolean flag) {
 
-        View viewById = findViewById( id);
+        View viewById = findViewById(id);
         if (null == viewById)
             return;
 
@@ -305,4 +305,13 @@ public interface BaseViewFindViewById {
     }
 
     /*****************************************/
+
+    default void setSelected(@IdRes int id, boolean selected) {
+        try {
+            View viewById = findViewById(id);
+            viewById.setSelected(selected);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
