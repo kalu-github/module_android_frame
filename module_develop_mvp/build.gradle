@@ -38,6 +38,7 @@ android {
 dependencies {
 //    implementation project(path: ':module_develop_okhttp_interceptor')
     compileOnly 'androidx.appcompat:appcompat:1.4.0'
+    compileOnly 'androidx.recyclerview:recyclerview:1.2.1'
 
     api files('libs/okhttp-3.12.0.jar')
     api files('libs/okio-1.15.0.jar')

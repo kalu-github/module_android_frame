@@ -6,7 +6,10 @@ import androidx.annotation.NonNull;
 import org.json.JSONObject;
 
 import lib.kalu.frame.mvp.impl.BaseViewFindViewById;
+import lib.kalu.frame.mvp.impl.BaseViewImageView;
 import lib.kalu.frame.mvp.impl.BaseViewIntent;
+import lib.kalu.frame.mvp.impl.BaseViewRecyclerView;
+import lib.kalu.frame.mvp.impl.BaseViewTextView;
 
 /**
  * @author zhanghang
@@ -14,7 +17,7 @@ import lib.kalu.frame.mvp.impl.BaseViewIntent;
  * @date :2022-01-17
  */
 @Keep
-public interface BaseView extends BaseViewFindViewById, BaseViewIntent {
+public interface BaseView extends BaseViewFindViewById, BaseViewIntent, BaseViewTextView, BaseViewImageView, BaseViewRecyclerView {
 
     default <T> T getPresenter() {
         throw new IllegalArgumentException("not implements method getPresenter()");
