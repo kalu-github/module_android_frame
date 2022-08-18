@@ -19,3 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# mvp
+-keep class * extends lib.kalu.frame.mvp.BaseActivity { *;}
+-keep class * extends lib.kalu.frame.mvp.BaseActivity  {
+      public <init>();
+ }
+-keep class * extends lib.kalu.frame.mvp.BasePresenter { *;}
+-keep class * extends lib.kalu.frame.mvp.BasePresenter  {
+      public <init>();
+ }
+-keep class * implements lib.kalu.frame.mvp.BaseView { *;}
+-keep class * implements lib.kalu.frame.mvp.BaseView  {
+      public <init>();
+ }

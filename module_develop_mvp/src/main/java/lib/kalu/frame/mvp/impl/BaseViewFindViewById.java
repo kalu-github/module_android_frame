@@ -107,19 +107,16 @@ public interface BaseViewFindViewById {
 
     /*****************************************/
 
-    default void setVisibility(@IdRes int id,
-                               boolean flag) {
+    default void setVisibility(@IdRes int id, int visibility) {
 
         View viewById = findViewById(id);
         if (null == viewById)
             return;
 
-        setVisibility(viewById, flag);
+        setVisibility(viewById, visibility);
     }
 
-    default void setVisibility(@NonNull View parent,
-                               @IdRes int id,
-                               boolean flag) {
+    default void setVisibility(@NonNull View parent, @IdRes int id, int visibility) {
 
         if (null == parent)
             return;
@@ -128,16 +125,15 @@ public interface BaseViewFindViewById {
         if (null == viewById)
             return;
 
-        setVisibility(viewById, flag);
+        setVisibility(viewById, visibility);
     }
 
-    default void setVisibility(@NonNull View view,
-                               boolean flag) {
+    default void setVisibility(@NonNull View view, int visibility) {
 
         if (null == view)
             return;
 
-        view.setVisibility(flag ? View.VISIBLE : View.GONE);
+        view.setVisibility(visibility);
     }
 
     /*****************************************/
