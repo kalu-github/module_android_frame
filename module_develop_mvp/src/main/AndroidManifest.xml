@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="lib.kalu.frame.mvp" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="androidx.leanback">
+
+    <application android:allowBackup="false">
+
+        <provider
+            android:authorities="${applicationId}.mvp.context"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:name="lib.kalu.frame.mvp.FrameContext" />
+
+    </application>
+
+</manifest>

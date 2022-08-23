@@ -1,6 +1,5 @@
 package lib.kalu.frame.mvp.crash;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,9 +8,6 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.widget.Toast;
 
-import androidx.annotation.Keep;
-import androidx.annotation.NonNull;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,33 +15,30 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Keep
-public final class CrashHandler implements Thread.UncaughtExceptionHandler {
+import lib.kalu.frame.mvp.context.FrameContext;
+
+public class FrameCrash implements Thread.UncaughtExceptionHandler {
 
     private static Thread.UncaughtExceptionHandler mDefalutCrashHandler;
 
-    private static Context mContext;
-
     private static class Singleton {
-        public static final CrashHandler INSTNCE = new CrashHandler();
+        public static final FrameCrash INSTNCE = new FrameCrash();
     }
 
-    public CrashHandler() {
+    public FrameCrash() {
     }
 
-    public static CrashHandler getInstance() {
+    public static FrameCrash getInstance() {
         return Singleton.INSTNCE;
     }
 
-    public void init(@NonNull Application application) {
-        //默认为 RuntimeInit#KillApplicationHandler
-        this.mContext = application.getApplicationContext();
+    public void init() {
         mDefalutCrashHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
     @Override
-    public void uncaughtException(@NonNull Thread t, @NonNull Throwable e) {
+    public void uncaughtException(Thread t, Throwable e) {
         try {
 
             // step1
@@ -53,15 +46,16 @@ public final class CrashHandler implements Thread.UncaughtExceptionHandler {
                 @Override
                 public void run() {
                     Looper.prepare();
-                    Toast.makeText(mContext, "程序出现异常, 很抱歉即将退出", Toast.LENGTH_LONG).show();
+                    Toast.makeText(FrameContext.getApplicationContext(), "程序出现异常, 很抱歉即将退出", Toast.LENGTH_LONG).show();
                     Looper.loop();
                 }
             }.start();
 
             // step2
-            File file = saveException(mContext, e, t);
+            File file = saveException(FrameContext.getApplicationContext(), e, t);
 
             // step3 => 上传服务器
+            uploadFile(file);
 
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -82,9 +76,10 @@ public final class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param t
      * @return
      */
-    private final File saveException(@NonNull Context context, @NonNull Throwable e, @NonNull Thread t) {
+    private final File saveException(Context context, Throwable e, Thread t) {
 
-        File file = new File(context.getExternalCacheDir().getAbsoluteFile(), "crash");
+        File parent = FrameContext.getApplicationContext().getFilesDir();
+        File file = new File(parent, "crash");
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -127,7 +122,10 @@ public final class CrashHandler implements Thread.UncaughtExceptionHandler {
                 printWriter.close();
             }
         }
-
         return crashFile;
+    }
+
+    public void uploadFile(File file) {
+
     }
 }
