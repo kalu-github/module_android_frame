@@ -4,11 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
