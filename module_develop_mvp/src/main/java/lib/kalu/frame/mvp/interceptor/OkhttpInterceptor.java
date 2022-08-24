@@ -50,6 +50,8 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
 
             Request newRequest = analysisRequest(requestTime, connection, request);
             Response response = chain.proceed(newRequest);
+            if (response.code() != 200)
+                throw new IllegalArgumentException("response code is " + response.code());
             Response newResponse = analysisResponse(requestTime, extra, newRequest, response);
             return newResponse;
         } catch (Exception e) {

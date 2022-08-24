@@ -59,6 +59,7 @@ public abstract class BaseClient {
                 .serializeNulls()//序列化为null对象
                 .setDateFormat("yyyy-MM-dd HH:mm:ss") //设置日期的格式
                 .disableHtmlEscaping()//防止对网址乱码 忽略对特殊字符的转换
+                .setLenient() // 使用JsonReader.setLenient(true)在第1行、第1列、路径$接受格式错误的JSON
                 .create();
 
         mRetrofit = new Retrofit.Builder()
