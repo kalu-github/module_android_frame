@@ -27,4 +27,22 @@ public interface BaseViewRecyclerView {
             e.printStackTrace();
         }
     }
+
+    default void notifyItemRangeRemoved(@IdRes int id, @NonNull int position, @NonNull int count) {
+        try {
+            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            recyclerView.getAdapter().notifyItemRangeRemoved(position, count);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    default void notifyItemRemoved(@IdRes int id, @NonNull int position) {
+        try {
+            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            recyclerView.getAdapter().notifyItemRemoved(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -3,11 +3,11 @@ package lib.kalu.frame.mvp.bean;
 import androidx.annotation.Keep;
 
 @Keep
-public interface RequestBean<T> {
+public abstract class RequestBean<T> extends ExtraBean {
 
-    int getCode();
+    public abstract int getCode();
 
-    T getNext();
+    public abstract T getData();
 
-    boolean isNext();
+    public abstract boolean isNext();
 }

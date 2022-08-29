@@ -110,7 +110,7 @@ public class BasePresenter<V extends BaseView> {
                         try {
                             boolean next = model.isNext();
                             if (next) {
-                                listener.onNext(model.getNext());
+                                listener.onNext(model.getData());
                             } else {
                                 listener.onError("not succ");
                             }
