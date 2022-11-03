@@ -76,4 +76,13 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        try {
+         hideLoading();
+        }catch (Exception e){
+        }
+    }
 }

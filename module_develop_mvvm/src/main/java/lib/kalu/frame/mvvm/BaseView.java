@@ -35,6 +35,12 @@ public interface BaseView extends BaseViewFindViewById, BaseViewIntent {
     default void initWindow() {
     }
 
+    default void showLoading() {
+    }
+
+    default void hideLoading() {
+    }
+
     int initLayout();
 
     void initData();
