@@ -124,7 +124,9 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             JSONObject object = new JSONObject(text);
             String session = object.optString(SESSION, null);
             object.remove(SESSION);
-            headersBuilder.add(SESSION, session);
+            if(null != session && session.length()>0){
+                headersBuilder.add(SESSION, session);
+            }
             return object.toString();
         } catch (Exception e) {
             logs(e.getMessage(), e);
