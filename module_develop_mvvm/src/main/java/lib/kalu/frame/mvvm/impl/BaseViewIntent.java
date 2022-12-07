@@ -247,4 +247,83 @@ public interface BaseViewIntent {
         } catch (Exception e) {
         }
     }
+
+    default long getLongExtra(@NonNull String name, @NonNull long defaultValue) {
+
+        try {
+
+            // activiy
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                return getLongExtra(activity, name, defaultValue);
+            }
+            // fragment
+            else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                return getLongExtra(fragment, name, defaultValue);
+            }
+            // defaults
+            else {
+                return defaultValue;
+            }
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    default long getLongExtra(@NonNull Activity activity, @NonNull String name, @NonNull long defaultValue) {
+
+        try {
+            Intent intent = activity.getIntent();
+            return intent.getLongExtra(name, defaultValue);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    default long getLongExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull long defaultValue) {
+
+        try {
+            Bundle bundle = fragment.getArguments();
+            return bundle.getLong(name, defaultValue);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    default void putLongExtra(@NonNull String name, @NonNull long value) {
+
+        try {
+
+            // activiy
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                putLongExtra(activity, name, value);
+            }
+            // fragment
+            else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                putLongExtra(fragment, name, value);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    default void putLongExtra(@NonNull Activity activity, @NonNull String name, @NonNull long value) {
+
+        try {
+            Intent intent = activity.getIntent();
+            intent.putExtra(name, value);
+        } catch (Exception e) {
+        }
+    }
+
+    default void putLongExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull long value) {
+
+        try {
+            Bundle bundle = fragment.getArguments();
+            bundle.putLong(name, value);
+        } catch (Exception e) {
+        }
+    }
 }
