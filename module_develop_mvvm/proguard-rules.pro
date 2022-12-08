@@ -1,14 +1,18 @@
-# mvp
--keep class * extends lib.kalu.frame.mvp.BaseActivity { *;}
--keep class * extends lib.kalu.frame.mvp.BaseActivity  {
+# mvvm
+-keep class * extends lib.kalu.frame.mvvm.BaseActivity { *;}
+-keep class * extends lib.kalu.frame.mvvm.BaseActivity  {
       public <init>();
  }
--keep class * extends lib.kalu.frame.mvp.BasePresenter { *;}
--keep class * extends lib.kalu.frame.mvp.BasePresenter  {
+-keep class * extends lib.kalu.frame.mvvm.BaseModel { *;}
+-keep class * extends lib.kalu.frame.mvvm.BaseModel  {
       public <init>();
  }
--keep class * implements lib.kalu.frame.mvp.BaseView { *;}
--keep class * implements lib.kalu.frame.mvp.BaseView  {
+ -keep class * extends lib.kalu.frame.mvvm.BaseViewModel { *;}
+ -keep class * extends lib.kalu.frame.mvvm.BaseViewModel  {
+       public <init>();
+  }
+-keep class * implements lib.kalu.frame.mvvm.BaseView { *;}
+-keep class * implements lib.kalu.frame.mvvm.BaseView  {
       public <init>();
  }
 
