@@ -2,8 +2,6 @@ package lib.kalu.frame.mvp.interceptor;
 
 import androidx.annotation.NonNull;
 
-import java.nio.charset.StandardCharsets;
-
 import okhttp3.Connection;
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -31,17 +29,16 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
         // 报文
         String text;
         RequestBody requestBody = request.body();
-        String contentType;
         Headers.Builder headersBuilder = request.headers().newBuilder();
-        try {
-            contentType = requestBody.contentType().toString();
-        } catch (Exception e) {
-            contentType = null;
-        }
 
-        // json-body
-        if (null != contentType && contentType.length() > 0 && contentType.startsWith(APPLICATION_JSON)) {
-            try {
+        try {
+            if (requestBody instanceof FormBody) {
+                FormBody formBody = processRequest((FormBody) requestBody, headersBuilder);
+                // log
+                logsRequestBody(requestTime, (FormBody) requestBody);
+                text = null;
+                requestBody = formBody;
+            } else {
                 Buffer buffer = new Buffer();
                 requestBody.writeTo(buffer);
                 text = buffer.readUtf8();
@@ -50,25 +47,16 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
                 text = processRequest(text, headersBuilder);
                 // log
                 logsRequestBody(requestTime, text);
-            } catch (Exception e) {
-                text = null;
-                // log
-                logsRequestBody(requestTime, e.getMessage());
             }
-        }
-        // form-body
-        else if (null != contentType && contentType.length() > 0 && contentType.startsWith(APPLICATION_X_WWW_FORM_URLENCODED)) {
-            FormBody formBody = processRequest((FormBody) requestBody, headersBuilder);
-            // log
-            logsRequestBody(requestTime, (FormBody) requestBody);
-            text = null;
-            requestBody = formBody;
-        }
-        // type-other
-        else {
+        } catch (Exception e) {
             text = null;
             // log
-            logsRequestBody(requestTime, "is not application/json;charset=utf-8");
+            String message = e.getMessage();
+            if (null != message && message.length() > 0) {
+                logsRequestBody(requestTime, message);
+            } else {
+                logsRequestBody(requestTime, "is not application/json;charset=utf-8");
+            }
         }
 
         Headers newHeaders = headersBuilder.build();
@@ -88,28 +76,25 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
         logsResponse(requestTime, response);
 
         ResponseBody body = response.body();
-        String contentType = body.contentType().toString();
         Headers.Builder builder = response.headers().newBuilder();
-        String text = null;
+        String text;
 
-        // json-body
-        if (null != contentType && contentType.length() > 0 && contentType.startsWith(APPLICATION_JSON)) {
-            try {
-                byte[] bytes = body.bytes();
-                text = new String(bytes, StandardCharsets.UTF_8);
-            } catch (Exception e) {
-            }
+        try {
+            byte[] bytes = body.bytes();
+            text = new String(bytes, UTF_8);
             // log
             logsResponseBody(requestTime, text);
-
             text = processResponse(text, extra);
             // log
             logsResponseBody(requestTime, text);
-        }
-        // type-other
-        else {
+        } catch (Exception e) {
             text = null;
-            logsResponseBody(requestTime, "is not application/json;charset=utf-8");
+            String message = e.getMessage();
+            if (null != message && message.length() > 0) {
+                logsResponseBody(requestTime, message);
+            } else {
+                logsResponseBody(requestTime, "is not application/json;charset=utf-8");
+            }
         }
 
         Headers newHeaders = builder.build();

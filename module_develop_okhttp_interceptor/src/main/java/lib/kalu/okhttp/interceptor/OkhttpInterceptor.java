@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Connection;
@@ -52,6 +50,8 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
 
             Request newRequest = analysisRequest(requestTime, connection, request);
             Response response = chain.proceed(newRequest);
+            if (response.code() != 200)
+                throw new IllegalArgumentException("response code is " + response.code());
             Response newResponse = analysisResponse(requestTime, extra, newRequest, response);
             return newResponse;
         } catch (Exception e) {
@@ -166,14 +166,14 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
      * 处理加工 => 响应报文
      *
      * @param text
-     * @param get
+     * @param extra
      * @return
      */
-    default String processResponse(@NonNull String text, @NonNull String get) {
+    default String processResponse(@NonNull String text, @NonNull String extra) {
         try {
             JSONObject object = new JSONObject(text);
-            if (null != get && get.length() > 0) {
-                object.putOpt(EXTRA, get);
+            if (null != extra && extra.length() > 0) {
+                object.putOpt(EXTRA, extra);
             }
             return object.toString();
         } catch (Exception e) {

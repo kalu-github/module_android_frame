@@ -44,10 +44,16 @@ interface OkhttpImpl {
      * text/html
      */
     String TEXT_HTML = "text/html";
+    String UTF_8 = "UTF-8";
+
     /**
      * text/plain;
      */
     String TEXT_PLAIN = "text/plain";
+    /**
+     * text/plain;charset=UTF-8
+     */
+    String TEXT_PLAIN_UTF_8 = "text/plain;charset=UTF-8";
     /**
      * application/json
      */
