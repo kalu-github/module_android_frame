@@ -71,7 +71,6 @@ public class BasePresenter<V extends BaseView> {
     protected final <T> void request(@NonNull Observable<? extends RequestBean<T>> observable, @NonNull OnRequestChangeListener<T> listener, @NonNull boolean loading) {
 
         addDisposable(observable
-                .compose(ComposeSchedulers.io_io())
                 .delay(40, TimeUnit.MILLISECONDS)
                 .compose(ComposeSchedulers.io_main())
                 .doOnSubscribe(new Consumer<Disposable>() {
