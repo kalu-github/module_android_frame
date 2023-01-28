@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Map;
 
-import lib.kalu.frame.mvp.util.OkhttpUtil;
+import lib.kalu.frame.mvp.util.MvpUtil;
 import okhttp3.Connection;
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -18,6 +18,8 @@ import okio.Buffer;
  * created by kalu on 2021-07-31
  */
 interface OkhttpImpl {
+
+    String TAG = "module_okhttp";
 
     /**
      * 无需加密
@@ -139,7 +141,7 @@ interface OkhttpImpl {
     /********************************/
 
     default boolean enableLogs() {
-        return OkhttpUtil.isPrint();
+        return MvpUtil.isLogger();
     }
 
     /********************************/
@@ -284,9 +286,10 @@ interface OkhttpImpl {
     default void logs(String message, Throwable throwable) {
 
         if (enableLogs()) {
-            OkhttpUtil.logE(message, throwable);
+            MvpUtil.logE(TAG, message, throwable);
         }
     }
+
 
     /********************************/
 }

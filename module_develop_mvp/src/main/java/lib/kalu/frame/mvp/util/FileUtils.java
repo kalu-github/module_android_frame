@@ -26,7 +26,7 @@ public final class FileUtils {
             ByteBuffer byteBuffer = readFile(bytes);
             return saveFile(byteBuffer, toPath);
         } catch (Exception e) {
-            OkhttpUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("saveFile => " + e.getMessage());
             return false;
         }
     }
@@ -45,7 +45,7 @@ public final class FileUtils {
             fc.write(src);
             status = true;
         } catch (Exception e) {
-            OkhttpUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("saveFile => " + e.getMessage());
         } finally {
             if (null != fc) {
                 try {
@@ -90,7 +90,7 @@ public final class FileUtils {
 //            fc = null;
             return mbb;
         } catch (IOException e) {
-            OkhttpUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("saveFile => " + e.getMessage());
             return null;
         }
     }
@@ -99,7 +99,7 @@ public final class FileUtils {
         try {
             return ByteBuffer.wrap(bytes);
         } catch (Exception e) {
-            OkhttpUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("saveFile => " + e.getMessage());
             return null;
         }
     }
