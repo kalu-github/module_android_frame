@@ -2,6 +2,9 @@ package lib.kalu.okhttp.interceptor;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONObject;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +12,7 @@ import lib.kalu.okhttp.interceptor.util.OkhttpUtil;
 import okhttp3.Connection;
 import okhttp3.FormBody;
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import okio.Buffer;
@@ -19,26 +23,7 @@ import okio.Buffer;
  */
 interface OkhttpImpl {
 
-    /**
-     * 无需加密
-     */
-    String HttpAes = "xAes:1";
-    /**
-     * 需要缓存
-     */
-    String HttpCached = "xCached:1";
-    /**
-     * 需要登录公共参数
-     */
-    String HttpLogin = "xLogin:1";
-    /**
-     * 下载文件
-     */
-    String HttpDownload = "xDownload:1";
-    /**
-     * 流文件
-     */
-    String HttpMupdf = "xStream:1";
+    String TAG = "module_okhttp";
 
     /**
      * text/html
@@ -102,6 +87,16 @@ interface OkhttpImpl {
      * extra
      */
     String EXTRA = "extra";
+
+    /**
+     * heads
+     */
+    String HEAD = "head";
+    /**
+     * param
+     */
+    String PARAM = "param";
+
     /**
      * data
      */
@@ -123,6 +118,80 @@ interface OkhttpImpl {
      */
     String MESSAGE_DEFAULT = "custom exception";
 
+    default String getParamValue(@NonNull Request request) {
+        try {
+            return request.url().queryParameter(PARAM);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    default HttpUrl.Builder getParamBuilder(@NonNull Request request) {
+        try {
+            String s = request.url().queryParameter(PARAM);
+            if (null == s || s.length() <= 0)
+                throw new Exception("param is empty");
+            JSONObject object = new JSONObject(s);
+            Iterator<String> keys = object.keys();
+            if (null == keys)
+                throw new Exception("param keys is empty");
+            HttpUrl.Builder newBuilder = request.url().newBuilder().removeAllQueryParameters(PARAM);
+            while (keys.hasNext()) {
+                String k = keys.next();
+                if (null == k)
+                    continue;
+                Object v = object.opt(k);
+                if (null == v)
+                    continue;
+                newBuilder.addQueryParameter(k, v.toString());
+            }
+            return newBuilder;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    default String getExtraValue(@NonNull Request request) {
+        try {
+            return request.url().queryParameter(EXTRA);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    default HttpUrl.Builder getExtraBuilder(@NonNull Request request) {
+        try {
+            return request.url().newBuilder().removeAllQueryParameters(EXTRA);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    default Headers getHeads(@NonNull Request request) {
+        try {
+            String s = request.url().queryParameter(HEAD);
+            if (null == s || s.length() <= 0)
+                throw new Exception("head is empty");
+            JSONObject object = new JSONObject(s);
+            Iterator<String> keys = object.keys();
+            if (null == keys)
+                throw new Exception("head keys empty");
+            Headers.Builder newBuilder = request.headers().newBuilder();
+            while (keys.hasNext()) {
+                String k = keys.next();
+                if (null == k)
+                    continue;
+                Object v = object.opt(k);
+                if (null == v)
+                    continue;
+                newBuilder.add(k, v.toString());
+            }
+            return newBuilder.build();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     Request analysisRequest(
             @NonNull long requestTime,
             @NonNull Connection connection,
@@ -139,7 +208,7 @@ interface OkhttpImpl {
     /********************************/
 
     default boolean enableLogs() {
-        return OkhttpUtil.isPrint();
+        return OkhttpUtil.isLogger();
     }
 
     /********************************/
@@ -287,6 +356,7 @@ interface OkhttpImpl {
             OkhttpUtil.logE(message, throwable);
         }
     }
+
 
     /********************************/
 }

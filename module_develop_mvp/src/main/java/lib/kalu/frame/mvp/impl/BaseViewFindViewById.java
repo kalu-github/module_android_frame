@@ -67,46 +67,6 @@ public interface BaseViewFindViewById {
 
     /*****************************************/
 
-    default Context getContext() {
-
-        // DialogFragment
-        if (this instanceof DialogFragment) {
-            DialogFragment dialogFragment = (DialogFragment) this;
-            Context context = dialogFragment.getContext().getApplicationContext();
-            return context;
-        }
-        // Dialog
-        else if (this instanceof Dialog) {
-            Dialog dialog = (Dialog) this;
-            Context context = dialog.getContext().getApplicationContext();
-            return context;
-        }
-        // service
-        else if (this instanceof Service) {
-            Service service = (Service) this;
-            Context context = service.getApplicationContext();
-            return context;
-        }
-        // fragment
-        else if (this instanceof Fragment) {
-            Fragment fragment = (Fragment) this;
-            Context context = fragment.getContext().getApplicationContext();
-            return context;
-        }
-        // activity
-        else if (this instanceof Activity) {
-            Activity activity = (Activity) this;
-            Context context = activity.getApplicationContext();
-            return context;
-        }
-        // fail
-        else {
-            return null;
-        }
-    }
-
-    /*****************************************/
-
     default void setVisibility(@IdRes int id, int visibility) {
 
         View viewById = findViewById(id);

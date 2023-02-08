@@ -12,11 +12,11 @@ public final class OkhttpUtil {
     private static final String TAG = "module_okhttp";
     private static boolean PRINT = false;
 
-    public static final boolean isPrint() {
+    public static final boolean isLogger() {
         return PRINT;
     }
 
-    public static final void setPrint(@NonNull boolean print) {
+    public static final void setLogger(@NonNull boolean print) {
         PRINT = print;
     }
 

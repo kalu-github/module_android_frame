@@ -1,6 +1,7 @@
 package lib.kalu.frame.mvp.demo;
 
 import lib.kalu.frame.mvp.http.BaseClient;
+import okhttp3.Interceptor;
 
 public class DemoClient extends BaseClient {
 

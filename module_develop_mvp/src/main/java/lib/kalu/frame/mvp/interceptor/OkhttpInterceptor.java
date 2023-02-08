@@ -46,21 +46,23 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
                 request = request.newBuilder().url(builder.build()).build();
             }
 
-            // params
-            String v2 = getParamValue(request);
-            if (null != v2 && v2.length() > 0) {
-                HttpUrl.Builder builder = getParamBuilder(request);
-                request = request.newBuilder().url(builder.build()).build();
-            }
+//            // params
+//            String v2 = getParamValue(request);
+//            if (null != v2 && v2.length() > 0) {
+//                HttpUrl.Builder builder = getParamBuilder(request);
+//                request = request.newBuilder().url(builder.build()).build();
+//            }
+//
+//            // heads
+//            Headers headers = getHeads(request);
+//            if (null != headers) {
+//                HttpUrl.Builder builder = request.url().newBuilder();
+//                builder.removeAllQueryParameters(HEAD);
+//                request = request.newBuilder().url(builder.build()).headers(headers).build();
+//            }
 
-            // heads
-            Headers headers = getHeads(request);
-            if (null != headers) {
-                HttpUrl.Builder builder = request.url().newBuilder();
-                builder.removeAllQueryParameters(HEAD);
-                request = request.newBuilder().url(builder.build()).headers(headers).build();
-            }
-
+            // format
+//            request = formatRequest(request);
 
             Request newRequest = analysisRequest(requestTime, connection, request);
             Response response = chain.proceed(newRequest);

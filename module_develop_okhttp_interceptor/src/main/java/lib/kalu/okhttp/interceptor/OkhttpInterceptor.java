@@ -34,25 +34,39 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
     @NonNull
     @Override
     default Response intercept(@NonNull Chain chain) {
-        String extra = "";
         long requestTime = System.nanoTime();
         try {
             Connection connection = chain.connection();
             Request request = chain.request();
 
-            String queryParameter = request.url().queryParameter(EXTRA);
-            if (null != queryParameter && queryParameter.length() > 0) {
-                extra = queryParameter;
-                HttpUrl.Builder builder = request.url().newBuilder();
-                builder.removeAllQueryParameters(EXTRA);
+            // extra
+            String v1 = getExtraValue(request);
+            if (null != v1 && v1.length() > 0) {
+                HttpUrl.Builder builder = getExtraBuilder(request);
                 request = request.newBuilder().url(builder.build()).build();
             }
+
+            // params
+            String v2 = getParamValue(request);
+            if (null != v2 && v2.length() > 0) {
+                HttpUrl.Builder builder = getParamBuilder(request);
+                request = request.newBuilder().url(builder.build()).build();
+            }
+
+            // heads
+            Headers headers = getHeads(request);
+            if (null != headers) {
+                HttpUrl.Builder builder = request.url().newBuilder();
+                builder.removeAllQueryParameters(HEAD);
+                request = request.newBuilder().url(builder.build()).headers(headers).build();
+            }
+
 
             Request newRequest = analysisRequest(requestTime, connection, request);
             Response response = chain.proceed(newRequest);
             if (response.code() != 200)
                 throw new IllegalArgumentException("response code is " + response.code());
-            Response newResponse = analysisResponse(requestTime, extra, newRequest, response);
+            Response newResponse = analysisResponse(requestTime, v1, newRequest, response);
             return newResponse;
         } catch (Exception e) {
             logs(e.getMessage(), e);
@@ -61,7 +75,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             map.put(MESSAGE, MESSAGE_DEFAULT);
             Request request = chain.request();
             Response response = createResponse(request, map);
-            Response newResponse = analysisResponse(requestTime, extra, request, response);
+            Response newResponse = analysisResponse(requestTime, null, request, response);
             return newResponse;
         }
     }
@@ -124,7 +138,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             JSONObject object = new JSONObject(text);
             String session = object.optString(SESSION, null);
             object.remove(SESSION);
-            if(null != session && session.length()>0){
+            if (null != session && session.length() > 0) {
                 headersBuilder.add(SESSION, session);
             }
             return object.toString();

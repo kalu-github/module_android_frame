@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import lib.kalu.frame.mvp.interceptor.OkhttpInterceptorStandard;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -27,15 +28,37 @@ public abstract class BaseClient {
 
     private Retrofit mRetrofit;
 
+    protected int initConnectTimeout() {
+        return 2;
+    }
+
+    protected int initReadTimeout() {
+        return 2;
+    }
+
+    protected int initWriteTimeout() {
+        return 2;
+    }
+
+    protected int initCallTimeout() {
+        return 3000;
+    }
+
     protected BaseClient() {
 
         OkHttpClient.Builder mOkHttpBuilder = new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(5, TimeUnit.SECONDS)
-                .writeTimeout(5, TimeUnit.SECONDS)
-                .callTimeout(3000, TimeUnit.SECONDS)
-                .retryOnConnectionFailure(false)
-                .addInterceptor(new OkhttpInterceptorStandard());
+                .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
+                .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
+                .callTimeout(initCallTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(initConnectTimeout(), TimeUnit.SECONDS)
+                .retryOnConnectionFailure(false);
+
+        Interceptor interceptor = addInterceptor();
+        if (null != interceptor) {
+            mOkHttpBuilder.addInterceptor(interceptor);
+        } else {
+            mOkHttpBuilder.addInterceptor(new OkhttpInterceptorStandard());
+        }
 
         // 禁止代理抓包
         mOkHttpBuilder.proxySelector(new ProxySelector() {
@@ -75,4 +98,8 @@ public abstract class BaseClient {
     }
 
     protected abstract String initApi();
+
+    protected Interceptor addInterceptor() {
+        return null;
+    }
 }

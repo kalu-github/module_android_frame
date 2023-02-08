@@ -88,14 +88,14 @@ interface OkhttpImpl {
      */
     String EXTRA = "extra";
 
-    /**
-     * heads
-     */
-    String HEAD = "head";
-    /**
-     * param
-     */
-    String PARAM = "param";
+//    /**
+//     * heads
+//     */
+//    String HEAD = "head";
+//    /**
+//     * param
+//     */
+//    String PARAM = "param";
 
     /**
      * data
@@ -118,38 +118,42 @@ interface OkhttpImpl {
      */
     String MESSAGE_DEFAULT = "custom exception";
 
-    default String getParamValue(@NonNull Request request) {
-        try {
-            return request.url().queryParameter(PARAM);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    default HttpUrl.Builder getParamBuilder(@NonNull Request request) {
-        try {
-            String s = request.url().queryParameter(PARAM);
-            if (null == s || s.length() <= 0)
-                throw new Exception("param is empty");
-            JSONObject object = new JSONObject(s);
-            Iterator<String> keys = object.keys();
-            if (null == keys)
-                throw new Exception("param keys is empty");
-            HttpUrl.Builder newBuilder = request.url().newBuilder().removeAllQueryParameters(PARAM);
-            while (keys.hasNext()) {
-                String k = keys.next();
-                if (null == k)
-                    continue;
-                Object v = object.opt(k);
-                if (null == v)
-                    continue;
-                newBuilder.addQueryParameter(k, v.toString());
-            }
-            return newBuilder;
-        } catch (Exception e) {
-            return null;
-        }
-    }
+//    default Request formatRequest(@NonNull Request request) {
+//        return request;
+//    }
+//
+//    default String getParamValue(@NonNull Request request) {
+//        try {
+//            return request.url().queryParameter(PARAM);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+//
+//    default HttpUrl.Builder getParamBuilder(@NonNull Request request) {
+//        try {
+//            String s = request.url().queryParameter(PARAM);
+//            if (null == s || s.length() <= 0)
+//                throw new Exception("param is empty");
+//            JSONObject object = new JSONObject(s);
+//            Iterator<String> keys = object.keys();
+//            if (null == keys)
+//                throw new Exception("param keys is empty");
+//            HttpUrl.Builder newBuilder = request.url().newBuilder().removeAllQueryParameters(PARAM);
+//            while (keys.hasNext()) {
+//                String k = keys.next();
+//                if (null == k)
+//                    continue;
+//                Object v = object.opt(k);
+//                if (null == v)
+//                    continue;
+//                newBuilder.addQueryParameter(k, v.toString());
+//            }
+//            return newBuilder;
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
     default String getExtraValue(@NonNull Request request) {
         try {
@@ -166,31 +170,31 @@ interface OkhttpImpl {
             return null;
         }
     }
-
-    default Headers getHeads(@NonNull Request request) {
-        try {
-            String s = request.url().queryParameter(HEAD);
-            if (null == s || s.length() <= 0)
-                throw new Exception("head is empty");
-            JSONObject object = new JSONObject(s);
-            Iterator<String> keys = object.keys();
-            if (null == keys)
-                throw new Exception("head keys empty");
-            Headers.Builder newBuilder = request.headers().newBuilder();
-            while (keys.hasNext()) {
-                String k = keys.next();
-                if (null == k)
-                    continue;
-                Object v = object.opt(k);
-                if (null == v)
-                    continue;
-                newBuilder.add(k, v.toString());
-            }
-            return newBuilder.build();
-        } catch (Exception e) {
-            return null;
-        }
-    }
+//
+//    default Headers getHeads(@NonNull Request request) {
+//        try {
+//            String s = request.url().queryParameter(HEAD);
+//            if (null == s || s.length() <= 0)
+//                throw new Exception("head is empty");
+//            JSONObject object = new JSONObject(s);
+//            Iterator<String> keys = object.keys();
+//            if (null == keys)
+//                throw new Exception("head keys empty");
+//            Headers.Builder newBuilder = request.headers().newBuilder();
+//            while (keys.hasNext()) {
+//                String k = keys.next();
+//                if (null == k)
+//                    continue;
+//                Object v = object.opt(k);
+//                if (null == v)
+//                    continue;
+//                newBuilder.add(k, v.toString());
+//            }
+//            return newBuilder.build();
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
 
     Request analysisRequest(
             @NonNull long requestTime,
