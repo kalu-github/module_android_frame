@@ -10,6 +10,25 @@ import lib.kalu.frame.mvp.BaseView;
 @Keep
 public interface BaseViewRecyclerView {
 
+    default boolean isAdapterEmpty(@IdRes int id) {
+        try {
+            return getAdapetItemCount(id) <= 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    default int getAdapetItemCount(@IdRes int id) {
+        try {
+            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            return recyclerView.getAdapter().getItemCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     default void notifyDataSetChanged(@IdRes int id) {
         try {
             RecyclerView recyclerView = ((BaseView) this).findViewById(id);
