@@ -51,6 +51,7 @@ interface OkhttpImpl {
      * application/json;charset=utf-8
      */
     String APPLICATION_JSON_CHARSET_UTF8 = "application/json;charset=utf-8";
+    String MULTIPART_FORM_DATA = "multipart/form-data";
     /**
      * "
      */
@@ -78,15 +79,15 @@ interface OkhttpImpl {
     /**
      * session
      */
-    String SESSION = "session";
+    String SESSION = "mvp_okhttp_request_text_contains_session";
+    /**
+     * extra
+     */
+    String EXTRA = "mvp_okhttp_request_text_contains_extra";
     /**
      * key
      */
     String KEY = "key";
-    /**
-     * extra
-     */
-    String EXTRA = "extra";
 
 //    /**
 //     * heads

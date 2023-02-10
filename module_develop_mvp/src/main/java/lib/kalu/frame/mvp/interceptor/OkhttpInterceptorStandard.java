@@ -27,7 +27,7 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
         logsConnection(requestTime, connection);
 
         // 报文
-        String text;
+        String value;
         RequestBody requestBody = request.body();
         Headers.Builder headersBuilder = request.headers().newBuilder();
 
@@ -36,20 +36,20 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
                 FormBody formBody = processRequest((FormBody) requestBody, headersBuilder);
                 // log
                 logsRequestBody(requestTime, (FormBody) requestBody);
-                text = null;
+                value = null;
                 requestBody = formBody;
             } else {
                 Buffer buffer = new Buffer();
                 requestBody.writeTo(buffer);
-                text = buffer.readUtf8();
+                value = buffer.readUtf8();
                 // log
-                logsRequestBody(requestTime, text);
-                text = processRequest(text, headersBuilder);
+                logsRequestBody(requestTime, value);
+                value = processRequest(value, headersBuilder);
                 // log
-                logsRequestBody(requestTime, text);
+                logsRequestBody(requestTime, value);
             }
         } catch (Exception e) {
-            text = null;
+            value = null;
             // log
             String message = e.getMessage();
             if (null != message && message.length() > 0) {
@@ -63,10 +63,14 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
         // log
         logsRequestHeaders(requestTime, newHeaders);
 
-        return request.newBuilder()
-                .method(request.method(), null == text ? requestBody : RequestBody.create(MediaType.parse(APPLICATION_JSON_CHARSET_UTF8), text))
-                .headers(newHeaders)
-                .build();
+        Request.Builder builder = request.newBuilder()
+                .headers(newHeaders);
+        if (null == value) {
+            builder.method(request.method(), requestBody);
+        } else {
+            builder.method(request.method(), RequestBody.create(MediaType.parse(APPLICATION_JSON_CHARSET_UTF8), value));
+        }
+        return builder.build();
     }
 
     @Override

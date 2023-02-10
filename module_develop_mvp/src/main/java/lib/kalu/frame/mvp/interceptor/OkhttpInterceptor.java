@@ -131,22 +131,25 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
     /**
      * 处理加工 => 请求报文
      *
-     * @param text
-     * @param headersBuilder
+     * @param s
+     * @param builder
      * @return
      */
-    default String processRequest(@NonNull String text, @NonNull Headers.Builder headersBuilder) {
+    default String processRequest(@NonNull String s, @NonNull Headers.Builder builder) {
         try {
-            JSONObject object = new JSONObject(text);
+            boolean contains = s.contains(SESSION);
+            if (!contains)
+                throw new Exception("not contains => " + SESSION);
+            JSONObject object = new JSONObject(s);
             String session = object.optString(SESSION, null);
             object.remove(SESSION);
             if (null != session && session.length() > 0) {
-                headersBuilder.add(SESSION, session);
+                builder.add(SESSION, session);
             }
-            return object.toString();
+            return s;
         } catch (Exception e) {
             logs(e.getMessage(), e);
-            throw new RuntimeException(e.getMessage());
+            return s;
         }
     }
 
@@ -181,20 +184,20 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
     /**
      * 处理加工 => 响应报文
      *
-     * @param text
+     * @param s
      * @param extra
      * @return
      */
-    default String processResponse(@NonNull String text, @NonNull String extra) {
+    default String processResponse(@NonNull String s, @NonNull String extra) {
         try {
-            JSONObject object = new JSONObject(text);
+            JSONObject object = new JSONObject(s);
             if (null != extra && extra.length() > 0) {
                 object.putOpt(EXTRA, extra);
             }
             return object.toString();
         } catch (Exception e) {
             logs(e.getMessage(), e);
-            throw new RuntimeException(e.getMessage());
+            return s;
         }
     }
 }
