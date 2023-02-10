@@ -41,7 +41,7 @@ public abstract class BaseClient {
         OkHttpClient.Builder mOkHttpBuilder = new OkHttpClient.Builder()
                 .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
                 .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
-                .retryOnConnectionFailure(false);
+                .retryOnConnectionFailure(true);
 
         Interceptor interceptor = addInterceptor();
         if (null != interceptor) {
