@@ -13,16 +13,21 @@ public interface BaseViewRecyclerView {
     default void notifyDataSetChanged(@IdRes int id) {
         try {
             RecyclerView recyclerView = ((BaseView) this).findViewById(id);
-            recyclerView.getAdapter().notifyDataSetChanged();
+            int count = recyclerView.getAdapter().getItemCount();
+            notifyItemRangeChanged(id, 0, count);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     default void notifyItemChanged(@IdRes int id, @NonNull int position) {
+        notifyItemRangeChanged(id, position, 1);
+    }
+
+    default void notifyItemRangeChanged(@IdRes int id, int positionStart, int itemCount) {
         try {
             RecyclerView recyclerView = ((BaseView) this).findViewById(id);
-            recyclerView.getAdapter().notifyItemChanged(position);
+            recyclerView.getAdapter().notifyItemRangeChanged(positionStart, itemCount);
         } catch (Exception e) {
             e.printStackTrace();
         }

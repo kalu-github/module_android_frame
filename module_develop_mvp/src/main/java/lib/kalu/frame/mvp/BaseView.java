@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import lib.kalu.frame.mvp.impl.BaseViewFocus;
 import lib.kalu.frame.mvp.impl.BaseViewContext;
 import lib.kalu.frame.mvp.impl.BaseViewFindViewById;
 import lib.kalu.frame.mvp.impl.BaseViewImageView;
@@ -22,6 +23,7 @@ import lib.kalu.frame.mvp.impl.BaseViewViewGroup;
  */
 @Keep
 public interface BaseView extends BaseViewContext,
+        BaseViewFocus,
         BaseViewResources,
         BaseViewFindViewById,
         BaseViewIntent,
