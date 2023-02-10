@@ -39,9 +39,21 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
                 value = null;
                 requestBody = formBody;
             } else {
-                Buffer buffer = new Buffer();
-                requestBody.writeTo(buffer);
-                value = buffer.readUtf8();
+
+                // "multipart/form-data"
+                String mediaType;
+                try {
+                    mediaType = request.body().contentType().toString();
+                } catch (Exception e) {
+                    mediaType = null;
+                }
+                if (null != mediaType && mediaType.startsWith(MULTIPART_FORM_DATA)) {
+                    value = null;
+                } else {
+                    Buffer buffer = new Buffer();
+                    requestBody.writeTo(buffer);
+                    value = buffer.readUtf8();
+                }
                 // log
                 logsRequestBody(requestTime, value);
                 value = processRequest(value, headersBuilder);

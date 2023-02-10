@@ -136,21 +136,19 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
      * @return
      */
     default String processRequest(@NonNull String s, @NonNull Headers.Builder builder) {
-        boolean contains = s.contains(SESSION);
-        if (contains) {
-            try {
-                JSONObject object = new JSONObject(s);
-                String session = object.optString(SESSION, null);
-                object.remove(SESSION);
-                if (null != session && session.length() > 0) {
-                    builder.add(SESSION, session);
-                }
-                return s;
-            } catch (Exception e) {
-                logs(e.getMessage());
-                return s;
+        try {
+            boolean contains = s.contains(SESSION);
+            if (contains)
+                throw new Exception("not contains " + SESSION);
+            JSONObject object = new JSONObject(s);
+            String session = object.optString(SESSION, null);
+            object.remove(SESSION);
+            if (null != session && session.length() > 0) {
+                builder.add(SESSION, session);
             }
-        } else {
+            return s;
+        } catch (Exception e) {
+            logs(e.getMessage());
             return s;
         }
     }
