@@ -49,16 +49,18 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
                 }
                 if (null != mediaType && mediaType.startsWith(MULTIPART_FORM_DATA)) {
                     value = null;
+                    // log
+                    logsRequestBody(requestTime, LOG_MULTIPART_FORM_DATA);
                 } else {
                     Buffer buffer = new Buffer();
                     requestBody.writeTo(buffer);
-                    value = buffer.readUtf8();
+                    String s = buffer.readUtf8();
+                    // log
+                    logsRequestBody(requestTime, s);
+                    value = processRequest(s, headersBuilder);
+                    // log
+                    logsRequestBody(requestTime, value);
                 }
-                // log
-                logsRequestBody(requestTime, value);
-                value = processRequest(value, headersBuilder);
-                // log
-                logsRequestBody(requestTime, value);
             }
         } catch (Exception e) {
             value = null;

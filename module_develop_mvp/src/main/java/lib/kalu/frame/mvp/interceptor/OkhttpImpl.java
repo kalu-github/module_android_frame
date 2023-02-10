@@ -52,6 +52,7 @@ public interface OkhttpImpl {
      */
     String APPLICATION_JSON_CHARSET_UTF8 = "application/json;charset=utf-8";
     String MULTIPART_FORM_DATA = "multipart/form-data";
+    String LOG_MULTIPART_FORM_DATA = "body is multipart/form-data";
     /**
      * "
      */
