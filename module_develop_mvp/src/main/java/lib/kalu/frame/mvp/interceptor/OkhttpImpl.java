@@ -21,7 +21,7 @@ import okio.Buffer;
  * description: 常量标记
  * created by kalu on 2021-07-31
  */
-interface OkhttpImpl {
+public interface OkhttpImpl {
 
     String TAG = "module_okhttp";
 
@@ -79,11 +79,11 @@ interface OkhttpImpl {
     /**
      * session
      */
-    String SESSION = "mvp_okhttp_request_text_contains_session";
+    String SESSION = "reqSession$$##@@";
     /**
      * extra
      */
-    String EXTRA = "mvp_okhttp_request_text_contains_extra";
+    String EXTRA = "reqExtra$$##@@";
     /**
      * key
      */
