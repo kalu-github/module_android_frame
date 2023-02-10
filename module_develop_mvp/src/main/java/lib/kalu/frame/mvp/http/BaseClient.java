@@ -28,10 +28,6 @@ public abstract class BaseClient {
 
     private Retrofit mRetrofit;
 
-    protected int initConnectTimeout() {
-        return 2;
-    }
-
     protected int initReadTimeout() {
         return 2;
     }
@@ -40,17 +36,11 @@ public abstract class BaseClient {
         return 2;
     }
 
-    protected int initCallTimeout() {
-        return 3000;
-    }
-
     protected BaseClient() {
 
         OkHttpClient.Builder mOkHttpBuilder = new OkHttpClient.Builder()
                 .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
                 .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
-                .callTimeout(initCallTimeout(), TimeUnit.SECONDS)
-                .connectTimeout(initConnectTimeout(), TimeUnit.SECONDS)
                 .retryOnConnectionFailure(false);
 
         Interceptor interceptor = addInterceptor();
