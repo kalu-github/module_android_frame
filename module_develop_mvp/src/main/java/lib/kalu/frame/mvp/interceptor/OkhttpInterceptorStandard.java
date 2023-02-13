@@ -32,26 +32,39 @@ public class OkhttpInterceptorStandard implements OkhttpInterceptor {
         Headers.Builder headersBuilder = request.headers().newBuilder();
 
         try {
-            if (requestBody instanceof FormBody) {
-                FormBody formBody = processRequest((FormBody) requestBody, headersBuilder);
-                // log
-                logsRequestBody(requestTime, (FormBody) requestBody);
+            // body null
+            if (null == requestBody) {
                 value = null;
-                requestBody = formBody;
-            } else {
+                // log
+                logsRequestBody(requestTime, LOG_REQUEST_BODY_IS_NULL);
+            }
+            // not null
+            else {
 
                 // "multipart/form-data"
                 String mediaType;
                 try {
-                    mediaType = request.body().contentType().toString();
+                    mediaType = requestBody.contentType().toString();
                 } catch (Exception e) {
                     mediaType = null;
                 }
+
+                // multipart
                 if (null != mediaType && mediaType.startsWith(MULTIPART_FORM_DATA)) {
                     value = null;
                     // log
                     logsRequestBody(requestTime, LOG_MULTIPART_FORM_DATA);
-                } else {
+                }
+                // formbody
+                else if (requestBody instanceof FormBody) {
+                    FormBody formBody = processRequest((FormBody) requestBody, headersBuilder);
+                    // log
+                    logsRequestBody(requestTime, (FormBody) requestBody);
+                    value = null;
+                    requestBody = formBody;
+                }
+                // jsonbody
+                else {
                     Buffer buffer = new Buffer();
                     requestBody.writeTo(buffer);
                     String s = buffer.readUtf8();
