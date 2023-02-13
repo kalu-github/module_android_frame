@@ -11,6 +11,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
+import retrofit2.http.GET;
 
 /**
  * description: 默认不加密
