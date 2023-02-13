@@ -35,40 +35,23 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
     @Override
     default Response intercept(@NonNull Chain chain) {
         long requestTime = System.nanoTime();
+        String data = null;
         try {
             Connection connection = chain.connection();
             Request request = chain.request();
 
             // extra
-            String v1 = getExtraValue(request);
-            if (null != v1 && v1.length() > 0) {
+            data = getExtraValue(request);
+            if (null != data && data.length() > 0) {
                 HttpUrl.Builder builder = getExtraBuilder(request);
                 request = request.newBuilder().url(builder.build()).build();
             }
-
-//            // params
-//            String v2 = getParamValue(request);
-//            if (null != v2 && v2.length() > 0) {
-//                HttpUrl.Builder builder = getParamBuilder(request);
-//                request = request.newBuilder().url(builder.build()).build();
-//            }
-//
-//            // heads
-//            Headers headers = getHeads(request);
-//            if (null != headers) {
-//                HttpUrl.Builder builder = request.url().newBuilder();
-//                builder.removeAllQueryParameters(HEAD);
-//                request = request.newBuilder().url(builder.build()).headers(headers).build();
-//            }
-
-            // format
-//            request = formatRequest(request);
 
             Request newRequest = analysisRequest(requestTime, connection, request);
             Response response = chain.proceed(newRequest);
             if (response.code() != 200)
                 throw new IllegalArgumentException("response code is " + response.code());
-            Response newResponse = analysisResponse(requestTime, v1, newRequest, response);
+            Response newResponse = analysisResponse(requestTime, data, newRequest, response);
             return newResponse;
         } catch (Exception e) {
             logs(e.getMessage(), e);
@@ -77,7 +60,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             map.put(MESSAGE, MESSAGE_DEFAULT);
             Request request = chain.request();
             Response response = createResponse(request, map);
-            Response newResponse = analysisResponse(requestTime, null, request, response);
+            Response newResponse = analysisResponse(requestTime, data, request, response);
             return newResponse;
         }
     }

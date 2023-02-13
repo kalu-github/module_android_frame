@@ -206,7 +206,7 @@ public interface OkhttpImpl {
 
     Response analysisResponse(
             @NonNull long requestTime,
-            @NonNull String get,
+            @NonNull String data,
             @NonNull Request request,
             @NonNull Response response);
 
