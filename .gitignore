@@ -7,6 +7,4 @@
 /module_develop_mvp/build/
 /module_develop_mvvm/.gradle/
 /module_develop_mvvm/build/
-/module_develop_okhttp_interceptor/.gradle/
-/module_develop_okhttp_interceptor/build/
 local.properties
