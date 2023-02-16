@@ -37,6 +37,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.show(fragment);
+            fragmentTransaction.commit();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
@@ -52,6 +53,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.hide(fragment);
+            fragmentTransaction.commit();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
@@ -71,6 +73,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.add(id, fragment, tag);
+            fragmentTransaction.commit();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
