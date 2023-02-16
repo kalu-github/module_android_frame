@@ -3,6 +3,7 @@ package lib.kalu.frame.mvp.impl;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,16 +17,39 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import lib.kalu.frame.mvp.BaseView;
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
 public interface BaseViewImageView {
 
+
+    default void setImageResource(@NonNull ImageView imageView, @DrawableRes int drawable) {
+        try {
+            if (null == imageView)
+                throw new Exception("imageView is null");
+            imageView.setImageResource(drawable);
+        } catch (Exception e) {
+            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+        }
+    }
+
     default void setImageResource(@IdRes int id, @DrawableRes int drawable) {
         try {
             ImageView imageView = ((BaseView) this).findViewById(id);
-            imageView.setImageResource(drawable);
+            setImageResource(imageView, drawable);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+        }
+    }
+
+    default void setImageResource(@NonNull View view, @IdRes int id, @DrawableRes int drawable) {
+        try {
+            if (null == view)
+                throw new Exception("view is null");
+            ImageView imageView = view.findViewById(id);
+            setImageResource(imageView, drawable);
+        } catch (Exception e) {
+            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
         }
     }
 
