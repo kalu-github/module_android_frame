@@ -17,35 +17,6 @@ import androidx.fragment.app.Fragment;
 @Keep
 public interface BaseViewWindow extends BaseViewContext {
 
-    default Activity getActivity(Context context) {
-        try {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            } else if (context instanceof ContextThemeWrapper) {
-                return getActivity(((ContextThemeWrapper) context).getBaseContext());
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    default Activity getActivity() {
-        try {
-            Context context = getContext();
-            if (context instanceof Activity) {
-                return (Activity) context;
-            } else if (context instanceof ContextThemeWrapper) {
-                return getActivity(((ContextThemeWrapper) context).getBaseContext());
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     default Window getWindow() {
         try {
             return getActivity().getWindow();
