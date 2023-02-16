@@ -7,6 +7,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
+import lib.kalu.frame.mvp.util.MvpUtil;
+
 @Keep
 public interface BaseViewView extends BaseViewFindViewById {
 
@@ -221,12 +223,31 @@ public interface BaseViewView extends BaseViewFindViewById {
         return (view.getVisibility() == View.VISIBLE);
     }
 
+    default void setSelected(@NonNull View view, boolean selected) {
+        try {
+            if (null == view)
+                throw new Exception("view is null");
+            view.setSelected(selected);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewView => setSelected => " + e.getMessage());
+        }
+    }
+
     default void setSelected(@IdRes int id, boolean selected) {
         try {
             View viewById = findViewById(id);
-            viewById.setSelected(selected);
+            setSelected(viewById, selected);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewView => setSelected => " + e.getMessage());
+        }
+    }
+
+    default void setSelected(@NonNull View view, @IdRes int id, boolean selected) {
+        try {
+            View viewById = view.findViewById(id);
+            setSelected(viewById, selected);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewView => setSelected => " + e.getMessage());
         }
     }
 }
