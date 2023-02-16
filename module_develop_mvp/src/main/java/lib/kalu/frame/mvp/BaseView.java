@@ -15,6 +15,7 @@ import lib.kalu.frame.mvp.impl.BaseViewResources;
 import lib.kalu.frame.mvp.impl.BaseViewTextView;
 import lib.kalu.frame.mvp.impl.BaseViewView;
 import lib.kalu.frame.mvp.impl.BaseViewViewGroup;
+import lib.kalu.frame.mvp.impl.BaseViewWindow;
 
 /**
  * @author zhanghang
@@ -23,6 +24,7 @@ import lib.kalu.frame.mvp.impl.BaseViewViewGroup;
  */
 @Keep
 public interface BaseView extends BaseViewContext,
+        BaseViewWindow,
         BaseViewFocus,
         BaseViewResources,
         BaseViewFindViewById,
