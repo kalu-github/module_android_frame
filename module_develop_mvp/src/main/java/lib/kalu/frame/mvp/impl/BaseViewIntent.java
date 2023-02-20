@@ -8,6 +8,10 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+
+import lib.kalu.frame.mvp.util.MvpUtil;
+
 @Keep
 public interface BaseViewIntent {
 
@@ -169,64 +173,72 @@ public interface BaseViewIntent {
         }
     }
 
-    default String getStringExtra(@NonNull String name) {
-
-        try {
-
-            // activiy
-            if (this instanceof Activity) {
-                Activity activity = (Activity) this;
-                return getStringExtra(activity, name);
-            }
-            // fragment
-            else if (this instanceof Fragment) {
-                Fragment fragment = (Fragment) this;
-                return getStringExtra(fragment, name);
-            }
-            // defaults
-            else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
+    default String getStringExtra(@NonNull Activity activity, @NonNull String name) {
+        return getStringExtra(activity, name, "");
     }
 
-    default String getStringExtra(@NonNull Activity activity, @NonNull String name) {
+    default String getStringExtra(@NonNull Activity activity, @NonNull String name, @NonNull String defaultValue) {
 
         try {
             Intent intent = activity.getIntent();
             return intent.getStringExtra(name);
         } catch (Exception e) {
-            return null;
+            MvpUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
+            return defaultValue;
         }
     }
 
     default String getStringExtra(@NonNull Fragment fragment, @NonNull String name) {
+        return getStringExtra(fragment, name, "");
+    }
+
+    default String getStringExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull String defaultValue) {
 
         try {
             Bundle bundle = fragment.getArguments();
-            return bundle.getString(name, null);
+            return bundle.getString(name, defaultValue);
         } catch (Exception e) {
-            return null;
+            MvpUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
+            return defaultValue;
+        }
+    }
+
+    default String getStringExtra(@NonNull String name) {
+        return getStringExtra(name, "");
+    }
+
+    default String getStringExtra(@NonNull String name, @NonNull String defaultValue) {
+
+        try {
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                return getStringExtra(activity, name, defaultValue);
+            } else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                return getStringExtra(fragment, name, defaultValue);
+            } else {
+                throw new Exception("not activity or fragment: " + this);
+            }
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
+            return defaultValue;
         }
     }
 
     default void putStringExtra(@NonNull String name, @NonNull String value) {
 
         try {
-
-            // activiy
             if (this instanceof Activity) {
                 Activity activity = (Activity) this;
                 putStringExtra(activity, name, value);
-            }
-            // fragment
-            else if (this instanceof Fragment) {
+            } else if (this instanceof Fragment) {
                 Fragment fragment = (Fragment) this;
                 putStringExtra(fragment, name, value);
+            } else {
+                throw new Exception("not activity or fragment: " + this);
             }
         } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
         }
     }
 
@@ -236,6 +248,7 @@ public interface BaseViewIntent {
             Intent intent = activity.getIntent();
             intent.putExtra(name, value);
         } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
         }
     }
 
@@ -245,6 +258,7 @@ public interface BaseViewIntent {
             Bundle bundle = fragment.getArguments();
             bundle.putString(name, value);
         } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
         }
     }
 
@@ -324,6 +338,95 @@ public interface BaseViewIntent {
             Bundle bundle = fragment.getArguments();
             bundle.putLong(name, value);
         } catch (Exception e) {
+        }
+    }
+
+    default ArrayList<String> getStringArrayListExtra(@NonNull String name) {
+        return getStringArrayListExtra(name, new ArrayList<String>());
+    }
+
+    default ArrayList<String> getStringArrayListExtra(@NonNull String name, @NonNull ArrayList<String> defaultValue) {
+
+        try {
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                return getStringArrayListExtra(activity, name, defaultValue);
+            } else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                return getStringArrayListExtra(fragment, name, defaultValue);
+            } else {
+                throw new Exception("not activity or fragment: " + this);
+            }
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
+            return defaultValue;
+        }
+    }
+
+    default ArrayList<String> getStringArrayListExtra(@NonNull Activity activity, @NonNull String name) {
+        return getStringArrayListExtra(activity, name, new ArrayList<String>());
+    }
+
+    default ArrayList<String> getStringArrayListExtra(@NonNull Activity activity, @NonNull String name, @NonNull ArrayList<String> defaultValue) {
+
+        try {
+            Intent intent = activity.getIntent();
+            return intent.getStringArrayListExtra(name);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
+            return defaultValue;
+        }
+    }
+
+    default ArrayList<String> getStringArrayListExtra(@NonNull Fragment fragment, @NonNull String name) {
+        return getStringArrayListExtra(fragment, name, new ArrayList<String>());
+    }
+
+    default ArrayList<String> getStringArrayListExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull ArrayList<String> defaultValue) {
+
+        try {
+            Bundle bundle = fragment.getArguments();
+            return bundle.getStringArrayList(name);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
+            return defaultValue;
+        }
+    }
+
+    default void putStringArrayListExtra(@NonNull String name, @NonNull ArrayList<String> value) {
+
+        try {
+            if (this instanceof Activity) {
+                Activity activity = (Activity) this;
+                putStringArrayListExtra(activity, name, value);
+            } else if (this instanceof Fragment) {
+                Fragment fragment = (Fragment) this;
+                putStringArrayListExtra(fragment, name, value);
+            } else {
+                throw new Exception("not activity or fragment: " + this);
+            }
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
+        }
+    }
+
+    default void putStringArrayListExtra(@NonNull Activity activity, @NonNull String name, @NonNull ArrayList<String> value) {
+
+        try {
+            Intent intent = activity.getIntent();
+            intent.putStringArrayListExtra(name, value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
+        }
+    }
+
+    default void putStringArrayListExtra(@NonNull Fragment fragment, @NonNull String name, @NonNull ArrayList<String> value) {
+
+        try {
+            Bundle bundle = fragment.getArguments();
+            bundle.putStringArrayList(name, value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
         }
     }
 }
