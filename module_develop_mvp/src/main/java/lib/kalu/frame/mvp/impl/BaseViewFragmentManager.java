@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import java.util.List;
+
 import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
@@ -41,6 +43,46 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default boolean hideFragment(@Nullable List<androidx.fragment.app.Fragment> fragments) {
+        try {
+            if (null == fragments || fragments.size() <= 0)
+                throw new Exception("fragment is null");
+            androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManagerTransaction();
+            if (null == fragmentTransaction)
+                throw new Exception("fragmentTransaction is null");
+            for (androidx.fragment.app.Fragment fragment : fragments) {
+                if (null == fragment)
+                    continue;
+                fragmentTransaction.hide(fragment);
+            }
+            fragmentTransaction.commit();
+            return true;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default boolean hideFragment(@Nullable androidx.fragment.app.Fragment[] fragments) {
+        try {
+            if (null == fragments || fragments.length <= 0)
+                throw new Exception("fragment is null");
+            androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManagerTransaction();
+            if (null == fragmentTransaction)
+                throw new Exception("fragmentTransaction is null");
+            for (androidx.fragment.app.Fragment fragment : fragments) {
+                if (null == fragment)
+                    continue;
+                fragmentTransaction.hide(fragment);
+            }
+            fragmentTransaction.commit();
+            return true;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
             return false;
         }
     }
