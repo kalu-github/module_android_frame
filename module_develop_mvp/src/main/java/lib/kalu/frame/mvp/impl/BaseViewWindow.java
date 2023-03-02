@@ -19,7 +19,7 @@ public interface BaseViewWindow extends BaseViewContext {
 
     default Window getWindow() {
         try {
-            return getActivity().getWindow();
+            return getWrapperActivity().getWindow();
         } catch (Exception e) {
             MvpUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
             return null;

@@ -149,7 +149,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
 
     default androidx.fragment.app.FragmentManager getSupportFragmentManager() {
         try {
-            Activity activity = getActivity();
+            Activity activity = getWrapperActivity();
             if (null == activity)
                 throw new Exception("activity is null");
             if (!(activity instanceof AppCompatActivity))

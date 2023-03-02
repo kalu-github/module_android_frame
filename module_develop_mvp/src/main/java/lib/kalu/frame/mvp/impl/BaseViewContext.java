@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.ContextWrapper;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
@@ -11,6 +12,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import lib.kalu.frame.mvp.util.WrapperUtil;
 
 @Keep
 public interface BaseViewContext {
@@ -53,32 +56,12 @@ public interface BaseViewContext {
         }
     }
 
-    default Activity getActivity(Context context) {
-        try {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            } else if (context instanceof ContextThemeWrapper) {
-                return getActivity(((ContextThemeWrapper) context).getBaseContext());
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
+    default Activity getWrapperActivity(Context context) {
+        return WrapperUtil.getWrapperActivity(context);
     }
 
-    default Activity getActivity() {
-        try {
-            Context context = getContext();
-            if (context instanceof Activity) {
-                return (Activity) context;
-            } else if (context instanceof ContextThemeWrapper) {
-                return getActivity(((ContextThemeWrapper) context).getBaseContext());
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            return null;
-        }
+    default Activity getWrapperActivity() {
+        Context context = getContext();
+        return WrapperUtil.getWrapperActivity(context);
     }
 }
