@@ -5,15 +5,18 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import lib.kalu.frame.mvp.impl.BaseViewActivity;
 import lib.kalu.frame.mvp.impl.BaseViewFocus;
 import lib.kalu.frame.mvp.impl.BaseViewContext;
 import lib.kalu.frame.mvp.impl.BaseViewFindViewById;
 import lib.kalu.frame.mvp.impl.BaseViewFragmentManager;
 import lib.kalu.frame.mvp.impl.BaseViewImageView;
 import lib.kalu.frame.mvp.impl.BaseViewIntent;
+import lib.kalu.frame.mvp.impl.BaseViewProcess;
 import lib.kalu.frame.mvp.impl.BaseViewRecyclerView;
 import lib.kalu.frame.mvp.impl.BaseViewResources;
 import lib.kalu.frame.mvp.impl.BaseViewTextView;
+import lib.kalu.frame.mvp.impl.BaseViewToast;
 import lib.kalu.frame.mvp.impl.BaseViewView;
 import lib.kalu.frame.mvp.impl.BaseViewViewGroup;
 import lib.kalu.frame.mvp.impl.BaseViewWindow;
@@ -25,6 +28,9 @@ import lib.kalu.frame.mvp.impl.BaseViewWindow;
  */
 @Keep
 public interface BaseView extends BaseViewContext,
+        BaseViewActivity,
+        BaseViewProcess,
+        BaseViewToast,
         BaseViewWindow,
         BaseViewFragmentManager,
         BaseViewFocus,
