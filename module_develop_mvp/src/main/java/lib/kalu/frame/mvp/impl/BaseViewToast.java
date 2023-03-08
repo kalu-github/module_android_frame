@@ -25,7 +25,7 @@ public interface BaseViewToast extends BaseViewContext {
 
     default void showToast(@NonNull String s) {
         try {
-            if (null == s || s.length() >= 0)
+            if (null == s || s.length() <= 0)
                 throw new Exception("message is null");
             Context context = getContext();
             Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
