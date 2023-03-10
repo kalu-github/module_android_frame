@@ -25,7 +25,21 @@ public interface BaseViewActivity extends BaseViewContext {
         return WrapperUtil.getWrapperActivity(context);
     }
 
-    default void finishActivity() {
+    default void callFinish() {
+        try {
+            if (this instanceof Activity) {
+                ((Activity) this).finish();
+            } else if (this instanceof Fragment) {
+                ((Fragment) this).getActivity().finish();
+            } else {
+                throw new Exception("not activity or fragment");
+            }
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewActivity => callFinish => " + e.getMessage());
+        }
+    }
+
+    default void callOnBackPressed() {
         try {
             if (this instanceof Activity) {
                 ((Activity) this).onBackPressed();
@@ -35,7 +49,7 @@ public interface BaseViewActivity extends BaseViewContext {
                 throw new Exception("not activity or fragment");
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewActivity => finishActivity => " + e.getMessage());
+            MvpUtil.logE("BaseViewActivity => callOnBackPressed => " + e.getMessage());
         }
     }
 }
