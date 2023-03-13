@@ -78,4 +78,13 @@ public interface BaseViewRecyclerView {
             e.printStackTrace();
         }
     }
+
+    default void notifyItemRangeInserted(@IdRes int id, @NonNull int position, int length) {
+        try {
+            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            recyclerView.getAdapter().notifyItemRangeInserted(position, length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
