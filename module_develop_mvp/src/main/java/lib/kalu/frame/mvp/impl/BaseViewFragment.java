@@ -7,7 +7,7 @@ import lib.kalu.frame.mvp.BaseFragment;
 import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
-public interface BaseViewFragment {
+public interface BaseViewFragment extends BaseViewContext {
 
     default boolean isFragmentVisible() {
         try {

@@ -3,11 +3,11 @@
 package lib.kalu.frame.mvp.impl;
 
 import android.content.Context;
-import android.os.Process;
 import android.widget.Toast;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import lib.kalu.frame.mvp.util.MvpUtil;
 
@@ -18,6 +18,16 @@ public interface BaseViewToast extends BaseViewContext {
         try {
             String message = throwable.getMessage();
             showToast(message);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewToast => showToast => " + e.getMessage());
+        }
+    }
+
+    default void showToast(@StringRes int resId) {
+        try {
+            Context context = getContext();
+            String string = context.getResources().getString(resId);
+            showToast(string);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewToast => showToast => " + e.getMessage());
         }

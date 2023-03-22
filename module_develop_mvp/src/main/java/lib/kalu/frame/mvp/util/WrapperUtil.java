@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 
+import androidx.fragment.app.Fragment;
+
 public class WrapperUtil {
 
     public static Activity getWrapperActivity(Context context) {
