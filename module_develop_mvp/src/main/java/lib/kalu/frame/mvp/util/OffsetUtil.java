@@ -5,7 +5,15 @@ import java.util.List;
 
 public final class OffsetUtil {
 
-    public static int getOffset(List data, int pageNum) {
+    public static int getOffset(List data) {
+        try {
+            return data.size();
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+
+    public static int getPage(List data, int pageNum) {
         try {
             int size = data.size();
             if (size <= 0)
