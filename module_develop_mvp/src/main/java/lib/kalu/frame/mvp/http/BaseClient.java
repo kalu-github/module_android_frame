@@ -28,6 +28,14 @@ public abstract class BaseClient {
 
     private Retrofit mRetrofit;
 
+    protected int initMaxRequests() {
+        return 100;
+    }
+
+    protected int initMaxRequestsPerHost() {
+        return 100;
+    }
+
     protected int initReadTimeout() {
         return 2;
     }
@@ -64,9 +72,9 @@ public abstract class BaseClient {
 
         OkHttpClient mOkHttpClient = mOkHttpBuilder.build();
         // 最大并发请求数为
-        mOkHttpClient.dispatcher().setMaxRequests(10);
+        mOkHttpClient.dispatcher().setMaxRequests(initMaxRequests());
         // 每个主机最大请求数
-        mOkHttpClient.dispatcher().setMaxRequestsPerHost(10);
+        mOkHttpClient.dispatcher().setMaxRequestsPerHost(initMaxRequestsPerHost());
 
         Gson gson = new GsonBuilder()//建造者模式设置不同的配置
                 .serializeNulls()//序列化为null对象
