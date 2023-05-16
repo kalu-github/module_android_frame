@@ -1,14 +1,20 @@
 package lib.kalu.frame.mvp;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
 import lib.kalu.frame.mvp.impl.BaseViewActivity;
-import lib.kalu.frame.mvp.impl.BaseViewFocus;
 import lib.kalu.frame.mvp.impl.BaseViewContext;
 import lib.kalu.frame.mvp.impl.BaseViewFindViewById;
+import lib.kalu.frame.mvp.impl.BaseViewFocus;
 import lib.kalu.frame.mvp.impl.BaseViewFragment;
 import lib.kalu.frame.mvp.impl.BaseViewFragmentManager;
 import lib.kalu.frame.mvp.impl.BaseViewImageView;
@@ -56,9 +62,52 @@ public interface BaseView extends BaseViewContext,
     }
 
     default void showLoading() {
+        try {
+            if (initLoadingLayoutRes() == 0 || initLoadingIdRes() == 0)
+                throw new Exception();
+            ViewGroup rootView = getRootView();
+            if (null == rootView)
+                throw new Exception();
+            View viewById = rootView.findViewById(initLoadingIdRes());
+            if (null != viewById)
+                throw new IllegalStateException();
+            View inflate = LayoutInflater.from(getContext()).inflate(initLoadingLayoutRes(), null);
+            inflate.setVisibility(View.GONE);
+            rootView.addView(inflate, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            inflate.bringToFront();
+            inflate.setVisibility(View.VISIBLE);
+        } catch (IllegalStateException e) {
+            ViewGroup rootView = getRootView();
+            View viewById = rootView.findViewById(initLoadingIdRes());
+            viewById.bringToFront();
+            viewById.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+        }
     }
 
     default void hideLoading() {
+        try {
+            if (initLoadingLayoutRes() == 0 || initLoadingIdRes() == 0)
+                throw new Exception();
+            ViewGroup rootView = getRootView();
+            if (null == rootView)
+                throw new Exception();
+            View viewById = rootView.findViewById(initLoadingIdRes());
+            if (null == viewById)
+                throw new Exception();
+            viewById.setVisibility(View.GONE);
+        } catch (Exception e) {
+        }
+    }
+
+    @LayoutRes
+    default int initLoadingLayoutRes() {
+        return 0;
+    }
+
+    @IdRes
+    default int initLoadingIdRes() {
+        return 0;
     }
 
     int initLayout();
