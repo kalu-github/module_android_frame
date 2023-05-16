@@ -6,12 +6,11 @@ import androidx.annotation.NonNull;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import lib.kalu.frame.mvp.listener.OnRequestChangeListener;
 import lib.kalu.frame.mvp.bean.RequestBean;
+import lib.kalu.frame.mvp.listener.OnRequestChangeListener;
 import lib.kalu.frame.mvp.transformer.ComposeSchedulers;
 
 /**
@@ -46,22 +45,27 @@ public class BasePresenter<V extends BaseView> {
     }
 
     @Keep
-    protected final void addDisposable(@NonNull Disposable disposable) {
+    public final void addDisposable(@NonNull Disposable disposable) {
+        addDisposable(false, disposable);
+    }
+
+    @Keep
+    public final void addDisposable(@NonNull boolean clean, @NonNull Disposable disposable) {
         BaseModel model = getModel();
         if (null == model)
             return;
+        if (clean) {
+            cleanDisposable();
+        }
         model.addDisposable(disposable);
     }
 
     @Keep
-    protected void dispose() {
+    public void cleanDisposable() {
         BaseModel model = getModel();
         if (null == model)
             return;
-        CompositeDisposable disposables = model.getDisposables();
-        if (null == disposables || disposables.size() == 0)
-            return;
-        disposables.dispose();
+        model.cleanDisposable();
     }
 
     protected final <T> void request(@NonNull Observable<? extends RequestBean<T>> observable, @NonNull OnRequestChangeListener<T> listener) {

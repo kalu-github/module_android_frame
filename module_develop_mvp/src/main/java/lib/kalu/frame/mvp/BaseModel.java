@@ -5,7 +5,8 @@ import android.util.Log;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import io.reactivex.disposables.CompositeDisposable;
+import java.util.LinkedList;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -27,15 +28,21 @@ public class BaseModel {
 
     /***********************/
 
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
-    protected final CompositeDisposable getDisposables() {
-        return mCompositeDisposable;
-    }
+    private LinkedList<Disposable> mDisposable = new LinkedList<>();
 
     protected final void addDisposable(@NonNull Disposable disposable) {
         if (null == disposable)
             return;
-        mCompositeDisposable.add(disposable);
+        mDisposable.add(disposable);
+    }
+
+    protected final void cleanDisposable() {
+        while (true) {
+            if (mDisposable.isEmpty())
+                break;
+            Disposable disposable = mDisposable.removeLast();
+            disposable.dispose();
+            disposable = null;
+        }
     }
 }

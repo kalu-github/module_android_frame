@@ -20,7 +20,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     @Override
     public void onBackPressed() {
         try {
-            mP.dispose();
+            mP.cleanDisposable();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,7 +30,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     @Override
     public void finish() {
         try {
-            mP.dispose();
+            mP.cleanDisposable();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -29,19 +29,19 @@ public abstract class BaseClient {
     private Retrofit mRetrofit;
 
     protected int initMaxRequests() {
-        return 100;
+        return 10;
     }
 
     protected int initMaxRequestsPerHost() {
-        return 100;
+        return 10;
     }
 
     protected int initReadTimeout() {
-        return 2;
+        return 10;
     }
 
     protected int initWriteTimeout() {
-        return 2;
+        return 10;
     }
 
     protected BaseClient() {

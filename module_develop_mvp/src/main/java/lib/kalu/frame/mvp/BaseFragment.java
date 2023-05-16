@@ -24,7 +24,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
     @Override
     public void onDestroyView() {
         try {
-            mP.dispose();
+            mP.cleanDisposable();
         } catch (Exception e) {
             e.printStackTrace();
         }
