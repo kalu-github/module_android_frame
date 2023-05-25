@@ -13,8 +13,10 @@ import org.json.JSONObject;
 
 import lib.kalu.frame.mvp.impl.BaseViewActivity;
 import lib.kalu.frame.mvp.impl.BaseViewContext;
+import lib.kalu.frame.mvp.impl.BaseViewDescendantFocusability;
+import lib.kalu.frame.mvp.impl.BaseViewEnable;
 import lib.kalu.frame.mvp.impl.BaseViewFindViewById;
-import lib.kalu.frame.mvp.impl.BaseViewFocus;
+import lib.kalu.frame.mvp.impl.BaseViewFocusable;
 import lib.kalu.frame.mvp.impl.BaseViewFragment;
 import lib.kalu.frame.mvp.impl.BaseViewFragmentManager;
 import lib.kalu.frame.mvp.impl.BaseViewImageView;
@@ -22,10 +24,11 @@ import lib.kalu.frame.mvp.impl.BaseViewIntent;
 import lib.kalu.frame.mvp.impl.BaseViewProcess;
 import lib.kalu.frame.mvp.impl.BaseViewRecyclerView;
 import lib.kalu.frame.mvp.impl.BaseViewResources;
+import lib.kalu.frame.mvp.impl.BaseViewSelected;
+import lib.kalu.frame.mvp.impl.BaseViewTag;
 import lib.kalu.frame.mvp.impl.BaseViewTextView;
 import lib.kalu.frame.mvp.impl.BaseViewToast;
-import lib.kalu.frame.mvp.impl.BaseViewView;
-import lib.kalu.frame.mvp.impl.BaseViewViewGroup;
+import lib.kalu.frame.mvp.impl.BaseViewVisibility;
 import lib.kalu.frame.mvp.impl.BaseViewWindow;
 
 /**
@@ -41,12 +44,15 @@ public interface BaseView extends BaseViewContext,
         BaseViewToast,
         BaseViewWindow,
         BaseViewFragmentManager,
-        BaseViewFocus,
         BaseViewResources,
         BaseViewFindViewById,
         BaseViewIntent,
-        BaseViewView,
-        BaseViewViewGroup,
+        BaseViewTag,
+        BaseViewEnable,
+        BaseViewSelected,
+        BaseViewFocusable,
+        BaseViewVisibility,
+        BaseViewDescendantFocusability,
         BaseViewTextView,
         BaseViewImageView,
         BaseViewRecyclerView {

@@ -6,7 +6,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 
 @Keep
-public interface BaseViewViewGroup extends BaseViewFindViewById {
+public interface BaseViewDescendantFocusability extends BaseViewFindViewById {
 
     default void setDescendantFocusability(@IdRes int id, int focusability) {
         try {
