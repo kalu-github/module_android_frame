@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import org.json.JSONObject;
 
 import lib.kalu.frame.mvp.impl.BaseViewActivity;
+import lib.kalu.frame.mvp.impl.BaseViewClip;
 import lib.kalu.frame.mvp.impl.BaseViewContext;
 import lib.kalu.frame.mvp.impl.BaseViewDescendantFocusability;
 import lib.kalu.frame.mvp.impl.BaseViewEnable;
@@ -55,6 +56,7 @@ public interface BaseView extends BaseViewContext,
         BaseViewDescendantFocusability,
         BaseViewTextView,
         BaseViewImageView,
+        BaseViewClip,
         BaseViewRecyclerView {
 
     default <T> T getPresenter() {
