@@ -22,7 +22,7 @@ public interface BaseViewPadding extends BaseViewFindViewById {
                 throw new Exception("viewById error: null");
             viewById.setPadding(padding[0], padding[1], padding[2], padding[3]);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setPadding => " + e.getMessage());
+            MvpUtil.logE("BaseViewPadding => setPadding => " + e.getMessage());
         }
     }
 
@@ -38,7 +38,7 @@ public interface BaseViewPadding extends BaseViewFindViewById {
             int bottom = viewById.getPaddingBottom();
             viewById.setPadding(offset, top, right, bottom);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setPaddingLeft => " + e.getMessage());
+            MvpUtil.logE("BaseViewPadding => setPaddingLeft => " + e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public interface BaseViewPadding extends BaseViewFindViewById {
             int bottom = viewById.getPaddingBottom();
             viewById.setPadding(left, top, offset, bottom);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setPaddingRight => " + e.getMessage());
+            MvpUtil.logE("BaseViewPadding => setPaddingRight => " + e.getMessage());
         }
     }
 
@@ -70,7 +70,7 @@ public interface BaseViewPadding extends BaseViewFindViewById {
             int bottom = viewById.getPaddingBottom();
             viewById.setPadding(left, offset, right, bottom);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setPaddingTop => " + e.getMessage());
+            MvpUtil.logE("BaseViewPadding => setPaddingTop => " + e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public interface BaseViewPadding extends BaseViewFindViewById {
             int top = viewById.getPaddingTop();
             viewById.setPadding(left, top, right, offset);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setPaddingBottom => " + e.getMessage());
+            MvpUtil.logE("BaseViewPadding => setPaddingBottom => " + e.getMessage());
         }
     }
 }
