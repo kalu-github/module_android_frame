@@ -22,6 +22,8 @@ import lib.kalu.frame.mvp.impl.BaseViewFragment;
 import lib.kalu.frame.mvp.impl.BaseViewFragmentManager;
 import lib.kalu.frame.mvp.impl.BaseViewImageView;
 import lib.kalu.frame.mvp.impl.BaseViewIntent;
+import lib.kalu.frame.mvp.impl.BaseViewMargin;
+import lib.kalu.frame.mvp.impl.BaseViewPadding;
 import lib.kalu.frame.mvp.impl.BaseViewProcess;
 import lib.kalu.frame.mvp.impl.BaseViewRecyclerView;
 import lib.kalu.frame.mvp.impl.BaseViewResources;
@@ -57,6 +59,8 @@ public interface BaseView extends BaseViewContext,
         BaseViewTextView,
         BaseViewImageView,
         BaseViewClip,
+        BaseViewMargin,
+        BaseViewPadding,
         BaseViewRecyclerView {
 
     default <T> T getPresenter() {
