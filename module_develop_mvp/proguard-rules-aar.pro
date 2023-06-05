@@ -1,5 +1,4 @@
 # mvp
--keep class * extends lib.kalu.frame.mvp.BasePresenter
 -keep class * extends lib.kalu.frame.mvp.BasePresenter  {
       public <init>(...);
  }
