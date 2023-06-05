@@ -55,7 +55,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
         }
     }
 
-    private final P initPresenter() {
+    private P initPresenter() {
         try {
             Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
