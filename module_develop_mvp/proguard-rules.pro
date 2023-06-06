@@ -151,6 +151,8 @@
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, jav.lang.String);
 }
+# Retrolambda
+-dontwarn java.lang.invoke.*
 ######################################################################
 # 三方
 ######################################################################
@@ -160,18 +162,65 @@
       public <init>(...);
  }
 # Retrofit
--dontwarn retrofit2.**
--keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
-# Retrolambda
--dontwarn java.lang.invoke.*
-# RxAndroid
--dontwarn io.reactivex.android.**
--keep class io.reactivex.android.** { *; }
-# Rxjava
--dontwarn io.reactivex.**
--keep class io.reactivex.** { *; }
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keep public class * extends retrofit2.Converter {*;}
+# Rxjava|RxAndroid
+-keep class io.reactivex.Observable
+-keepclassmembers class * implements io.reactivex.Observer {
+    public void onSubscribe(io.reactivex.disposables.Disposable);
+    public void onNext(**);
+    public void onError(java.lang.Throwable);
+    public void onComplete();
+}
+-keepclassmembers class * implements io.reactivex.SingleObserver {
+    public void onSubscribe(io.reactivex.disposables.Disposable);
+    public void onSuccess(**);
+    public void onError(java.lang.Throwable);
+}
+-keepclassmembers class * implements io.reactivex.CompletableObserver {
+    public void onSubscribe(io.reactivex.disposables.Disposable);
+    public void onComplete();
+    public void onError(java.lang.Throwable);
+}
+-keepclassmembers class * implements io.reactivex.MaybeObserver {
+    public void onSubscribe(io.reactivex.disposables.Disposable);
+    public void onSuccess(**);
+    public void onError(java.lang.Throwable);
+    public void onComplete();
+}
+-keepclassmembers class * implements io.reactivex.FlowableSubscriber {
+    public void onSubscribe(io.reactivex.subscribers.Subscription);
+    public void onNext(**);
+    public void onError(java.lang.Throwable);
+    public void onComplete();
+}
+-keepclassmembers class * implements io.reactivex.ObservableEmitter {
+    public void setDisposable(io.reactivex.disposables.Disposable);
+    public boolean isDisposed();
+    public void onNext(**);
+    public void onError(java.lang.Throwable);
+    public void onComplete();
+}
+-keepclassmembers class * implements io.reactivex.SingleEmitter {
+    public void setDisposable(io.reactivex.disposables.Disposable);
+    public boolean isDisposed();
+    public void onSuccess(**);
+    public void onError(java.lang.Throwable);
+}
+-keepclassmembers class * implements io.reactivex.CompletableEmitter {
+    public void setDisposable(io.reactivex.disposables.Disposable);
+    public boolean isDisposed();
+    public void onComplete();
+    public void onError(java.lang.Throwable);
+}
+-keepclassmembers class * implements io.reactivex.MaybeEmitter {
+    public void setDisposable(io.reactivex.disposables.Disposable);
+    public boolean isDisposed();
+    public void onSuccess();
+}
 # OkHttp
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
@@ -221,3 +270,205 @@
 # fastjson
 -dontwarn com.alibaba.fastjson.**
 -keep class com.alibaba.fastjson.**{*;}
+# umeng
+-keep class com.umeng.** {*;}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+#-keep public class [您的应用包名].R$*{
+#public static final int *;
+#}
+# wechat
+-keep class com.tencent.mm.opensdk.** { *; }
+-keep class com.tencent.wxop.** { *; }
+-keep class com.tencent.mm.sdk.** { *; }
+# jpush
+-dontoptimize
+-dontpreverify
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+# tencent-x5
+-keep class com.tencent.smtt.export.external.**{
+    *;
+}
+-keep class com.tencent.tbs.video.interfaces.IUserStateChangedListener {
+    *;
+}
+-keep class com.tencent.smtt.sdk.CacheManager {
+    public *;
+}
+-keep class com.tencent.smtt.sdk.CookieManager {
+    public *;
+}
+-keep class com.tencent.smtt.sdk.WebHistoryItem {
+    public *;
+}
+-keep class com.tencent.smtt.sdk.WebViewDatabase {
+    public *;
+}
+-keep class com.tencent.smtt.sdk.WebBackForwardList {
+    public *;
+}
+-keep public class com.tencent.smtt.sdk.WebView {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebView$HitTestResult {
+    public static final <fields>;
+    public java.lang.String getExtra();
+    public int getType();
+}
+-keep public class com.tencent.smtt.sdk.WebView$WebViewTransport {
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebView$PictureListener {
+    public <fields>;
+    public <methods>;
+}
+-keepattributes InnerClasses
+-keep public enum com.tencent.smtt.sdk.WebSettings$** {
+    *;
+}
+-keep public enum com.tencent.smtt.sdk.QbSdk$** {
+    *;
+}
+-keep public class com.tencent.smtt.sdk.WebSettings {
+    public *;
+}
+-keepattributes Signature
+-keep public class com.tencent.smtt.sdk.ValueCallback {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebViewClient {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.DownloadListener {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebChromeClient {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebChromeClient$FileChooserParams {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.tencent.smtt.sdk.SystemWebChromeClient{
+    public *;
+}
+-keep public class com.tencent.smtt.export.external.extension.interfaces.* {
+    public protected *;
+}
+-keep public class com.tencent.smtt.export.external.interfaces.* {
+    public protected *;
+}
+-keep public class com.tencent.smtt.sdk.WebViewCallbackClient {
+    public protected *;
+}
+-keep public class com.tencent.smtt.sdk.WebStorage$QuotaUpdater {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebIconDatabase {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.WebStorage {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.DownloadListener {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.QbSdk {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.QbSdk$PreInitCallback {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.CookieSyncManager {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.Tbs* {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.utils.LogFileUtils {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.utils.TbsLog {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.utils.TbsLogClient {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.CookieSyncManager {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.TBSGamePlayer {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.TBSGamePlayerClient* {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.TBSGamePlayerClientExtension {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.TBSGamePlayerService* {
+    public <fields>;
+    public <methods>;
+}
+-keep public class com.tencent.smtt.utils.Apn {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.tencent.smtt.** {
+    *;
+}
+-keep public class com.tencent.smtt.export.external.extension.proxy.ProxyWebViewClientExtension {
+    public <fields>;
+    public <methods>;
+}
+-keep class MTT.ThirdAppInfoNew {
+    *;
+}
+-keep class com.tencent.mtt.MttTraceEvent {
+    *;
+}
+-keep public class com.tencent.smtt.gamesdk.* {
+    public protected *;
+}
+-keep public class com.tencent.smtt.sdk.TBSGameBooter {
+        public <fields>;
+        public <methods>;
+}
+-keep public class com.tencent.smtt.sdk.TBSGameBaseActivity {
+    public protected *;
+}
+-keep public class com.tencent.smtt.sdk.TBSGameBaseActivityProxy {
+    public protected *;
+}
+-keep public class com.tencent.smtt.gamesdk.internal.TBSGameServiceClient {
+    public *;
+}
