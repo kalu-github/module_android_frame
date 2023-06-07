@@ -1,25 +1,23 @@
 ######################################################################
 # 基础
 ######################################################################
-# 忽略警告
--dontwarn
+# 不要压缩(这个必须，因为开启混淆的时候 默认 会把没有被调用的代码 全都排除掉)
+#-dontshrink
+# 忽略警告 不忽略可能打包不成功
 -ignorewarnings
+# 保护泛型 如果混淆报错建议关掉
+-keepattributes Signature
 # 代码混淆压缩比，在0~7之间，默认为5，一般不做修改
 -optimizationpasses 5
 # 混合时不使用大小写混合，混合后的类名为小写
 -dontusemixedcaseclassnames
 # 指定不去忽略非公共库的类
 -dontskipnonpubliclibraryclasses
- #优化时允许访问并修改有修饰符的类和类的成员，这可以提高优化步骤的结果。
-# 比如，当内联一个公共的getter方法时，这也可能需要外地公共访问。
-# 虽然java二进制规范不需要这个，要不然有的虚拟机处理这些代码会有问题。当有优化和使用-repackageclasses时才适用。
-#指示语：不能用这个指令处理库中的代码，因为有的类和类成员没有设计成public ,而在api中可能变成public
+# 优化时允许访问并修改有修饰符的类和类的成员，这可以提高优化步骤的结果,比如，当内联一个公共的getter方法时，这也可能需要外地公共访问。虽然java二进制规范不需要这个，要不然有的虚拟机处理这些代码会有问题。当有优化和使用-repackageclasses时才适用。指示语：不能用这个指令处理库中的代码，因为有的类和类成员没有设计成public ,而在api中可能变成public
 -allowaccessmodification
-#当有优化和使用-repackageclasses时才适用。
+# 当有优化和使用-repackageclasses时才适用。
 #-repackageclasses com.test
- # 混淆时记录日志(打印混淆的详细信息)
- # 这句话能够使我们的项目混淆后产生映射文件
- # 包含有类名->混淆后类名的映射关系
+# 这句话能够使我们的项目混淆后产生映射文件, 包含有类名->混淆后类名的映射关系
 -verbose
 # 指定不去忽略非公共库的类成员
 -dontskipnonpubliclibraryclassmembers
@@ -31,45 +29,10 @@
 -keepattributes Signature
 # 抛出异常时保留代码行号
 -keepattributes SourceFile,LineNumberTable
-# 指定混淆是采用的算法, 后面的参数是一个过滤器
+# 指定混淆是采用的算法，后面的参数是一个过滤器, 这个过滤器是谷歌推荐的算法，一般不做更改
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
 #-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
-# 表示不混淆任何包含native方法的类的类名以及native方法名，这个和我们刚才验证的结果是一致
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-# 不混淆使用了 @Keep 注解相关的类
--keep class androidx.annotation.Keep
--keep class android.support.annotation.Keep
--keep @androidx.annotation.Keep class * {*;}
--keep @android.support.annotation.Keep class * {*;}
--keepclasseswithmembers class * {
-    @androidx.annotation.Keep <methods>;
-}
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <methods>;
-}
--keepclasseswithmembers class * {
-    @androidx.annotation.Keep <fields>;
-}
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <fields>;
-}
--keepclasseswithmembers class * {
-    @androidx.annotation.Keep <init>(...);
-}
--keepclasseswithmembers class * {
-    @android.support.annotation.Keep <init>(...);
-}
-# Annotation
--keep class * extends java.lang.annotation.Annotation
-# androidX
--keep public class * extends androidx.fragment.app.Fragment
--keep public class * extends androidx.fragment.app.DialogFragment
--keep public class * extends androidx.appcompat.app.AppCompatActivity
-# 保留我们使用的四大组件，自定义的Application等等这些类不被混淆
-# 因为这些子类都有可能被外部调用
--keep public class * extends android.app.Activity
+# 四大组件，自定义的Application等等这些类不被混淆
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Appliction
 -keep public class * extends android.app.Service
@@ -81,20 +44,25 @@
 -keep public class com.android.vending.licensing.ILicensingService
 # 保留support下的所有类及其内部类
 -keep class android.support.** {*;}
--keep class androidx.** {*;}
-# 保留继承的
+# 保留v4|v7
 -keep public class * extends android.support.v4.**
 -keep public class * extends android.support.v7.**
 -keep public class * extends android.support.annotation.**
--keep public class * extends androidx.annotation.**
+# 保留androidx
+-keep class com.google.android.material.** {*;}
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+-dontwarn androidx.**
 # 保留R下面的资源
 -keep class **.R$* {*;}
 # 保留本地native方法不被混淆
 -keepclasseswithmembernames class * {
     native <methods>;
 }
-# 保留在Activity中的方法参数是view的方法，
-# 这样以来我们在layout中写的onClick就不会被影响
+# 保留在Activity中的方法参数是view的方法，这样以来我们在layout中写的onClick就不会被影响
 -keepclassmembers class * extends android.app.Activity{
     public void *(android.view.View);
 }
@@ -118,7 +86,6 @@
     public <init>(android.content.Context, android.util.AttributeSet);
     public <init>(android.content.Context, android.util.AttributeSet, int);
 }
-
 # 保留Parcelable序列化类不被混淆
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
@@ -153,6 +120,29 @@
 }
 # Retrolambda
 -dontwarn java.lang.invoke.*
+# Keep注解
+-keep class androidx.annotation.Keep
+-keep class android.support.annotation.Keep
+-keep @androidx.annotation.Keep class * {*;}
+-keep @android.support.annotation.Keep class * {*;}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
+}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
 ######################################################################
 # 三方
 ######################################################################
