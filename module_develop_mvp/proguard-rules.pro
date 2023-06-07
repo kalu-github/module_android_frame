@@ -150,7 +150,7 @@
 -keep class lib.kalu.frame.mvp.bean.** { *; }
 -keep class * extends lib.kalu.frame.mvp.BasePresenter  {
       public <init>(...);
- }
+}
 # Retrofit
 -keepattributes Signature
 -keepattributes Exceptions
