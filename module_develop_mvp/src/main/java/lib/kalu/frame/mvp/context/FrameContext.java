@@ -6,6 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.lang.reflect.Field;
+import java.util.Properties;
+
+import okhttp3.internal.platform.Platform;
+
 public class FrameContext extends ContentProvider {
 
     private static Context mContext;
