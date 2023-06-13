@@ -45,7 +45,6 @@ dependencies {
 
     // gson
     api files('libs/gson-2.10.1.jar')
-    api files('libs/converter-gson-2.6.4.jar')
 
     // okhttp
     api files('libs/okhttp-3.14.9.jar')
@@ -59,4 +58,5 @@ dependencies {
     api files('libs/rxandroid-2.1.1.jar')
     api files('libs/reactive-streams-1.0.4.jar')
     api files('libs/adapter-rxjava2-2.6.4.jar')
+    api files('libs/converter-gson-2.9.0.jar')
 }
