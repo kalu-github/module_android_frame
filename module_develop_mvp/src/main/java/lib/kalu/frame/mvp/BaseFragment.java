@@ -8,9 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.viewmodel.CreationExtras;
+import androidx.lifecycle.viewmodel.MutableCreationExtras;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 /**
  * @author zhanghang
@@ -26,7 +31,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
         try {
             mP.cleanDisposable();
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseFragment => onDestroyView => " + e.getMessage());
         }
         super.onDestroyView();
     }
@@ -34,8 +39,12 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initWindow();
-        mP = initPresenter();
+        try {
+            initWindow();
+            mP = initPresenter();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseFragment => onCreate => " + e.getMessage());
+        }
     }
 
     @Nullable
@@ -57,14 +66,17 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
 
     @Override
     public final P getPresenter() {
-        if (null != mP) {
+        try {
+            if (null == mP)
+                throw new IllegalArgumentException("mP error: null");
             return mP;
-        } else {
-            throw new IllegalArgumentException("view-model is null");
+        } catch (Exception e) {
+            MvpUtil.logE("BaseFragment => getPresenter => " + e.getMessage());
+            throw e;
         }
     }
 
-    private final P initPresenter() {
+    private P initPresenter() {
         try {
             Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
@@ -72,8 +84,18 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
             constructorP.setAccessible(true);
             return (P) constructorP.newInstance(this);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
+            MvpUtil.logE("BaseFragment => getPresenter => " + e.getMessage());
+            try {
+                throw e;
+            } catch (NoSuchMethodException ex) {
+                throw new RuntimeException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            } catch (java.lang.InstantiationException ex) {
+                throw new RuntimeException(ex);
+            } catch (InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -81,8 +103,19 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         try {
-         hideLoading();
-        }catch (Exception e){
+            hideLoading();
+        } catch (Exception e) {
+        }
+    }
+
+    @NonNull
+    @Override
+    public CreationExtras getDefaultViewModelCreationExtras() {
+        try {
+            return super.getDefaultViewModelCreationExtras();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseFragment => getDefaultViewModelCreationExtras => " + e.getMessage());
+            return new MutableCreationExtras();
         }
     }
 }

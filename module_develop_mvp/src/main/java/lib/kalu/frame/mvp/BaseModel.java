@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.util.LinkedList;
 
 import io.reactivex.disposables.Disposable;
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 /**
  * @author zhanghang
@@ -23,7 +24,7 @@ public class BaseModel {
     }
 
     protected void init() {
-        Log.d("BaseModel", "init =>");
+        MvpUtil.logE("BaseModel => init =>");
     }
 
     /***********************/

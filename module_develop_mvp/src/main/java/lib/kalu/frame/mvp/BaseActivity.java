@@ -2,11 +2,18 @@ package lib.kalu.frame.mvp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.viewmodel.CreationExtras;
+import androidx.lifecycle.viewmodel.MutableCreationExtras;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 /**
  * @author zhanghang
@@ -22,7 +29,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
         try {
             mP.cleanDisposable();
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseActivity => onBackPressed => " + e.getMessage());
         }
         super.onBackPressed();
     }
@@ -32,7 +39,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
         try {
             mP.cleanDisposable();
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseActivity => finish => " + e.getMessage());
         }
         super.finish();
     }
@@ -40,18 +47,25 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initWindow();
-        setContentView(initLayout());
-        mP = initPresenter();
-        initData();
+        try {
+            initWindow();
+            setContentView(initLayout());
+            mP = initPresenter();
+            initData();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseActivity => onCreate => " + e.getMessage());
+        }
     }
 
     @Override
     public final P getPresenter() {
-        if (null != mP) {
+        try {
+            if (null == mP)
+                throw new IllegalArgumentException("mP error: null");
             return mP;
-        } else {
-            throw new IllegalArgumentException("view-model is null");
+        } catch (Exception e) {
+            MvpUtil.logE("BaseActivity => getPresenter => " + e.getMessage());
+            throw e;
         }
     }
 
@@ -63,8 +77,18 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
             constructorP.setAccessible(true);
             return (P) constructorP.newInstance(this);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException(e.getMessage());
+            MvpUtil.logE("BaseActivity => initPresenter => " + e.getMessage());
+            try {
+                throw e;
+            } catch (NoSuchMethodException ex) {
+                throw new RuntimeException(ex);
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            } catch (InstantiationException ex) {
+                throw new RuntimeException(ex);
+            } catch (InvocationTargetException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -77,5 +101,16 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
 //        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    }
+
+    @NonNull
+    @Override
+    public CreationExtras getDefaultViewModelCreationExtras() {
+        try {
+            return super.getDefaultViewModelCreationExtras();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseActivity => getDefaultViewModelCreationExtras => " + e.getMessage());
+            return new MutableCreationExtras();
+        }
     }
 }
