@@ -1,10 +1,8 @@
-﻿package lib.kalu.frame.mvp;
+package lib.kalu.frame.mvp;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
