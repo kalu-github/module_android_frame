@@ -119,6 +119,11 @@ public interface OkhttpImpl {
      * code-timeout
      */
     String CODE_TIMEOUT = "201";
+
+    /**
+     * code-net-error
+     */
+    String CODE_NET_ERROR = "202";
     /**
      * message
      */
@@ -373,7 +378,6 @@ public interface OkhttpImpl {
 
     /********************************/
 
-    default String initSocketTimeoutMessage(Context context) {
-        return null;
+    default void processResponseException(Exception e) {
     }
 }

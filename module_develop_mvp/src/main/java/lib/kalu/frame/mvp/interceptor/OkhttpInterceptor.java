@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,6 +60,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             Response newResponse = analysisResponse(requestTime, data, newRequest, response);
             return newResponse;
         } catch (Exception e) {
+            processResponseException(e);
             logs(e.getMessage(), e);
             HashMap<CharSequence, CharSequence> map = new HashMap<>();
             String message = e.getMessage();
@@ -68,12 +70,9 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
                 map.put(MESSAGE, message);
             }
             if (e instanceof SocketTimeoutException) {
-                Context context = FrameContext.getApplicationContext();
-                String s = initSocketTimeoutMessage(context);
-                if (null != s && s.length() > 0) {
-                    ToastUtil.showToast(context, s);
-                }
                 map.put(CODE, CODE_TIMEOUT);
+            } else if (e instanceof NoRouteToHostException) {
+                map.put(CODE, CODE_NET_ERROR);
             } else {
                 map.put(CODE, CODE_DEDAULT);
             }
