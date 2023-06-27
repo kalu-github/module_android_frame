@@ -7,6 +7,7 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
@@ -152,9 +153,9 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             Activity activity = getWrapperActivity();
             if (null == activity)
                 throw new Exception("activity is null");
-            if (!(activity instanceof AppCompatActivity))
+            if (!(activity instanceof FragmentActivity))
                 throw new Exception("activity is not AppCompatActivity");
-            return ((AppCompatActivity) activity).getSupportFragmentManager();
+            return ((FragmentActivity) activity).getSupportFragmentManager();
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => getFragmentManager => " + e.getMessage());
             return null;

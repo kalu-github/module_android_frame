@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
 
@@ -21,7 +22,7 @@ import lib.kalu.frame.mvp.util.MvpUtil;
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseActivityMonitorKeycodeHome<V extends BaseView, P extends BasePresenter> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivityMonitorKeycodeHome<V extends BaseView, P extends BasePresenter> extends FragmentActivity implements BaseView {
 
     private final String INTENT_KEYCODE_BACK = "intent_keycode_back";
 
