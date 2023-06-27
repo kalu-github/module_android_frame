@@ -3,6 +3,7 @@
 package lib.kalu.frame.mvp.impl;
 
 import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.annotation.Keep;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import lib.kalu.frame.mvp.util.MvpUtil;
+import lib.kalu.frame.mvp.util.ToastUtil;
 
 @Keep
 public interface BaseViewToast extends BaseViewContext {
@@ -35,10 +37,12 @@ public interface BaseViewToast extends BaseViewContext {
 
     default void showToast(@NonNull String s) {
         try {
-            if (null == s || s.length() <= 0)
-                throw new Exception("message is null");
+            if (null == s || s.length() == 0)
+                throw new Exception("message error: " + s);
             Context context = getContext();
-            Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+            if (null == context)
+                throw new Exception("context error: null");
+            ToastUtil.showToast(context, s);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewToast => showToast => " + e.getMessage());
         }

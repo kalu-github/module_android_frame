@@ -1,5 +1,7 @@
 package lib.kalu.frame.mvp.interceptor;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
@@ -112,6 +114,11 @@ public interface OkhttpImpl {
      * code
      */
     String CODE_DEDAULT = "200";
+
+    /**
+     * code-timeout
+     */
+    String CODE_TIMEOUT = "201";
     /**
      * message
      */
@@ -119,7 +126,7 @@ public interface OkhttpImpl {
     /**
      * message
      */
-    String MESSAGE_DEFAULT = "custom exception";
+    String MESSAGE_DEFAULT = "unknow exception";
 
 //    default Request formatRequest(@NonNull Request request) {
 //        return request;
@@ -364,6 +371,9 @@ public interface OkhttpImpl {
         }
     }
 
-
     /********************************/
+
+    default String initSocketTimeoutMessage(Context context) {
+        return null;
+    }
 }

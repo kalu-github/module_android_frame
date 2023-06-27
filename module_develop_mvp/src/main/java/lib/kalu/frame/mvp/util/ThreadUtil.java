@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-
 public final class ThreadUtil {
 
     private static final Map<Integer, Map<Integer, ExecutorService>> TYPE_PRIORITY_POOLS =

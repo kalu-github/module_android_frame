@@ -1,13 +1,18 @@
 package lib.kalu.frame.mvp.interceptor;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import lib.kalu.frame.mvp.context.FrameContext;
+import lib.kalu.frame.mvp.util.ToastUtil;
 import okhttp3.Connection;
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -56,8 +61,22 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
         } catch (Exception e) {
             logs(e.getMessage(), e);
             HashMap<CharSequence, CharSequence> map = new HashMap<>();
-            map.put(CODE, CODE_DEDAULT);
-            map.put(MESSAGE, MESSAGE_DEFAULT);
+            String message = e.getMessage();
+            if (null == message || message.length() == 0) {
+                map.put(MESSAGE, MESSAGE_DEFAULT);
+            } else {
+                map.put(MESSAGE, message);
+            }
+            if (e instanceof SocketTimeoutException) {
+                Context context = FrameContext.getApplicationContext();
+                String s = initSocketTimeoutMessage(context);
+                if (null != s && s.length() > 0) {
+                    ToastUtil.showToast(context, s);
+                }
+                map.put(CODE, CODE_TIMEOUT);
+            } else {
+                map.put(CODE, CODE_DEDAULT);
+            }
             Request request = chain.request();
             Response response = createResponse(request, map);
             Response newResponse = analysisResponse(requestTime, data, request, response);
