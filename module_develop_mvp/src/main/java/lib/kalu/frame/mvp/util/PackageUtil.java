@@ -504,6 +504,19 @@ public class PackageUtil {
         }
     }
 
+    public static boolean isApkInstall(Context context, String packageName) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setPackage(packageName);
+            List<ResolveInfo> activities = pm.queryIntentActivities(intent, 0);
+            return activities.size() > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public static void chmodPath(String permission, String path) {
         try {
             Runtime.getRuntime().exec("chmod -R " + permission + " " + path);
