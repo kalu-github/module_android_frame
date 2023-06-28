@@ -27,7 +27,6 @@ import java.util.List;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
-
 public class PackageUtil {
 
     private static final String TAG = "PackageUtil";
