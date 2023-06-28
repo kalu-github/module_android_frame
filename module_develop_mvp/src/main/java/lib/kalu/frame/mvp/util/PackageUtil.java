@@ -88,21 +88,21 @@ public class PackageUtil {
                             }
                             if (errorMsg.contains("SecurityException")) {
                                 //非静默安装/更新
-                                if (getTopApp(context)) {
+                                if (isRunningForeground(context)) {
                                     Log.i(TAG, "应用安装失败，没有安装权限 -->" + file.getName());
 
                                 }
 
                             } else {
 
-                                if (getTopApp(context)) {
+                                if (isRunningForeground(context)) {
 
                                     Log.i(TAG, "应用安装失败 -->" + file.getName());
                                 }
                             }
 
                         } else {
-                            if (getTopApp(context)) {
+                            if (isRunningForeground(context)) {
 
                                 Log.i(TAG, "应用安装失败 -->" + file.getName());
                             }
@@ -524,22 +524,19 @@ public class PackageUtil {
         }
     }
 
-    public static boolean getTopApp(Context context) {
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
-
-        if (runningTaskInfos != null) {
+    public static boolean isRunningForeground(Context context) {
+        try {
+            ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
+            if (null == runningTaskInfos)
+                throw new Exception();
             String name = (runningTaskInfos.get(0).topActivity).getPackageName();
-            Log.i(TAG, "getTopApp packagename:" + name);
-            if (context.getApplicationInfo().packageName.equals(name)) {
-                Log.i(TAG, "return ...");
-                return true;
-            }
-        } else {
-            Log.i(TAG, "RunningTaskInfo is null. ");
+            if (!context.getApplicationInfo().packageName.equals(name))
+                throw new Exception();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-
-        return false;
     }
 
     /*************/
