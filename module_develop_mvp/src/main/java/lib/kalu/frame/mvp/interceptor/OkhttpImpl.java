@@ -378,6 +378,6 @@ public interface OkhttpImpl {
 
     /********************************/
 
-    default void processResponseException(Exception e) {
+    default void analysisResponseException(@NonNull String url, @NonNull Exception e) {
     }
 }

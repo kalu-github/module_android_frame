@@ -41,13 +41,15 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
     @Override
     default Response intercept(@NonNull Chain chain) {
         long requestTime = System.nanoTime();
+        String url = null;
         String data = null;
         try {
             Connection connection = chain.connection();
             Request request = chain.request();
 
-            // extra
+            url = request.url().toString();
             data = getExtraValue(request);
+
             if (null != data && data.length() > 0) {
                 HttpUrl.Builder builder = getExtraBuilder(request);
                 request = request.newBuilder().url(builder.build()).build();
@@ -60,7 +62,7 @@ interface OkhttpInterceptor extends Interceptor, OkhttpImpl {
             Response newResponse = analysisResponse(requestTime, data, newRequest, response);
             return newResponse;
         } catch (Exception e) {
-            processResponseException(e);
+            analysisResponseException(url, e);
             logs(e.getMessage(), e);
             HashMap<CharSequence, CharSequence> map = new HashMap<>();
             String message = e.getMessage();
