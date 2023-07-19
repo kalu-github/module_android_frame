@@ -28,12 +28,38 @@ public abstract class BaseClient {
 
     private Retrofit mRetrofit;
 
+    private final Interceptor mCustomInterceptor = initInterceptor();
+    private final OkhttpInterceptorStandard mOkhttpInterceptorStandard = new OkhttpInterceptorStandard();
+    private final Gson mGson = new GsonBuilder()//建造者模式设置不同的配置
+            .serializeNulls()//序列化为null对象
+            .setDateFormat("yyyy-MM-dd HH:mm:ss") //设置日期的格式
+            .disableHtmlEscaping()//防止对网址乱码 忽略对特殊字符的转换
+            .setLenient() // 使用JsonReader.setLenient(true)在第1行、第1列、路径$接受格式错误的JSON
+            .create();
+
+    private final OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
+            .addInterceptor(null != mCustomInterceptor ? mCustomInterceptor : mOkhttpInterceptorStandard)
+            .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
+            .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .proxySelector(new ProxySelector() { // 禁止抓包
+                @Override
+                public List<Proxy> select(URI uri) {
+                    return Collections.singletonList(Proxy.NO_PROXY);
+                }
+
+                @Override
+                public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+                }
+            })
+            .build();
+
     protected int initMaxRequests() {
-        return 10;
+        return 100;
     }
 
     protected int initMaxRequestsPerHost() {
-        return 10;
+        return 100;
     }
 
     protected int initReadTimeout() {
@@ -46,47 +72,15 @@ public abstract class BaseClient {
 
     protected BaseClient() {
 
-        OkHttpClient.Builder mOkHttpBuilder = new OkHttpClient.Builder()
-                .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
-                .retryOnConnectionFailure(true);
-
-        Interceptor interceptor = addInterceptor();
-        if (null != interceptor) {
-            mOkHttpBuilder.addInterceptor(interceptor);
-        } else {
-            mOkHttpBuilder.addInterceptor(new OkhttpInterceptorStandard());
-        }
-
-        // 禁止代理抓包
-        mOkHttpBuilder.proxySelector(new ProxySelector() {
-            @Override
-            public List<Proxy> select(URI uri) {
-                return Collections.singletonList(Proxy.NO_PROXY);
-            }
-
-            @Override
-            public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-            }
-        });
-
-        OkHttpClient mOkHttpClient = mOkHttpBuilder.build();
         // 最大并发请求数为
         mOkHttpClient.dispatcher().setMaxRequests(initMaxRequests());
         // 每个主机最大请求数
         mOkHttpClient.dispatcher().setMaxRequestsPerHost(initMaxRequestsPerHost());
 
-        Gson gson = new GsonBuilder()//建造者模式设置不同的配置
-                .serializeNulls()//序列化为null对象
-                .setDateFormat("yyyy-MM-dd HH:mm:ss") //设置日期的格式
-                .disableHtmlEscaping()//防止对网址乱码 忽略对特殊字符的转换
-                .setLenient() // 使用JsonReader.setLenient(true)在第1行、第1列、路径$接受格式错误的JSON
-                .create();
-
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(initApi())
                 .client(mOkHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(mGson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
@@ -97,7 +91,7 @@ public abstract class BaseClient {
 
     protected abstract String initApi();
 
-    protected Interceptor addInterceptor() {
+    protected Interceptor initInterceptor() {
         return null;
     }
 }
