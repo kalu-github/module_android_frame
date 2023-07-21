@@ -1,6 +1,7 @@
 package lib.kalu.frame.mvp;
 
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -51,6 +52,10 @@ public abstract class BaseActivityMonitorKeycodeHome<V extends BaseView, P exten
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        } catch (Exception e) {
+        }
         putBooleanExtra(INTENT_KEYCODE_BACK, false);
         try {
             initWindow();

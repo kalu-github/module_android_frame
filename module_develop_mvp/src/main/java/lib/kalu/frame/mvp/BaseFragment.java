@@ -1,5 +1,6 @@
 package lib.kalu.frame.mvp;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,10 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        } catch (Exception e) {
+        }
         try {
             initWindow();
             mP = initPresenter();

@@ -1,5 +1,6 @@
 package lib.kalu.frame.mvp;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,10 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        } catch (Exception e) {
+        }
         try {
             initWindow();
             setContentView(initLayout());
