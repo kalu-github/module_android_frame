@@ -21,7 +21,7 @@ public final class ToastUtil {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             if (msg.what == 11011) {
-                showToast(FrameContext.getApplicationContext(), (String) msg.obj);
+                showToast(FrameContext.getApplicationContext(), (String) msg.obj, false);
             }
         }
     };
@@ -31,29 +31,39 @@ public final class ToastUtil {
             String string = context.getResources().getString(res);
             if (null == string || string.length() == 0)
                 throw new Exception("string error: " + string);
-            showToast(context, string);
+            showToast(context, string, true);
         } catch (Exception e) {
             MvpUtil.logE("ToastUtil => showToast => " + e.getMessage());
         }
     }
 
     public static void showToast(Context context, String s) {
+        showToast(context, s, true);
+    }
+
+    private static void showToast(Context context, String msg, boolean isFromUser) {
         try {
             if (null == context)
                 throw new Exception("context error: null");
-            if (null == s || s.length() == 0)
-                throw new Exception("message error: " + s);
-            if (Looper.myLooper() == Looper.getMainLooper()) {
-                if (mToast == null) {
-                    mToast = Toast.makeText(context, s, Toast.LENGTH_SHORT);
+            if (null == msg || msg.length() == 0)
+                throw new Exception("msg error: " + msg);
+            Thread currentThread = Thread.currentThread();
+            if (null == currentThread)
+                throw new Exception("currentThread error: null");
+            Thread mainThread = Looper.getMainLooper().getThread();
+            if (null == mainThread)
+                throw new Exception("mainThread error: null");
+            if (currentThread == mainThread || !isFromUser) {
+                if (!isFromUser || null == mToast) {
+                    mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
                 } else {
-                    mToast.setText(s);
+                    mToast.setText(msg);
                 }
                 mToast.show();
             } else {
                 Message message = new Message();
                 message.what = 11011;
-                message.obj = s;
+                message.obj = msg;
                 mHandler.sendMessage(message);
             }
         } catch (Exception e) {
