@@ -60,8 +60,6 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
                                @NonNull int visibility) {
 
         try {
-            if (visibility != View.VISIBLE && visibility != View.GONE && visibility != View.INVISIBLE)
-                throw new Exception("visibility error: " + visibility);
             View viewById = findViewById(viewId);
             if (null == viewById)
                 throw new Exception("viewById error: null");
