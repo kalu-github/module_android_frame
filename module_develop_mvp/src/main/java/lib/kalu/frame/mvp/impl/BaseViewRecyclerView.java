@@ -70,6 +70,19 @@ public interface BaseViewRecyclerView {
         }
     }
 
+    default void notifyItemRangeRemovedAll(@IdRes int id) {
+        try {
+            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+            if (null == adapter)
+                throw new Exception("adapter error: null");
+            int itemCount = adapter.getItemCount();
+            recyclerView.getAdapter().notifyItemRangeRemoved(0, itemCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     default void notifyItemRemoved(@IdRes int id, @NonNull int position) {
         try {
             RecyclerView recyclerView = ((BaseView) this).findViewById(id);
