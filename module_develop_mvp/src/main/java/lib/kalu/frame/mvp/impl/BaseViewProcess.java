@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import lib.kalu.frame.mvp.util.MvpUtil;
 import lib.kalu.frame.mvp.util.WrapperUtil;
 
 @Keep
@@ -30,6 +31,7 @@ public interface BaseViewProcess {
                 System.exit(0);
             }
         } catch (Exception e) {
+            MvpUtil.logE("BaseViewProcess => killProcess => " + e.getMessage());
         }
     }
 }

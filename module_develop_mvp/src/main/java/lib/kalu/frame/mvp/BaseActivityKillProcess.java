@@ -1,5 +1,6 @@
 package lib.kalu.frame.mvp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
         try {
             mP.cleanDisposable();
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivity => onBackPressed => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => onBackPressed => " + e.getMessage());
         }
         super.onBackPressed();
     }
@@ -43,7 +44,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
         try {
             mP.cleanDisposable();
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivity => finish => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => finish => " + e.getMessage());
         }
         super.finish();
     }
@@ -62,7 +63,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
             mP = initPresenter();
             initData();
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivity => onCreate => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => onCreate => " + e.getMessage());
         }
     }
 
@@ -73,7 +74,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
                 throw new IllegalArgumentException("mP error: null");
             return mP;
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivity => getPresenter => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => getPresenter => " + e.getMessage());
             throw e;
         }
     }
@@ -86,7 +87,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
             constructorP.setAccessible(true);
             return (P) constructorP.newInstance(this);
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivity => initPresenter => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => initPresenter => " + e.getMessage());
             try {
                 throw e;
             } catch (NoSuchMethodException ex) {
@@ -118,13 +119,14 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
         try {
             return super.getDefaultViewModelCreationExtras();
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivity => getDefaultViewModelCreationExtras => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => getDefaultViewModelCreationExtras => " + e.getMessage());
             return new MutableCreationExtras();
         }
     }
 
     /**************/
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         // action_down => keycode_back
@@ -137,13 +139,13 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     @Override
     protected void onPause() {
         super.onPause();
-        MvpUtil.logE("BaseActivityMonitorKeycodeHome => onPause =>");
         try {
             boolean keycodeBack = getBooleanExtra(INTENT_KEYCODE_BACK, false);
             if (!keycodeBack)
-                throw new Exception("not press down keycode_back");
+                throw new Exception("killProcess");
+            MvpUtil.logE("BaseActivityKillProcess => onPause =>");
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivityMonitorKeycodeHome => onPause => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage());
             killProcess();
         }
     }
@@ -151,7 +153,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     @Override
     protected void onRestart() {
         super.onRestart();
-        MvpUtil.logE("BaseActivityMonitorKeycodeHome => onRestart =>");
+        MvpUtil.logE("BaseActivityKillProcess => onRestart =>");
         putBooleanExtra(INTENT_KEYCODE_BACK, false);
     }
 

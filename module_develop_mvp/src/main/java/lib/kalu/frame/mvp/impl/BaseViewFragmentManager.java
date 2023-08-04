@@ -32,6 +32,41 @@ public interface BaseViewFragmentManager extends BaseViewContext {
 //        }
 //    }
 
+    default boolean removeFragment(@Nullable androidx.fragment.app.Fragment fragment) {
+        try {
+            if (null == fragment)
+                throw new Exception("fragment is null");
+            androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManagerTransaction();
+            if (null == fragmentTransaction)
+                throw new Exception("fragmentTransaction is null");
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commitNow();
+            return true;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewFragmentManger => removeFragment => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default boolean removeFragments(@Nullable List<androidx.fragment.app.Fragment> fragments) {
+        try {
+            if (null == fragments || fragments.size() == 0)
+                throw new Exception("fragment error: " + fragments);
+            androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManagerTransaction();
+            if (null == fragmentTransaction)
+                throw new Exception("fragmentTransaction is null");
+            for (androidx.fragment.app.Fragment fragment : fragments) {
+                fragmentTransaction.remove(fragment);
+            }
+            fragmentTransaction.commitNow();
+            return true;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewFragmentManger => removeFragments => " + e.getMessage());
+            return false;
+        }
+    }
+
+
     default boolean showFragment(@Nullable androidx.fragment.app.Fragment fragment) {
         try {
             if (null == fragment)
