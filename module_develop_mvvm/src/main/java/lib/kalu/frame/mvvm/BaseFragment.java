@@ -1,13 +1,18 @@
 package lib.kalu.frame.mvvm;
 
 import android.app.Application;
-import android.app.Fragment;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.viewmodel.CreationExtras;
+import androidx.lifecycle.viewmodel.MutableCreationExtras;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
+
+import lib.kalu.frame.mvvm.util.MvpUtil;
 
 /**
  * @author zhanghang
@@ -69,7 +74,18 @@ public abstract class BaseFragment<M extends BaseModel, V extends BaseView, VM e
         super.setUserVisibleHint(isVisibleToUser);
         try {
             hideLoading();
-        }catch (Exception e){
+        } catch (Exception e) {
+        }
+    }
+
+    @NonNull
+    @Override
+    public CreationExtras getDefaultViewModelCreationExtras() {
+        try {
+            return super.getDefaultViewModelCreationExtras();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseFragment => getDefaultViewModelCreationExtras => " + e.getMessage());
+            return new MutableCreationExtras();
         }
     }
 }

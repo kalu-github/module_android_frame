@@ -2,23 +2,24 @@ package lib.kalu.frame.mvvm;
 
 import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.viewmodel.CreationExtras;
+import androidx.lifecycle.viewmodel.MutableCreationExtras;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Arrays;
+
+import lib.kalu.frame.mvvm.util.MvpUtil;
 
 /**
  * @author zhanghang
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseActivity<M extends BaseModel, V extends BaseView, VM extends BaseViewModel> extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity<M extends BaseModel, V extends BaseView, VM extends BaseViewModel> extends FragmentActivity implements BaseView {
 
     private VM mVM = null;
 
@@ -45,10 +46,14 @@ public abstract class BaseActivity<M extends BaseModel, V extends BaseView, VM e
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initWindow();
-        setContentView(initLayout());
-        mVM = initViewModel();
-        initData();
+        try {
+            initWindow();
+            setContentView(initLayout());
+            mVM = initViewModel();
+            initData();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseActivity => onCreate => " + e.getMessage());
+        }
     }
 
     @Override
@@ -83,5 +88,16 @@ public abstract class BaseActivity<M extends BaseModel, V extends BaseView, VM e
 //        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+    }
+
+    @NonNull
+    @Override
+    public CreationExtras getDefaultViewModelCreationExtras() {
+        try {
+            return super.getDefaultViewModelCreationExtras();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseActivity => getDefaultViewModelCreationExtras => " + e.getMessage());
+            return new MutableCreationExtras();
+        }
     }
 }

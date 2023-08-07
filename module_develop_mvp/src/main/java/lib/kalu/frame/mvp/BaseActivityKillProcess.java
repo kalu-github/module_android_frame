@@ -23,105 +23,19 @@ import lib.kalu.frame.mvp.util.MvpUtil;
  * @description:
  * @date :2022-01-17
  */
-public abstract class BaseActivityKillProcess<V extends BaseView, P extends BasePresenter> extends FragmentActivity implements BaseView {
+public abstract class BaseActivityKillProcess<V extends BaseView, P extends BasePresenter> extends BaseActivity<V, P> implements BaseView {
 
     private final String INTENT_KEYCODE_BACK = "intent_keycode_back";
 
-    private P mP = null;
-
-    @Override
-    public void onBackPressed() {
-        try {
-            mP.cleanDisposable();
-        } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onBackPressed => " + e.getMessage());
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    public void finish() {
-        try {
-            mP.cleanDisposable();
-        } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => finish => " + e.getMessage());
-        }
-        super.finish();
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         try {
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
         } catch (Exception e) {
         }
         putBooleanExtra(INTENT_KEYCODE_BACK, false);
-        try {
-            initWindow();
-            setContentView(initLayout());
-            mP = initPresenter();
-            initData();
-        } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onCreate => " + e.getMessage());
-        }
-    }
-
-    @Override
-    public final P getPresenter() {
-        try {
-            if (null == mP)
-                throw new IllegalArgumentException("mP error: null");
-            return mP;
-        } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => getPresenter => " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private P initPresenter() {
-        try {
-            Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-            Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-            Constructor constructorP = clazzP.getDeclaredConstructor(new Class[]{clazzV});
-            constructorP.setAccessible(true);
-            return (P) constructorP.newInstance(this);
-        } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => initPresenter => " + e.getMessage());
-            try {
-                throw e;
-            } catch (NoSuchMethodException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (InvocationTargetException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
-    @Override
-    public void initWindow() {
-//        Window window = getWindow();
-//        WindowManager.LayoutParams params = window.getAttributes();
-//        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE;
-//        window.setAttributes(params);
-//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-    }
-
-    @NonNull
-    @Override
-    public CreationExtras getDefaultViewModelCreationExtras() {
-        try {
-            return super.getDefaultViewModelCreationExtras();
-        } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => getDefaultViewModelCreationExtras => " + e.getMessage());
-            return new MutableCreationExtras();
-        }
+        super.onCreate(savedInstanceState);
     }
 
     /**************/
