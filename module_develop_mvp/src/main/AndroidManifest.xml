@@ -2,14 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <application android:allowBackup="false">
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <application android:allowBackup="false">
+        <!-- 默认context -->
         <provider
+            android:name="lib.kalu.frame.mvp.context.FrameContext"
             android:authorities="${applicationId}.mvp.context"
             android:exported="false"
-            android:grantUriPermissions="true"
-            android:name="lib.kalu.frame.mvp.context.FrameContext" />
-
+            android:grantUriPermissions="true" />
+        <!-- 安装apk -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="lib.kalu.frame.mvp.common.upgrade"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/upgrade_filepaths" />
+        </provider>
     </application>
 
 </manifest>
