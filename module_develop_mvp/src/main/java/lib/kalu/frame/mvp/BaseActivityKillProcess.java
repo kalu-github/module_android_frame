@@ -1,6 +1,7 @@
 package lib.kalu.frame.mvp;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -57,8 +58,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
             MvpUtil.logE("BaseActivityKillProcess => onPause =>");
         } catch (Exception e) {
             MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage());
-            onBackPressed();
-            BaseApplication.clearActivitys();
+            checkApplication();
             killProcess(false);
         }
     }
@@ -68,6 +68,20 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
         super.onRestart();
         MvpUtil.logE("BaseActivityKillProcess => onRestart =>");
         setKillProcess(true);
+    }
+
+    private void checkApplication() {
+        try {
+            Application application = getApplication();
+            MvpUtil.logE("BaseActivityKillProcess => checkApplication => application = " + application);
+            if (null == application)
+                throw new Exception("application error: null");
+            if (!(application instanceof BaseApplicationKillProcess))
+                throw new Exception("application error: not instanceof BaseApplicationKillProcess");
+            ((BaseApplicationKillProcess) application).clearActivitys();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseActivityKillProcess => checkApplication => " + e.getMessage());
+        }
     }
 
     public void setKillProcess(boolean status) {
