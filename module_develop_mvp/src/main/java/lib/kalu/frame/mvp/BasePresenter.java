@@ -46,18 +46,23 @@ public class BasePresenter<V extends BaseView> {
 
     @Keep
     public final void addDisposable(@NonNull Disposable disposable) {
-        addDisposable(false, disposable);
+        addDisposable(false, (Integer.MIN_VALUE - 100), disposable);
     }
 
     @Keep
-    public final void addDisposable(@NonNull boolean clean, @NonNull Disposable disposable) {
+    public final void addDisposable(@NonNull boolean remove, @NonNull Disposable disposable) {
+        addDisposable(remove, (Integer.MIN_VALUE - 100), disposable);
+    }
+
+    @Keep
+    public final void addDisposable(@NonNull boolean remove, @NonNull int key, @NonNull Disposable disposable) {
         BaseModel model = getModel();
         if (null == model)
             return;
-        if (clean) {
-            cleanDisposable();
+        if (remove) {
+            removeDisposable(key);
         }
-        model.addDisposable(disposable);
+        model.addDisposable(key, disposable);
     }
 
     @Keep
@@ -66,6 +71,14 @@ public class BasePresenter<V extends BaseView> {
         if (null == model)
             return;
         model.cleanDisposable();
+    }
+
+    @Keep
+    public void removeDisposable(@NonNull int key) {
+        BaseModel model = getModel();
+        if (null == model)
+            return;
+        model.removeDisposable(key);
     }
 
     protected final <T> void request(@NonNull Observable<? extends RequestBean<T>> observable, @NonNull OnRequestChangeListener<T> listener) {
