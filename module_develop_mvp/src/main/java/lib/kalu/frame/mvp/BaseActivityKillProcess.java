@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
@@ -29,10 +31,6 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        try {
-            getWindow().setFormat(PixelFormat.TRANSLUCENT);
-        } catch (Exception e) {
-        }
         setKillProcess(true);
         super.onCreate(savedInstanceState);
     }
@@ -58,9 +56,10 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
                 throw new Exception("killProcess");
             MvpUtil.logE("BaseActivityKillProcess => onPause =>");
         } catch (Exception e) {
-            onKillProcess();
             MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage());
-            killProcess();
+            onBackPressed();
+            BaseApplication.clearActivitys();
+            killProcess(false);
         }
     }
 
@@ -69,9 +68,6 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
         super.onRestart();
         MvpUtil.logE("BaseActivityKillProcess => onRestart =>");
         setKillProcess(true);
-    }
-
-    public void onKillProcess() {
     }
 
     public void setKillProcess(boolean status) {
