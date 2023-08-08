@@ -38,7 +38,7 @@ public final class FileUtils {
             file.createNewFile();
             return file;
         } catch (Exception e) {
-            MvpUtil.logE("checkFile => " + e.getMessage());
+            MvpUtil.logE("FileUtils => checkFile => " + e.getMessage());
             return null;
         }
     }
@@ -54,7 +54,7 @@ public final class FileUtils {
             fileOutputStream.close();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("FileUtils => saveFile => " + e.getMessage());
             return false;
         }
     }
@@ -77,7 +77,7 @@ public final class FileUtils {
             inputStream.close();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("FileUtils => saveFile => " + e.getMessage());
             return false;
         }
     }

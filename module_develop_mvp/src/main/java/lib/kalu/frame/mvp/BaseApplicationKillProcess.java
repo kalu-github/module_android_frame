@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import lib.kalu.frame.mvp.context.FrameContext;
 import lib.kalu.frame.mvp.util.MvpUtil;
@@ -17,13 +18,8 @@ public class BaseApplicationKillProcess extends BaseApplication implements Appli
 
     private final LinkedList<Activity> mActivitys = new LinkedList<>();
 
-    public final void clearActivitys() {
-        for (Activity activity : mActivitys) {
-            MvpUtil.logE("BaseApplication => clearActivitys => activity = " + activity);
-            if (null == activity)
-                continue;
-            activity.onBackPressed();
-        }
+    public final List<Activity> getActivitys() {
+        return mActivitys;
     }
 
     @Override

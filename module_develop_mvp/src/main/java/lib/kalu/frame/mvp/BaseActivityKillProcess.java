@@ -1,6 +1,7 @@
 package lib.kalu.frame.mvp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -18,6 +19,7 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 import lib.kalu.frame.mvp.util.MvpUtil;
 
@@ -57,8 +59,8 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
                 throw new Exception("killProcess");
             MvpUtil.logE("BaseActivityKillProcess => onPause => activity = " + this);
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage() + ", activity = " + this);
             checkApplication();
+            MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage() + ", activity = " + this);
             killProcess(false);
         }
     }
@@ -78,7 +80,14 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
                 throw new Exception("application error: null");
             if (!(application instanceof BaseApplicationKillProcess))
                 throw new Exception("application error: not instanceof BaseApplicationKillProcess");
-            ((BaseApplicationKillProcess) application).clearActivitys();
+            List<Activity> activitys = ((BaseApplicationKillProcess) application).getActivitys();
+            for (Activity activity : activitys) {
+                MvpUtil.logE("BaseActivityKillProcess => checkApplication => activity = " + activity);
+                if (null == activity)
+                    continue;
+                MvpUtil.logE("BaseActivityKillProcess => checkApplication => onBackPressed => activity = " + activity);
+                activity.onBackPressed();
+            }
         } catch (Exception e) {
             MvpUtil.logE("BaseActivityKillProcess => checkApplication => " + e.getMessage());
         }

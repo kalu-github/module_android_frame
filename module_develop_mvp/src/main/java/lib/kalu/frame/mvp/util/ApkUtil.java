@@ -2,6 +2,8 @@ package lib.kalu.frame.mvp.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -9,7 +11,10 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
+import java.io.BufferedReader;
 import java.io.File;
+
+import lib.kalu.frame.mvp.context.FrameContext;
 
 public final class ApkUtil {
 
