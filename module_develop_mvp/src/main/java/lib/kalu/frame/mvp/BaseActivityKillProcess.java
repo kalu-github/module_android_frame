@@ -25,8 +25,7 @@ import lib.kalu.frame.mvp.util.MvpUtil;
  */
 public abstract class BaseActivityKillProcess<V extends BaseView, P extends BasePresenter> extends BaseActivity<V, P> implements BaseView {
 
-    private final String INTENT_KEYCODE_BACK = "intent_keycode_back";
-
+    private final String INTENT_KILL_PROCESS = "intent_kill_process";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
         } catch (Exception e) {
         }
-        putBooleanExtra(INTENT_KEYCODE_BACK, false);
+        setKillProcess(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -45,7 +44,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     public boolean dispatchKeyEvent(KeyEvent event) {
         // action_down => keycode_back
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            putBooleanExtra(INTENT_KEYCODE_BACK, true);
+            setKillProcess(false);
         }
         return super.dispatchKeyEvent(event);
     }
@@ -54,11 +53,12 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     protected void onPause() {
         super.onPause();
         try {
-            boolean keycodeBack = getBooleanExtra(INTENT_KEYCODE_BACK, false);
-            if (!keycodeBack)
+            boolean killProcess = getKillProcess();
+            if (killProcess)
                 throw new Exception("killProcess");
             MvpUtil.logE("BaseActivityKillProcess => onPause =>");
         } catch (Exception e) {
+            onKillProcess();
             MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage());
             killProcess();
         }
@@ -68,7 +68,18 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     protected void onRestart() {
         super.onRestart();
         MvpUtil.logE("BaseActivityKillProcess => onRestart =>");
-        putBooleanExtra(INTENT_KEYCODE_BACK, false);
+        setKillProcess(true);
+    }
+
+    public void onKillProcess() {
+    }
+
+    public void setKillProcess(boolean status) {
+        putBooleanExtra(INTENT_KILL_PROCESS, status);
+    }
+
+    public boolean getKillProcess() {
+        return getBooleanExtra(INTENT_KILL_PROCESS, true);
     }
 
     /**********/
@@ -76,24 +87,24 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        putBooleanExtra(INTENT_KEYCODE_BACK, true);
+        setKillProcess(false);
     }
 
     @Override
     public void startActivity(Intent intent, @Nullable Bundle options) {
         super.startActivity(intent, options);
-        putBooleanExtra(INTENT_KEYCODE_BACK, true);
+        setKillProcess(false);
     }
 
     @Override
     public void startActivityForResult(@NonNull Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        putBooleanExtra(INTENT_KEYCODE_BACK, true);
+        setKillProcess(false);
     }
 
     @Override
     public void startActivityForResult(@NonNull Intent intent, int requestCode, @Nullable Bundle options) {
         super.startActivityForResult(intent, requestCode, options);
-        putBooleanExtra(INTENT_KEYCODE_BACK, true);
+        setKillProcess(false);
     }
 }
