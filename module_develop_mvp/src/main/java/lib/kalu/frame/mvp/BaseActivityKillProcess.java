@@ -55,9 +55,9 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
             boolean killProcess = getKillProcess();
             if (killProcess)
                 throw new Exception("killProcess");
-            MvpUtil.logE("BaseActivityKillProcess => onPause =>");
+            MvpUtil.logE("BaseActivityKillProcess => onPause => activity = " + this);
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage());
+            MvpUtil.logE("BaseActivityKillProcess => onPause => " + e.getMessage() + ", activity = " + this);
             checkApplication();
             killProcess(false);
         }
@@ -66,7 +66,7 @@ public abstract class BaseActivityKillProcess<V extends BaseView, P extends Base
     @Override
     protected void onRestart() {
         super.onRestart();
-        MvpUtil.logE("BaseActivityKillProcess => onRestart =>");
+        MvpUtil.logE("BaseActivityKillProcess => onRestart => activity = " + this);
         setKillProcess(true);
     }
 

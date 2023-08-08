@@ -26,7 +26,7 @@ public final class ApkUtil {
             File file = new File(apkPath);
             if (!file.exists())
                 throw new Exception("apkFile error: not exists");
-            Intent intent = new Intent();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
             // 8.0
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 MvpUtil.logE("ApkUtil => installApk => android8.0");
@@ -35,8 +35,7 @@ public final class ApkUtil {
                 if (canRequestPackageInstalls) {
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Uri uri = FileProvider.getUriForFile(context, AUTHORITY, file);
-                    intent.setDataAndType(uri, PACKAGE_ARCHIVE);
+                    intent.setDataAndType(FileProvider.getUriForFile(context, AUTHORITY, file), PACKAGE_ARCHIVE);
                 } else {
                     intent.setAction(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
                     intent.setData(Uri.parse(PACKAGE + context.getPackageName()));
@@ -47,11 +46,12 @@ public final class ApkUtil {
                 MvpUtil.logE("ApkUtil => installApk => android7.0");
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Uri uri = FileProvider.getUriForFile(context, AUTHORITY, file);
-                intent.setDataAndType(uri, PACKAGE_ARCHIVE);
+                intent.setDataAndType(FileProvider.getUriForFile(context, AUTHORITY, file), PACKAGE_ARCHIVE);
             } else {
                 MvpUtil.logE("ApkUtil => installApk => android6.0");
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setDataAndType(Uri.fromFile(file), PACKAGE_ARCHIVE);
             }
             context.startActivity(intent);
