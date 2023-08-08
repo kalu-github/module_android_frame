@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Process;
 import android.widget.Toast;
 
@@ -25,11 +27,16 @@ public interface BaseViewProcess {
 
     default void killProcess(@NonNull boolean android) {
         try {
-            if (android) {
-                Process.killProcess(Process.myPid());
-            } else {
-                System.exit(0);
-            }
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (android) {
+                        Process.killProcess(Process.myPid());
+                    } else {
+                        System.exit(0);
+                    }
+                }
+            });
         } catch (Exception e) {
             MvpUtil.logE("BaseViewProcess => killProcess => " + e.getMessage());
         }

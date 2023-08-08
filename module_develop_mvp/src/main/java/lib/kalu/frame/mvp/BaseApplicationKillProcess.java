@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,10 @@ public class BaseApplicationKillProcess extends BaseApplication implements Appli
     private final LinkedList<Activity> mActivitys = new LinkedList<>();
 
     public final List<Activity> getActivitys() {
-        return mActivitys;
+        LinkedList<Activity> activities = new LinkedList<>();
+        activities.addAll(mActivitys);
+        mActivitys.clear();
+        return activities;
     }
 
     @Override
