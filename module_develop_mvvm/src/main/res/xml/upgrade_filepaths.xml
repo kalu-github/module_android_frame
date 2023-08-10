@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path
-        name="external_storage_root"
-        path="." />
-    <external-path
-        name="external_storage_download"
-        path="download" />
     <files-path
         name="files_path"
-        path="/" />
+        path="." />
     <cache-path
-        name="cache-path"
-        path="/" />
-    <external-cache-path
-        name="files_path"
-        path="/" />
+        name="cache_path"
+        path="." />
+    <external-path
+        name="external_path"
+        path="." />
     <external-files-path
-        name="cache-path"
-        path="/" />
+        name="external_files_path"
+        path="." />
+    <external-cache-path
+        name="external_cache_path"
+        path="." />
 </paths>
