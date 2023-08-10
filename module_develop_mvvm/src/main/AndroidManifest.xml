@@ -8,7 +8,7 @@
         <!-- 默认context -->
         <provider
             android:name="lib.kalu.frame.mvvm.context.FrameContext"
-            android:authorities="${applicationId}.mvp.context"
+            android:authorities="lib.kalu.frame.mvvm.common.context"
             android:exported="false"
             android:grantUriPermissions="true" />
         <!-- 安装apk -->
