@@ -42,8 +42,8 @@ public abstract class BaseClient {
             .addInterceptor(null != mCustomInterceptor ? mCustomInterceptor : mOkhttpInterceptorStandard)
             .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
             .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
-            .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))
-            .retryOnConnectionFailure(false)
+            .connectionPool(new ConnectionPool(10, 60, TimeUnit.MINUTES))
+            .retryOnConnectionFailure(true)
             .proxySelector(new ProxySelector() { // 禁止抓包
                 @Override
                 public List<Proxy> select(URI uri) {
