@@ -42,8 +42,6 @@ public abstract class BaseClient {
             .addInterceptor(null != mCustomInterceptor ? mCustomInterceptor : mOkhttpInterceptorStandard)
             .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
             .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
-//    okhttp默认使用的RealConnectionPool初始化线程数==2147483647，在服务端会导致大量线程TIMED_WAITING
-//    ThreadPoolExecutor(0, 2147483647, 60L, TimeUnit.SECONDS, new SynchronousQueue(), Util.threadFactory("OkHttp ConnectionPool", true));
             .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))
             .retryOnConnectionFailure(false)
             .proxySelector(new ProxySelector() { // 禁止抓包
