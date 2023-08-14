@@ -73,49 +73,52 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
         }
     }
 
-    @Keep
-    public final void addDisposable(@NonNull Disposable disposable) {
-        addDisposable(false, (Integer.MIN_VALUE - 100), disposable);
-    }
-
-    @Keep
-    public final void addDisposable(@NonNull boolean remove, @NonNull Disposable disposable) {
-        addDisposable(remove, (Integer.MIN_VALUE - 100), disposable);
-    }
-
-    @Keep
-    public final void addDisposable(@NonNull boolean remove, @NonNull int key, @NonNull Disposable disposable) {
-        try {
-            M baseModel = getModel();
-            if (null == baseModel)
-                throw new Exception("baseModel error: null");
-            baseModel.addDisposable(key, disposable);
-        } catch (Exception e) {
-            MvpUtil.logE("BaseViewModel => addDisposable => " + e.getMessage());
-        }
-    }
-
-    @Keep
-    public void cleanDisposable() {
-        try {
-            M baseModel = getModel();
-            if (null == baseModel)
-                throw new Exception("baseModel error: null");
-            baseModel.cleanDisposable();
-        } catch (Exception e) {
-            MvpUtil.logE("BaseViewModel => cleanDisposable => " + e.getMessage());
-        }
-    }
-
-    @Keep
-    public void removeDisposable(@NonNull int key) {
-        try {
-            M baseModel = getModel();
-            if (null == baseModel)
-                throw new Exception("baseModel error: null");
-            baseModel.removeDisposable(key);
-        } catch (Exception e) {
-            MvpUtil.logE("BaseViewModel => removeDisposable => " + e.getMessage());
-        }
-    }
+//    @Keep
+//    public final void addDisposable(@NonNull Disposable disposable) {
+//        addDisposable(false, (Integer.MIN_VALUE - 100), disposable);
+//    }
+//
+//    @Keep
+//    public final void addDisposable(@NonNull boolean remove, @NonNull Disposable disposable) {
+//        addDisposable(remove, (Integer.MIN_VALUE - 100), disposable);
+//    }
+//
+//    @Keep
+//    public final void addDisposable(@NonNull boolean remove, @NonNull int key, @NonNull Disposable disposable) {
+//        try {
+//            M baseModel = getModel();
+//            if (null == baseModel)
+//                throw new Exception("baseModel error: null");
+//            if (remove) {
+//                removeDisposable(key);
+//            }
+//            baseModel.addDisposable(key, disposable);
+//        } catch (Exception e) {
+//            MvpUtil.logE("BaseViewModel => addDisposable => " + e.getMessage());
+//        }
+//    }
+//
+//    @Keep
+//    public void cleanDisposable() {
+//        try {
+//            M baseModel = getModel();
+//            if (null == baseModel)
+//                throw new Exception("baseModel error: null");
+//            baseModel.cleanDisposable();
+//        } catch (Exception e) {
+//            MvpUtil.logE("BaseViewModel => cleanDisposable => " + e.getMessage());
+//        }
+//    }
+//
+//    @Keep
+//    public void removeDisposable(@NonNull int key) {
+//        try {
+//            M baseModel = getModel();
+//            if (null == baseModel)
+//                throw new Exception("baseModel error: null");
+//            baseModel.removeDisposable(key);
+//        } catch (Exception e) {
+//            MvpUtil.logE("BaseViewModel => removeDisposable => " + e.getMessage());
+//        }
+//    }
 }

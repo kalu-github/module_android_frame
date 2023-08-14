@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import io.reactivex.disposables.Disposable;
 import lib.kalu.frame.mvvm.util.MvpUtil;
 
@@ -59,23 +60,38 @@ public abstract class BaseModel {
     /***********************/
     private final HashMap<Integer, List<Disposable>> mDisposables = new HashMap<>();
 
-    protected final void addDisposable(@NonNull int k, @NonNull Disposable disposable) {
+
+    @Keep
+    public final void addDisposable(@NonNull Disposable disposable) {
+        addDisposable(false, (Integer.MIN_VALUE - 100), disposable);
+    }
+
+    @Keep
+    public final void addDisposable(@NonNull boolean remove, @NonNull Disposable disposable) {
+        addDisposable(remove, (Integer.MIN_VALUE - 100), disposable);
+    }
+
+    @Keep
+    public final void addDisposable(@NonNull boolean remove, @NonNull int key, @NonNull Disposable disposable) {
         try {
+            if (remove) {
+                removeDisposable(key);
+            }
             if (null == disposable)
                 throw new Exception("disposable error: null");
-            boolean containsKey = mDisposables.containsKey(k);
+            boolean containsKey = mDisposables.containsKey(key);
             if (!containsKey) {
                 LinkedList<Disposable> disposables = new LinkedList<>();
-                mDisposables.put(k, disposables);
+                mDisposables.put(key, disposables);
             }
-            List<Disposable> disposables = mDisposables.get(k);
+            List<Disposable> disposables = mDisposables.get(key);
             disposables.add(disposable);
         } catch (Exception e) {
             MvpUtil.logE("BaseModel => addDisposable => " + e.getMessage());
         }
     }
 
-    protected final void cleanDisposable() {
+    public final void cleanDisposable() {
         try {
             Set<Map.Entry<Integer, List<Disposable>>> entrySet = mDisposables.entrySet();
             if (null == entrySet || entrySet.size() == 0)
@@ -83,7 +99,6 @@ public abstract class BaseModel {
             for (Map.Entry<Integer, List<Disposable>> entry : entrySet) {
                 if (null == entry)
                     continue;
-                Integer key = entry.getKey();
                 List<Disposable> value = entry.getValue();
                 if (null == value || value.size() == 0)
                     continue;
@@ -99,7 +114,7 @@ public abstract class BaseModel {
         }
     }
 
-    protected final void removeDisposable(@NonNull int k) {
+    public final void removeDisposable(@NonNull int k) {
         try {
             Set<Map.Entry<Integer, List<Disposable>>> entrySet = mDisposables.entrySet();
             if (null == entrySet || entrySet.size() == 0)
