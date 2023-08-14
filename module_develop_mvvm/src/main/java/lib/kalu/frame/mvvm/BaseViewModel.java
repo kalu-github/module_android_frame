@@ -14,6 +14,7 @@ import java.util.WeakHashMap;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import lib.kalu.frame.mvvm.util.MvpUtil;
 
 /**
  * @author zhanghang
@@ -36,14 +37,14 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
     @Override
     protected void onCleared() {
         super.onCleared();
-
-        BaseModel model = getModel();
-        if (null == model)
-            return;
-        CompositeDisposable disposables = model.getDisposables();
-        if (null == disposables || disposables.size() == 0)
-            return;
-        disposables.dispose();
+        try {
+            M baseModel = getModel();
+            if (null == baseModel)
+                throw new Exception("baseModel error: null");
+            baseModel.cleanDisposable();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewModel => onCleared => " + e.getMessage());
+        }
     }
 
     @Keep
@@ -62,18 +63,59 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
 
     @Keep
     public final <T> void regist(@NonNull LifecycleOwner owner, @NonNull String key, @NonNull Observer<T> observer) {
-        M model = getModel();
-        if (null == model)
-            return;
-        model.regist(owner, key, observer);
+        try {
+            M baseModel = getModel();
+            if (null == baseModel)
+                throw new Exception("baseModel error: null");
+            baseModel.regist(owner, key, observer);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewModel => regist => " + e.getMessage());
+        }
     }
 
+    @Keep
+    public final void addDisposable(@NonNull Disposable disposable) {
+        addDisposable(false, (Integer.MIN_VALUE - 100), disposable);
+    }
 
     @Keep
-    protected final void addDisposable(@NonNull Disposable disposable) {
-        BaseModel model = getModel();
-        if (null == model)
-            return;
-        model.addDisposable(disposable);
+    public final void addDisposable(@NonNull boolean remove, @NonNull Disposable disposable) {
+        addDisposable(remove, (Integer.MIN_VALUE - 100), disposable);
+    }
+
+    @Keep
+    public final void addDisposable(@NonNull boolean remove, @NonNull int key, @NonNull Disposable disposable) {
+        try {
+            M baseModel = getModel();
+            if (null == baseModel)
+                throw new Exception("baseModel error: null");
+            baseModel.addDisposable(key, disposable);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewModel => addDisposable => " + e.getMessage());
+        }
+    }
+
+    @Keep
+    public void cleanDisposable() {
+        try {
+            M baseModel = getModel();
+            if (null == baseModel)
+                throw new Exception("baseModel error: null");
+            baseModel.cleanDisposable();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewModel => cleanDisposable => " + e.getMessage());
+        }
+    }
+
+    @Keep
+    public void removeDisposable(@NonNull int key) {
+        try {
+            M baseModel = getModel();
+            if (null == baseModel)
+                throw new Exception("baseModel error: null");
+            baseModel.removeDisposable(key);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewModel => removeDisposable => " + e.getMessage());
+        }
     }
 }
