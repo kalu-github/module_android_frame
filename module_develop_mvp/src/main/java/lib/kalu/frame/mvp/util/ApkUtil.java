@@ -20,12 +20,15 @@ public final class ApkUtil {
 
     private static String PACKAGE_ARCHIVE = "application/vnd.android.package-archive";
     private static String PACKAGE = "package:";
-    private static String AUTHORITY = "lib.kalu.frame.mvp.common.upgrade";
+    private static String AUTHORITY = ".frame-upgrade";
 
     public static boolean installApk(@NonNull Context context, @NonNull String apkPath) {
         try {
             if (null == context)
                 throw new Exception("context error: null");
+            String applicationId = context.getPackageName();
+            if (null == applicationId || applicationId.length() == 0)
+                throw new Exception("applicationId error: " + applicationId);
             if (null == apkPath || apkPath.length() == 0)
                 throw new Exception("apkPath error: " + apkPath);
             File file = new File(apkPath);
@@ -40,7 +43,7 @@ public final class ApkUtil {
                 if (canRequestPackageInstalls) {
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setDataAndType(FileProvider.getUriForFile(context, AUTHORITY, file), PACKAGE_ARCHIVE);
+                    intent.setDataAndType(FileProvider.getUriForFile(context, applicationId + AUTHORITY, file), PACKAGE_ARCHIVE);
                 } else {
                     intent.setAction(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
                     intent.setData(Uri.parse(PACKAGE + context.getPackageName()));
@@ -51,7 +54,7 @@ public final class ApkUtil {
                 MvpUtil.logE("ApkUtil => installApk => android7.0");
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(FileProvider.getUriForFile(context, AUTHORITY, file), PACKAGE_ARCHIVE);
+                intent.setDataAndType(FileProvider.getUriForFile(context, applicationId + AUTHORITY, file), PACKAGE_ARCHIVE);
             } else {
                 MvpUtil.logE("ApkUtil => installApk => android6.0");
                 intent.addCategory(Intent.CATEGORY_DEFAULT);

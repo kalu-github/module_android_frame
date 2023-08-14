@@ -13,13 +13,13 @@
         <!-- 默认context -->
         <provider
             android:name="lib.kalu.frame.mvp.context.FrameContext"
-            android:authorities="lib.kalu.frame.mvp.common.context"
+            android:authorities="${applicationId}.frame-context"
             android:exported="false"
             android:grantUriPermissions="true" />
         <!-- 安装apk -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="lib.kalu.frame.mvp.common.upgrade"
+            android:authorities="${applicationId}.frame-upgrade"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
