@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import lib.kalu.frame.mvvm.interceptor.OkhttpInterceptorStandard;
 import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -38,20 +37,30 @@ public abstract class BaseClient {
             .disableHtmlEscaping()//防止对网址乱码 忽略对特殊字符的转换
             .setLenient() // 使用JsonReader.setLenient(true)在第1行、第1列、路径$接受格式错误的JSON
             .create();
-    private final OkHttpClient.Builder mOkHttpClientBuilder = new OkHttpClient.Builder()
+    private final OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
             .addInterceptor(null != mCustomInterceptor ? mCustomInterceptor : mOkhttpInterceptorStandard)
             .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
             .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
             .connectionPool(new ConnectionPool(10, 60, TimeUnit.MINUTES))
-            .retryOnConnectionFailure(true);
+            .retryOnConnectionFailure(true)
+            .proxySelector(initProxy() ? ProxySelector.getDefault() : new ProxySelector() {
+                @Override
+                public List<Proxy> select(URI uri) {
+                    return Collections.singletonList(Proxy.NO_PROXY);
+                }
 
+                @Override
+                public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+                }
+            })
+            .build();
 
     protected int initMaxRequests() {
-        return 100;
+        return 64;
     }
 
     protected int initMaxRequestsPerHost() {
-        return 100;
+        return 5;
     }
 
     protected int initReadTimeout() {
@@ -63,31 +72,14 @@ public abstract class BaseClient {
     }
 
     protected BaseClient() {
-
-        // 禁止抓包
-        if (initProxy()) {
-            mOkHttpClientBuilder.proxySelector(new ProxySelector() {
-                @Override
-                public List<Proxy> select(URI uri) {
-                    return Collections.singletonList(Proxy.NO_PROXY);
-                }
-
-                @Override
-                public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-                }
-            });
-        }
-
-        OkHttpClient okHttpClient = mOkHttpClientBuilder.build();
-        Dispatcher dispatcher = okHttpClient.dispatcher();
         // 最大并发请求数为
-        dispatcher.setMaxRequests(initMaxRequests());
+        mOkHttpClient.dispatcher().setMaxRequests(initMaxRequests());
         // 每个主机最大请求数
-        dispatcher.setMaxRequestsPerHost(initMaxRequestsPerHost());
-
+        mOkHttpClient.dispatcher().setMaxRequestsPerHost(initMaxRequestsPerHost());
+        // retrofit
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(initApi())
-                .client(okHttpClient)
+                .client(mOkHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(mGson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
@@ -104,6 +96,6 @@ public abstract class BaseClient {
     }
 
     protected boolean initProxy() {
-        return true;
+        return false;
     }
 }

@@ -56,7 +56,6 @@ public class BaseModel {
             for (Map.Entry<Integer, List<Disposable>> entry : entrySet) {
                 if (null == entry)
                     continue;
-                Integer key = entry.getKey();
                 List<Disposable> value = entry.getValue();
                 if (null == value || value.size() == 0)
                     continue;
