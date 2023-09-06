@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Build;
 import android.webkit.WebView;
 
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 import lib.kalu.frame.mvp.context.FrameContext;
 import lib.kalu.frame.mvp.util.MvpUtil;
 
@@ -17,7 +19,21 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initRxJavaPlugins();
         initWebViewProcess();
+    }
+
+    private void initRxJavaPlugins() {
+        try {
+            RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) {
+                    MvpUtil.logE("BaseApplication => initRxJavaPlugins => setErrorHandler => " + throwable.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            MvpUtil.logE("BaseApplication => initRxJavaPlugins => " + e.getMessage());
+        }
     }
 
     private void initWebViewProcess() {

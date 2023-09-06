@@ -173,6 +173,8 @@ public interface BaseViewIntent {
         }
     }
 
+    /**************/
+
     default String getStringExtra(@NonNull Activity activity, @NonNull String name) {
         return getStringExtra(activity, name, "");
     }

@@ -50,11 +50,14 @@
 -keep public class * extends android.support.annotation.**
 # 保留androidx
 -keep class com.google.android.material.** {*;}
--keep class androidx.** {*;}
--keep public class * extends androidx.**
--keep interface androidx.** {*;}
 -dontwarn com.google.android.material.**
 -dontnote com.google.android.material.**
+-keep interface androidx.** {*;}
+-keep class androidx.** {*;}
+-dontwarn androidx.**
+-dontnote androidx.**
+-keep class androidx.core.app.CoreComponentFactory{*;}
+-keep public class * extends androidx.**
 -dontwarn androidx.**
 # 保留R下面的资源
 -keep class **.R$* {*;}
