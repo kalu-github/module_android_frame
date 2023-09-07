@@ -48,4 +48,45 @@ public interface BaseViewEnable extends BaseViewFindViewById {
         editText.setFocusable(enable);
         editText.setFocusableInTouchMode(enable);
     }
+
+
+    default boolean isEnabled(@NonNull View parent,
+                              @IdRes int id) {
+
+        try {
+            if (null == parent)
+                throw new Exception("parent error: null");
+            View viewById = findViewById(parent, id);
+            if (null == viewById)
+                throw new Exception("viewById error: null");
+            return isEnabled(viewById);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    default boolean isEnabled(@IdRes int id) {
+
+        try {
+            View viewById = findViewById(id);
+            if (null == viewById)
+                throw new Exception("viewById error: null");
+            return isEnabled(viewById);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    default boolean isEnabled(@NonNull View view) {
+        try {
+            if (null == view)
+                throw new Exception("view error: null");
+            boolean viewEnabled = view.isEnabled();
+            if (!viewEnabled)
+                throw new Exception("viewEnabled warning: false");
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
