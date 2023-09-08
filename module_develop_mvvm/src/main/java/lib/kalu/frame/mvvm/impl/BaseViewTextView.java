@@ -83,42 +83,4 @@ public interface BaseViewTextView {
             e.printStackTrace();
         }
     }
-
-    default void setTextBackgroundColor(@IdRes int id, @ColorInt int color) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            textView.setBackgroundColor(color);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackgroundColorRes(@IdRes int id, @ColorRes int res) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            Context context = ((BaseView) this).getContext();
-            int color = context.getResources().getColor(res);
-            textView.setBackgroundColor(color);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackgroundResource(@IdRes int id, @DrawableRes int drawable) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            textView.setBackgroundResource(drawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackground(@IdRes int id, @NonNull Drawable drawable) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            textView.setBackground(drawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

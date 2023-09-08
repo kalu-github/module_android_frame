@@ -1,20 +1,18 @@
 package lib.kalu.frame.mvp.impl;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
-import lib.kalu.frame.mvp.BaseView;
+import lib.kalu.frame.mvvm.BaseView;
 
 @Keep
 public interface BaseViewTextView {
@@ -79,44 +77,6 @@ public interface BaseViewTextView {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setTextSize(dimen);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackgroundColor(@IdRes int id, @ColorInt int color) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            textView.setBackgroundColor(color);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackgroundColorRes(@IdRes int id, @ColorRes int res) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            Context context = ((BaseView) this).getContext();
-            int color = context.getResources().getColor(res);
-            textView.setBackgroundColor(color);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackgroundResource(@IdRes int id, @DrawableRes int drawable) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            textView.setBackgroundResource(drawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    default void setTextBackground(@IdRes int id, @NonNull Drawable drawable) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            textView.setBackground(drawable);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -32,6 +32,7 @@ import lib.kalu.frame.mvvm.impl.BaseViewSelected;
 import lib.kalu.frame.mvvm.impl.BaseViewTag;
 import lib.kalu.frame.mvvm.impl.BaseViewTextView;
 import lib.kalu.frame.mvvm.impl.BaseViewToast;
+import lib.kalu.frame.mvvm.impl.BaseViewView;
 import lib.kalu.frame.mvvm.impl.BaseViewVisibility;
 import lib.kalu.frame.mvvm.impl.BaseViewWindow;
 
@@ -57,6 +58,7 @@ public interface BaseView extends BaseViewContext,
         BaseViewFocusable,
         BaseViewVisibility,
         BaseViewDescendantFocusability,
+        BaseViewView,
         BaseViewTextView,
         BaseViewImageView,
         BaseViewClip,

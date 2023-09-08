@@ -22,14 +22,9 @@ public interface BaseViewLoading extends BaseViewWindow {
             if (null == rootView)
                 throw new Exception("rootView error: null");
             View loadingView = rootView.findViewById(initLoadingIdRes());
-            if (null == loadingView) {
-                LayoutInflater.from(getContext()).inflate(initLoadingLayoutRes(), rootView);
-                loadingView = rootView.findViewById(initLoadingIdRes());
-            }
-            if (null == loadingView)
-                throw new Exception("loadingView error: null");
-            loadingView.bringToFront();
-            loadingView.setVisibility(View.VISIBLE);
+            if (null != loadingView)
+                throw new Exception("loadingView warning: not null");
+            LayoutInflater.from(getContext()).inflate(initLoadingLayoutRes(), rootView);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewLoading => showLoading => " + e.getMessage());
         }
@@ -47,7 +42,7 @@ public interface BaseViewLoading extends BaseViewWindow {
             View loadingView = rootView.findViewById(initLoadingIdRes());
             if (null == loadingView)
                 throw new Exception("viewById error: null");
-            loadingView.setVisibility(View.GONE);
+            rootView.removeView(loadingView);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewLoading => hideLoading => " + e.getMessage());
         }
