@@ -50,11 +50,14 @@
 -keep public class * extends android.support.annotation.**
 # 保留androidx
 -keep class com.google.android.material.** {*;}
--keep class androidx.** {*;}
--keep public class * extends androidx.**
--keep interface androidx.** {*;}
 -dontwarn com.google.android.material.**
 -dontnote com.google.android.material.**
+-keep interface androidx.** {*;}
+-keep class androidx.** {*;}
+-dontwarn androidx.**
+-dontnote androidx.**
+-keep class androidx.core.app.CoreComponentFactory{*;}
+-keep public class * extends androidx.**
 -dontwarn androidx.**
 # 保留R下面的资源
 -keep class **.R$* {*;}
@@ -146,12 +149,9 @@
 ######################################################################
 # 三方
 ######################################################################
-# mvvm
--keep class * extends lib.kalu.frame.mvvm.BaseModel  {
-      public <init>(...);
-}
--keep class lib.kalu.frame.mvvm.bean.** { *; }
--keep class * extends lib.kalu.frame.mvvm.BaseViewModel  {
+# mvp
+-keep class lib.kalu.frame.mvp.bean.** { *; }
+-keep class * extends lib.kalu.frame.mvp.BasePresenter  {
       public <init>(...);
 }
 # Retrofit
