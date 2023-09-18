@@ -91,7 +91,7 @@ public abstract class BaseModel {
         }
     }
 
-    public final void cleanDisposable() {
+    public final void clearDisposable() {
         try {
             Set<Map.Entry<Integer, List<Disposable>>> entrySet = mDisposables.entrySet();
             if (null == entrySet || entrySet.size() == 0)

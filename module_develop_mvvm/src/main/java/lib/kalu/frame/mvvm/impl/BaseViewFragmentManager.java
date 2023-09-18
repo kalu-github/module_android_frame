@@ -16,21 +16,6 @@ import lib.kalu.frame.mvvm.util.MvpUtil;
 @Keep
 public interface BaseViewFragmentManager extends BaseViewContext {
 
-//    default boolean showFragment(@Nullable android.app.Fragment fragment) {
-//        try {
-//            if (null == fragment)
-//                throw new Exception("fragment is null");
-//            android.app.FragmentTransaction fragmentTransaction = getFragmentManagerTransaction();
-//            if (null == fragmentTransaction)
-//                throw new Exception("fragmentTransaction is null");
-//            fragmentTransaction.show(fragment);
-//            return true;
-//        } catch (Exception e) {
-//            MvpUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
-//            return false;
-//        }
-//    }
-
     default boolean removeFragment(@Nullable androidx.fragment.app.Fragment fragment) {
         try {
             if (null == fragment)
@@ -39,7 +24,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.remove(fragment);
-            fragmentTransaction.commitNow();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => removeFragment => " + e.getMessage());
@@ -57,7 +42,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             for (androidx.fragment.app.Fragment fragment : fragments) {
                 fragmentTransaction.remove(fragment);
             }
-            fragmentTransaction.commitNow();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => removeFragments => " + e.getMessage());
@@ -74,7 +59,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.show(fragment);
-            fragmentTransaction.commitNow();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
@@ -94,7 +79,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
                     continue;
                 fragmentTransaction.hide(fragment);
             }
-            fragmentTransaction.commitNow();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
@@ -114,7 +99,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
                     continue;
                 fragmentTransaction.hide(fragment);
             }
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
@@ -130,7 +115,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.hide(fragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
@@ -150,37 +135,13 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.add(id, fragment, tag);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
             return false;
         }
     }
-
-//    default android.app.FragmentManager getFragmentManager() {
-//        try {
-//            Activity activity = getActivity();
-//            if (null == activity)
-//                throw new Exception("activity is null");
-//            return activity.getFragmentManager();
-//        } catch (Exception e) {
-//            MvpUtil.logE("BaseViewFragmentManger => getFragmentManager => " + e.getMessage());
-//            return null;
-//        }
-//    }
-
-//    default android.app.FragmentTransaction getFragmentManagerTransaction() {
-//        try {
-//            FragmentManager fragmentManager = getFragmentManager();
-//            if (null == fragmentManager)
-//                throw new Exception("fragmentManager is null");
-//            return fragmentManager.beginTransaction();
-//        } catch (Exception e) {
-//            MvpUtil.logE("BaseViewFragmentManger => getFragmentManager => " + e.getMessage());
-//            return null;
-//        }
-//    }
 
     default FragmentManager getSupportFragmentManager() {
         try {

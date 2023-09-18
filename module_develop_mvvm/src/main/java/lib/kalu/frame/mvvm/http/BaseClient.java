@@ -42,7 +42,7 @@ public abstract class BaseClient {
             .readTimeout(initReadTimeout(), TimeUnit.SECONDS)
             .writeTimeout(initWriteTimeout(), TimeUnit.SECONDS)
             .connectionPool(new ConnectionPool(10, 60, TimeUnit.MINUTES))
-            .retryOnConnectionFailure(true)
+            .retryOnConnectionFailure(false)
             .proxySelector(initProxy() ? ProxySelector.getDefault() : new ProxySelector() {
                 @Override
                 public List<Proxy> select(URI uri) {

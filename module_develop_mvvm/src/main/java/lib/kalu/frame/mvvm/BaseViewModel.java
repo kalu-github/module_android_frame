@@ -41,7 +41,7 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
             M baseModel = getModel();
             if (null == baseModel)
                 throw new Exception("baseModel error: null");
-            baseModel.cleanDisposable();
+            baseModel.clearDisposable();
         } catch (Exception e) {
             MvpUtil.logE("BaseViewModel => onCleared => " + e.getMessage());
         }
