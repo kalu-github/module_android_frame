@@ -8,3 +8,4 @@
 /module_develop_mvvm/.gradle/
 /module_develop_mvvm/build/
 local.properties
+/module_okhttp3_3.14.9/build/
