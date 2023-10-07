@@ -9,7 +9,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewMargin extends BaseViewFindViewById {
@@ -32,7 +32,7 @@ public interface BaseViewMargin extends BaseViewFindViewById {
             ((RelativeLayout.LayoutParams) layoutParams).rightMargin = margin[2];
             ((RelativeLayout.LayoutParams) layoutParams).bottomMargin = margin[3];
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setMargin => " + e.getMessage());
+            MvvmUtil.logE("BaseViewMargin => setMargin => " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public interface BaseViewMargin extends BaseViewFindViewById {
             int offset = viewById.getResources().getDimensionPixelOffset(resId);
             ((RelativeLayout.LayoutParams) layoutParams).leftMargin = offset;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setMarginLeft => " + e.getMessage());
+            MvvmUtil.logE("BaseViewMargin => setMarginLeft => " + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public interface BaseViewMargin extends BaseViewFindViewById {
             int offset = viewById.getResources().getDimensionPixelOffset(resId);
             ((RelativeLayout.LayoutParams) layoutParams).rightMargin = offset;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setMarginRight => " + e.getMessage());
+            MvvmUtil.logE("BaseViewMargin => setMarginRight => " + e.getMessage());
         }
     }
 
@@ -86,7 +86,7 @@ public interface BaseViewMargin extends BaseViewFindViewById {
             int offset = viewById.getResources().getDimensionPixelOffset(resId);
             ((RelativeLayout.LayoutParams) layoutParams).topMargin = offset;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setMarginTop => " + e.getMessage());
+            MvvmUtil.logE("BaseViewMargin => setMarginTop => " + e.getMessage());
         }
     }
 
@@ -104,7 +104,7 @@ public interface BaseViewMargin extends BaseViewFindViewById {
             int offset = viewById.getResources().getDimensionPixelOffset(resId);
             ((RelativeLayout.LayoutParams) layoutParams).bottomMargin = offset;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewMargin => setMarginBottom => " + e.getMessage());
+            MvvmUtil.logE("BaseViewMargin => setMarginBottom => " + e.getMessage());
         }
     }
 }

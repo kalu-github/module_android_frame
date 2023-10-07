@@ -5,16 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 
 import lib.kalu.frame.mvp.BaseView;
 import lib.kalu.frame.mvp.util.MvpUtil;

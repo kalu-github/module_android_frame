@@ -8,7 +8,7 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 import lib.kalu.frame.mvvm.util.ToastUtil;
 
 @Keep
@@ -19,7 +19,7 @@ public interface BaseViewToast extends BaseViewContext {
             String message = throwable.getMessage();
             showToast(message);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewToast => showToast => " + e.getMessage());
+            MvvmUtil.logE("BaseViewToast => showToast => " + e.getMessage());
         }
     }
 
@@ -29,7 +29,7 @@ public interface BaseViewToast extends BaseViewContext {
             String string = context.getResources().getString(resId);
             showToast(string);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewToast => showToast => " + e.getMessage());
+            MvvmUtil.logE("BaseViewToast => showToast => " + e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public interface BaseViewToast extends BaseViewContext {
                 throw new Exception("context error: null");
             ToastUtil.showToast(context, s);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewToast => showToast => " + e.getMessage());
+            MvvmUtil.logE("BaseViewToast => showToast => " + e.getMessage());
         }
     }
 }

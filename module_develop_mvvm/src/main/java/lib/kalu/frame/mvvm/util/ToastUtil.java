@@ -32,7 +32,7 @@ public final class ToastUtil {
                 throw new Exception("string error: " + string);
             showToast(context, string, true);
         } catch (Exception e) {
-            MvpUtil.logE("ToastUtil => showToast => " + e.getMessage());
+            MvvmUtil.logE("ToastUtil => showToast => " + e.getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ public final class ToastUtil {
                 mHandler.sendMessage(message);
             }
         } catch (Exception e) {
-            MvpUtil.logE("ToastUtil => showToast => " + e.getMessage());
+            MvvmUtil.logE("ToastUtil => showToast => " + e.getMessage());
         }
     }
 }

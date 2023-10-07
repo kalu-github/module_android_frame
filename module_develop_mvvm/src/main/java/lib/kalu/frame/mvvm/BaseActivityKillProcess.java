@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -13,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 /**
  * @author zhanghang
@@ -44,14 +43,14 @@ public abstract class BaseActivityKillProcess<M extends BaseModel, V extends Bas
 
     @Override
     protected void onPause() {
-        MvpUtil.logE("BaseActivityKillProcess => onPause => activity = " + this);
+        MvvmUtil.logE("BaseActivityKillProcess => onPause => activity = " + this);
         super.onPause();
         try {
             boolean killProcess = getKillProcess();
             if (killProcess)
                 throw new Exception("killProcess");
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onPause => checkApplication => " + e.getMessage());
+            MvvmUtil.logE("BaseActivityKillProcess => onPause => checkApplication => " + e.getMessage());
             onKillActivitys();
         }
         try {
@@ -59,7 +58,7 @@ public abstract class BaseActivityKillProcess<M extends BaseModel, V extends Bas
             if (killProcess)
                 throw new Exception("killProcess");
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onPause => onKillProcess => " + e.getMessage());
+            MvvmUtil.logE("BaseActivityKillProcess => onPause => onKillProcess => " + e.getMessage());
             onKillProcess();
         }
     }
@@ -71,28 +70,28 @@ public abstract class BaseActivityKillProcess<M extends BaseModel, V extends Bas
     @Override
     protected void onRestart() {
         super.onRestart();
-        MvpUtil.logE("BaseActivityKillProcess => onRestart => activity = " + this);
+        MvvmUtil.logE("BaseActivityKillProcess => onRestart => activity = " + this);
         setKillProcess(true);
     }
 
     private void onKillActivitys() {
         try {
             Application application = getApplication();
-            MvpUtil.logE("BaseActivityKillProcess => onKillActivitys => application = " + application);
+            MvvmUtil.logE("BaseActivityKillProcess => onKillActivitys => application = " + application);
             if (null == application)
                 throw new Exception("application error: null");
             if (!(application instanceof BaseApplicationKillProcess))
                 throw new Exception("application error: not instanceof BaseApplicationKillProcess");
             List<Activity> activitys = ((BaseApplicationKillProcess) application).getActivitys();
             for (Activity activity : activitys) {
-                MvpUtil.logE("BaseActivityKillProcess => onKillActivitys => activity = " + activity);
+                MvvmUtil.logE("BaseActivityKillProcess => onKillActivitys => activity = " + activity);
                 if (null == activity)
                     continue;
                 activity.onBackPressed();
                 activity.finish();
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseActivityKillProcess => onKillActivitys => " + e.getMessage());
+            MvvmUtil.logE("BaseActivityKillProcess => onKillActivitys => " + e.getMessage());
         }
     }
 

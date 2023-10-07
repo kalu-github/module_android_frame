@@ -6,7 +6,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewTag extends BaseViewFindViewById {
@@ -23,7 +23,7 @@ public interface BaseViewTag extends BaseViewFindViewById {
                 throw new Exception("tag error: null");
             return (T) tag;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTag => getTag => " + e.getMessage());
+            MvvmUtil.logE("BaseViewTag => getTag => " + e.getMessage());
             return def;
         }
     }
@@ -44,7 +44,7 @@ public interface BaseViewTag extends BaseViewFindViewById {
                 throw new Exception("tag error: null");
             return (T) tag;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTag => getTag => " + e.getMessage());
+            MvvmUtil.logE("BaseViewTag => getTag => " + e.getMessage());
             return def;
         }
     }
@@ -59,7 +59,7 @@ public interface BaseViewTag extends BaseViewFindViewById {
                 throw new Exception("viewById error: null");
             viewById.setTag(tagId, o);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTag => setTag => " + e.getMessage());
+            MvvmUtil.logE("BaseViewTag => setTag => " + e.getMessage());
         }
     }
 
@@ -76,7 +76,7 @@ public interface BaseViewTag extends BaseViewFindViewById {
                 throw new Exception("viewById error: null");
             viewById.setTag(tagId, o);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTag => setTag => " + e.getMessage());
+            MvvmUtil.logE("BaseViewTag => setTag => " + e.getMessage());
         }
     }
 }

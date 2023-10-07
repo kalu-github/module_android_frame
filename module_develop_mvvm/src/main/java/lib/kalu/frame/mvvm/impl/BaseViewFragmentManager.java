@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.List;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewFragmentManager extends BaseViewContext {
@@ -27,7 +27,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => removeFragment => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => removeFragment => " + e.getMessage());
             return false;
         }
     }
@@ -45,7 +45,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => removeFragments => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => removeFragments => " + e.getMessage());
             return false;
         }
     }
@@ -62,7 +62,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
             return false;
         }
     }
@@ -82,7 +82,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
             return false;
         }
     }
@@ -102,7 +102,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
             return false;
         }
     }
@@ -118,7 +118,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
             return false;
         }
     }
@@ -138,7 +138,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             fragmentTransaction.commitAllowingStateLoss();
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
             return false;
         }
     }
@@ -152,7 +152,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
                 throw new Exception("activity is not AppCompatActivity");
             return ((FragmentActivity) activity).getSupportFragmentManager();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => getFragmentManager => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => getFragmentManager => " + e.getMessage());
             return null;
         }
     }
@@ -164,7 +164,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
                 throw new Exception("fragmentManager is null");
             return fragmentManager.beginTransaction();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => getSupportFragmentManagerTransaction => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => getSupportFragmentManagerTransaction => " + e.getMessage());
             return null;
         }
     }
@@ -176,7 +176,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
                 throw new Exception("fragmentManager is null");
             return fragmentManager.findFragmentByTag(v);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFragmentManger => findFragmentByTag => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFragmentManger => findFragmentByTag => " + e.getMessage());
             return null;
         }
     }

@@ -6,7 +6,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewVisibility extends BaseViewFindViewById {
@@ -19,7 +19,7 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
                 throw new Exception("viewById error: null");
             return viewById.getVisibility() == View.VISIBLE;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewVisibility => isVisibility => " + e.getMessage());
+            MvvmUtil.logE("BaseViewVisibility => isVisibility => " + e.getMessage());
             return false;
         }
     }
@@ -35,7 +35,7 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
                 throw new Exception("viewById error: null");
             return viewById.getVisibility() == View.VISIBLE;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewVisibility => isVisibility => " + e.getMessage());
+            MvvmUtil.logE("BaseViewVisibility => isVisibility => " + e.getMessage());
             return false;
         }
     }
@@ -52,7 +52,7 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
                 setVisibility(id, visibility);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
+            MvvmUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
         }
     }
 
@@ -65,7 +65,7 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
                 throw new Exception("viewById error: null");
             viewById.setVisibility(visibility);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
+            MvvmUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
         }
     }
 
@@ -81,7 +81,7 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
                 setVisibility(root, id, visibility);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
+            MvvmUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ public interface BaseViewVisibility extends BaseViewFindViewById {
             View viewById = root.findViewById(viewId);
             viewById.setVisibility(visibility);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
+            MvvmUtil.logE("BaseViewVisibility => setVisibility => " + e.getMessage());
         }
     }
 }

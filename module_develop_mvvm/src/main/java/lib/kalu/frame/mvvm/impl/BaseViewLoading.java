@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 public interface BaseViewLoading extends BaseViewWindow {
 
@@ -26,7 +26,7 @@ public interface BaseViewLoading extends BaseViewWindow {
                 throw new Exception("loadingView warning: not null");
             LayoutInflater.from(getContext()).inflate(initLoadingLayoutRes(), rootView);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewLoading => showLoading => " + e.getMessage());
+            MvvmUtil.logE("BaseViewLoading => showLoading => " + e.getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ public interface BaseViewLoading extends BaseViewWindow {
                 throw new Exception("viewById error: null");
             rootView.removeView(loadingView);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewLoading => hideLoading => " + e.getMessage());
+            MvvmUtil.logE("BaseViewLoading => hideLoading => " + e.getMessage());
         }
     }
 

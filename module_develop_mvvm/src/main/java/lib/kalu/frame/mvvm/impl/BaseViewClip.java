@@ -7,7 +7,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewClip extends BaseViewFindViewById {
@@ -23,7 +23,7 @@ public interface BaseViewClip extends BaseViewFindViewById {
             ((ViewGroup) viewById).setClipChildren(enable);
             ((ViewGroup) viewById).setClipToPadding(enable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewClip => setClip => " + e.getMessage());
+            MvvmUtil.logE("BaseViewClip => setClip => " + e.getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ public interface BaseViewClip extends BaseViewFindViewById {
                 throw new Exception("viewById error: not instanceof ViewGroup");
             ((ViewGroup) viewById).setClipChildren(enable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewClip => setClipChildren => " + e.getMessage());
+            MvvmUtil.logE("BaseViewClip => setClipChildren => " + e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public interface BaseViewClip extends BaseViewFindViewById {
                 throw new Exception("viewById error: not instanceof ViewGroup");
             ((ViewGroup) viewById).setClipToPadding(enable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewClip => setClipChildren => " + e.getMessage());
+            MvvmUtil.logE("BaseViewClip => setClipChildren => " + e.getMessage());
         }
     }
 }

@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.lang.reflect.Field;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 public class BaseDialogFragment extends DialogFragment {
 
@@ -33,7 +33,7 @@ public class BaseDialogFragment extends DialogFragment {
         try {
             super.setupDialog(dialog, style);
         } catch (Exception e) {
-            MvpUtil.logE("BaseDialogFragment => setupDialog => " + e.getMessage());
+            MvvmUtil.logE("BaseDialogFragment => setupDialog => " + e.getMessage());
         }
     }
 

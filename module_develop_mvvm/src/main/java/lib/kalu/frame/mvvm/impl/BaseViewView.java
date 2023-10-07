@@ -5,19 +5,16 @@ import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 
 import lib.kalu.frame.mvvm.BaseView;
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewView extends BaseViewContext {
@@ -38,7 +35,7 @@ public interface BaseViewView extends BaseViewContext {
                 throw new Exception("drawable error: null");
             view.setBackground(drawable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewView => setTextBackgroundDrawableRes => " + e.getMessage());
+            MvvmUtil.logE("BaseViewView => setTextBackgroundDrawableRes => " + e.getMessage());
         }
     }
 
@@ -59,7 +56,7 @@ public interface BaseViewView extends BaseViewContext {
                 throw new Exception("drawable error: null");
             view.setBackground(drawable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewView => setBackgroundColorRes => " + e.getMessage());
+            MvvmUtil.logE("BaseViewView => setBackgroundColorRes => " + e.getMessage());
         }
     }
 
@@ -73,7 +70,7 @@ public interface BaseViewView extends BaseViewContext {
                 throw new Exception("drawable error: null");
             view.setBackground(drawable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewView => setBackgroundColorInt => " + e.getMessage());
+            MvvmUtil.logE("BaseViewView => setBackgroundColorInt => " + e.getMessage());
         }
     }
 
@@ -86,7 +83,7 @@ public interface BaseViewView extends BaseViewContext {
                 throw new Exception("view error: null");
             view.setBackground(drawable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewView => setBackgroundDrawable => " + e.getMessage());
+            MvvmUtil.logE("BaseViewView => setBackgroundDrawable => " + e.getMessage());
         }
     }
 }

@@ -12,7 +12,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewWindow extends BaseViewContext {
@@ -21,7 +21,7 @@ public interface BaseViewWindow extends BaseViewContext {
         try {
             return getWrapperActivity().getWindow();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
+            MvvmUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
             return null;
         }
     }
@@ -30,7 +30,7 @@ public interface BaseViewWindow extends BaseViewContext {
         try {
             return (ViewGroup) getWindow().getDecorView().getRootView();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
+            MvvmUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
             return null;
         }
     }
@@ -48,7 +48,7 @@ public interface BaseViewWindow extends BaseViewContext {
             setWindowBackgroundDrawable(drawable);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundColorRes => " + e.getMessage());
+            MvvmUtil.logE("BaseViewWindow => setWindowBackgroundColorRes => " + e.getMessage());
             return false;
         }
     }
@@ -65,7 +65,7 @@ public interface BaseViewWindow extends BaseViewContext {
             setWindowBackgroundDrawable(drawable);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundColor => " + e.getMessage());
+            MvvmUtil.logE("BaseViewWindow => setWindowBackgroundColor => " + e.getMessage());
             return false;
         }
     }
@@ -80,7 +80,7 @@ public interface BaseViewWindow extends BaseViewContext {
             rootView.setBackground(drawable);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
+            MvvmUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
             return false;
         }
     }
@@ -93,7 +93,7 @@ public interface BaseViewWindow extends BaseViewContext {
             rootView.setBackgroundResource(res);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setBackgroundResource => " + e.getMessage());
+            MvvmUtil.logE("BaseViewWindow => setBackgroundResource => " + e.getMessage());
             return false;
         }
     }

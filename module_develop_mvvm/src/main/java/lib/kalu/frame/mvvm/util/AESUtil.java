@@ -39,7 +39,7 @@ public class AESUtil {
         String plainText = null;
         try {
             if (key == null || key.length() != 16) {
-                MvpUtil.logE("The length of the key must be 12 byte!!!!!!");
+                MvvmUtil.logE("The length of the key must be 12 byte!!!!!!");
             } else {
                 byte[] raw = key.getBytes("ASCII");
                 SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
@@ -66,7 +66,7 @@ public class AESUtil {
      */
     public static String Encrypt(String plaintText, String key) {
         if (key == null || key.length() != 16) {
-            MvpUtil.logE("The length of the key must be 16 characters!!!!!!");
+            MvvmUtil.logE("The length of the key must be 16 characters!!!!!!");
         } else {
             try {
                 byte[] raw = key.getBytes("ASCII");
@@ -76,7 +76,7 @@ public class AESUtil {
                 byte[] encrypted = cipher.doFinal(plaintText.getBytes());
                 return byte2hex(encrypted).toLowerCase();
             } catch (Exception e) {
-                MvpUtil.logE("Encrypt Exception:{}");
+                MvvmUtil.logE("Encrypt Exception:{}");
             }
         }
         return null;

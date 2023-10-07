@@ -14,7 +14,7 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import lib.kalu.frame.mvvm.BaseView;
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewImageView {
@@ -26,7 +26,7 @@ public interface BaseViewImageView {
                 throw new Exception("imageView is null");
             imageView.setImageResource(drawable);
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+            MvvmUtil.logE("setImageResource => setImageResource => " + e.getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ public interface BaseViewImageView {
             ImageView imageView = ((BaseView) this).findViewById(id);
             setImageResource(imageView, drawable);
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+            MvvmUtil.logE("setImageResource => setImageResource => " + e.getMessage());
         }
     }
 
@@ -46,7 +46,7 @@ public interface BaseViewImageView {
             ImageView imageView = view.findViewById(id);
             setImageResource(imageView, drawable);
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+            MvvmUtil.logE("setImageResource => setImageResource => " + e.getMessage());
         }
     }
 

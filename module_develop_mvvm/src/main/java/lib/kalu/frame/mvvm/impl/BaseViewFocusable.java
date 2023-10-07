@@ -8,7 +8,7 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewFocusable extends BaseViewFindViewById {
@@ -118,7 +118,7 @@ public interface BaseViewFocusable extends BaseViewFindViewById {
             }
             viewById.requestFocus();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFocusable => requestFocus => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFocusable => requestFocus => " + e.getMessage());
         }
     }
 
@@ -141,7 +141,7 @@ public interface BaseViewFocusable extends BaseViewFindViewById {
             }
             viewById.requestFocus();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFocusable => requestFocus => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFocusable => requestFocus => " + e.getMessage());
         }
     }
 
@@ -162,7 +162,7 @@ public interface BaseViewFocusable extends BaseViewFindViewById {
             }
             viewById.clearFocus();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFocusable => cleanFocus => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFocusable => cleanFocus => " + e.getMessage());
         }
     }
 
@@ -185,7 +185,7 @@ public interface BaseViewFocusable extends BaseViewFindViewById {
             }
             viewById.clearFocus();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewFocusable => requestFocus => " + e.getMessage());
+            MvvmUtil.logE("BaseViewFocusable => requestFocus => " + e.getMessage());
         }
     }
 

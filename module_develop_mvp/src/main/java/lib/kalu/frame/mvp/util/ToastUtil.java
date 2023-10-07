@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 

@@ -13,8 +13,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.BaseView;
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvp.BaseView;
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
 public interface BaseViewView extends BaseViewContext {

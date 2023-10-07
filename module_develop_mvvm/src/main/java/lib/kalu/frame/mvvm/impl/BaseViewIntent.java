@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewIntent {
@@ -183,7 +183,7 @@ public interface BaseViewIntent {
             Intent intent = activity.getIntent();
             return intent.getStringExtra(name);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
             return defaultValue;
         }
     }
@@ -198,7 +198,7 @@ public interface BaseViewIntent {
             Bundle bundle = fragment.getArguments();
             return bundle.getString(name, defaultValue);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
             return defaultValue;
         }
     }
@@ -220,7 +220,7 @@ public interface BaseViewIntent {
                 throw new Exception("not activity or fragment: " + this);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => getStringExtra => " + e.getMessage());
             return defaultValue;
         }
     }
@@ -238,7 +238,7 @@ public interface BaseViewIntent {
                 throw new Exception("not activity or fragment: " + this);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
         }
     }
 
@@ -248,7 +248,7 @@ public interface BaseViewIntent {
             Intent intent = activity.getIntent();
             intent.putExtra(name, value);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
         }
     }
 
@@ -258,7 +258,7 @@ public interface BaseViewIntent {
             Bundle bundle = fragment.getArguments();
             bundle.putString(name, value);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => putStringExtra => " + e.getMessage());
         }
     }
 
@@ -358,7 +358,7 @@ public interface BaseViewIntent {
                 throw new Exception("not activity or fragment: " + this);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
             return defaultValue;
         }
     }
@@ -373,7 +373,7 @@ public interface BaseViewIntent {
             Intent intent = activity.getIntent();
             return intent.getStringArrayListExtra(name);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
             return defaultValue;
         }
     }
@@ -388,7 +388,7 @@ public interface BaseViewIntent {
             Bundle bundle = fragment.getArguments();
             return bundle.getStringArrayList(name);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => getStringArrayListExtra => " + e.getMessage());
             return defaultValue;
         }
     }
@@ -406,7 +406,7 @@ public interface BaseViewIntent {
                 throw new Exception("not activity or fragment: " + this);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
         }
     }
 
@@ -416,7 +416,7 @@ public interface BaseViewIntent {
             Intent intent = activity.getIntent();
             intent.putStringArrayListExtra(name, value);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
         }
     }
 
@@ -426,7 +426,7 @@ public interface BaseViewIntent {
             Bundle bundle = fragment.getArguments();
             bundle.putStringArrayList(name, value);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
+            MvvmUtil.logE("BaseViewIntent => putStringArrayListExtra => " + e.getMessage());
         }
     }
 }

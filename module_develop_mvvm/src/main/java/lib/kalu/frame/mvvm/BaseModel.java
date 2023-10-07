@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import io.reactivex.disposables.Disposable;
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 /**
  * @author zhanghang
@@ -87,7 +87,7 @@ public abstract class BaseModel {
             List<Disposable> disposables = mDisposables.get(key);
             disposables.add(disposable);
         } catch (Exception e) {
-            MvpUtil.logE("BaseModel => addDisposable => " + e.getMessage());
+            MvvmUtil.logE("BaseModel => addDisposable => " + e.getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class BaseModel {
             }
             mDisposables.clear();
         } catch (Exception e) {
-            MvpUtil.logE("BaseModel => cleanDisposable => " + e.getMessage());
+            MvvmUtil.logE("BaseModel => cleanDisposable => " + e.getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class BaseModel {
             }
             mDisposables.remove(k);
         } catch (Exception e) {
-            MvpUtil.logE("BaseModel => removeDisposable => " + e.getMessage());
+            MvvmUtil.logE("BaseModel => removeDisposable => " + e.getMessage());
         }
     }
 }

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Map;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 import okhttp3.Connection;
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -222,7 +222,7 @@ public interface OkhttpImpl {
     /********************************/
 
     default boolean enableLogs() {
-        return MvpUtil.isLogger();
+        return MvvmUtil.isLogger();
     }
 
     /********************************/
@@ -367,7 +367,7 @@ public interface OkhttpImpl {
     default void logs(String message, Throwable throwable) {
 
         if (enableLogs()) {
-            MvpUtil.logE(TAG, message, throwable);
+            MvvmUtil.logE(TAG, message, throwable);
         }
     }
 

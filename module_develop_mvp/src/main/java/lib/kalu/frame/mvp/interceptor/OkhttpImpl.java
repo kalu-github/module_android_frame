@@ -1,12 +1,7 @@
 package lib.kalu.frame.mvp.interceptor;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
-import org.json.JSONObject;
-
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

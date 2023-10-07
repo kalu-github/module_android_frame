@@ -1,7 +1,6 @@
 package lib.kalu.frame.mvp.impl;
 
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Keep;

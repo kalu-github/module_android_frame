@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 @Keep
-public final class MvpUtil {
+public final class MvvmUtil {
 
     private static final String TAG = "module_okhttp";
     private static boolean PRINT = false;

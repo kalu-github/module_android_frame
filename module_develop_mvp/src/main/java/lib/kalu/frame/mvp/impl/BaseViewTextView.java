@@ -11,8 +11,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-
-import lib.kalu.frame.mvvm.BaseView;
+import lib.kalu.frame.mvp.BaseView;
 
 @Keep
 public interface BaseViewTextView {

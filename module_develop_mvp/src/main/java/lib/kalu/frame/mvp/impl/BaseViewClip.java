@@ -1,6 +1,5 @@
 package lib.kalu.frame.mvp.impl;
 
-import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 

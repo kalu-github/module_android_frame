@@ -7,7 +7,7 @@ import android.content.Context;
 import androidx.annotation.Keep;
 import androidx.fragment.app.Fragment;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 import lib.kalu.frame.mvvm.util.WrapperUtil;
 
 @Keep
@@ -32,7 +32,7 @@ public interface BaseViewActivity extends BaseViewContext {
                 throw new Exception("not activity or fragment");
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewActivity => callFinish => " + e.getMessage());
+            MvvmUtil.logE("BaseViewActivity => callFinish => " + e.getMessage());
         }
     }
 
@@ -46,7 +46,7 @@ public interface BaseViewActivity extends BaseViewContext {
                 throw new Exception("not activity or fragment");
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewActivity => callOnBackPressed => " + e.getMessage());
+            MvvmUtil.logE("BaseViewActivity => callOnBackPressed => " + e.getMessage());
         }
     }
 }

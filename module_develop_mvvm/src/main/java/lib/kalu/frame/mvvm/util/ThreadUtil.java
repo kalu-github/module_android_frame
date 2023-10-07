@@ -1068,7 +1068,7 @@ public final class ThreadUtil {
                     try {
                         super.run();
                     } catch (Throwable t) {
-                        MvpUtil.logE("ThreadUtil", "Request threw uncaught throwable", t);
+                        MvvmUtil.logE("ThreadUtil", "Request threw uncaught throwable", t);
                     }
                 }
             };

@@ -498,7 +498,7 @@ public class PackageUtil {
             }
             throw new Exception("not find");
         } catch (Exception e) {
-            MvpUtil.logE("PMUtil => isInstalled => " + e.getMessage());
+            MvvmUtil.logE("PMUtil => isInstalled => " + e.getMessage());
             return false;
         }
     }
@@ -520,7 +520,7 @@ public class PackageUtil {
         try {
             Runtime.getRuntime().exec("chmod -R " + permission + " " + path);
         } catch (Exception e) {
-            MvpUtil.logE("PMUtil => chmodPath => " + e.getMessage());
+            MvvmUtil.logE("PMUtil => chmodPath => " + e.getMessage());
         }
     }
 
@@ -619,7 +619,7 @@ public class PackageUtil {
             } else {
                 result = 1;
             }
-            MvpUtil.logE("pm install successMsg:" + successMsg + ", Msg:" + errorMsg);
+            MvvmUtil.logE("pm install successMsg:" + successMsg + ", Msg:" + errorMsg);
             return result;
         }
 

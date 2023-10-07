@@ -6,7 +6,7 @@ import android.os.Process;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 @Keep
 public interface BaseViewProcess {
@@ -23,7 +23,7 @@ public interface BaseViewProcess {
                 System.exit(0);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewProcess => killProcess => " + e.getMessage());
+            MvvmUtil.logE("BaseViewProcess => killProcess => " + e.getMessage());
         }
     }
 }

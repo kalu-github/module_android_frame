@@ -47,7 +47,6 @@ dependencies {
     api files('libs/gson-2.10.1.jar')
     // okhttp
     api files('libs/okhttp-3.14.9.jar')
-    api files('libs/okio-1.17.5.jar')
     api files('libs/conscrypt-openjdk-uber-2.5.2.jar')
     api files('libs/animal-sniffer-annotations-1.23.jar')
     // retrofit

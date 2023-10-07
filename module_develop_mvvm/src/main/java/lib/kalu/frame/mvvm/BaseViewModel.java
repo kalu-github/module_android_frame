@@ -8,13 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
-import java.lang.ref.WeakReference;
-import java.util.LinkedList;
-import java.util.WeakHashMap;
-
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 /**
  * @author zhanghang
@@ -43,7 +37,7 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
                 throw new Exception("baseModel error: null");
             baseModel.clearDisposable();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewModel => onCleared => " + e.getMessage());
+            MvvmUtil.logE("BaseViewModel => onCleared => " + e.getMessage());
         }
     }
 
@@ -69,7 +63,7 @@ public abstract class BaseViewModel<V extends BaseView, M extends BaseModel> ext
                 throw new Exception("baseModel error: null");
             baseModel.regist(owner, key, observer);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewModel => regist => " + e.getMessage());
+            MvvmUtil.logE("BaseViewModel => regist => " + e.getMessage());
         }
     }
 

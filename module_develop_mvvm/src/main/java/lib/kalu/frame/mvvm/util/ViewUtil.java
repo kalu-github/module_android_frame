@@ -14,7 +14,7 @@ public final class ViewUtil {
                 return findDecorView(parent);
             }
         } catch (Exception e) {
-            MvpUtil.logE("ViewUtil => findDecorView => " + e.getMessage());
+            MvvmUtil.logE("ViewUtil => findDecorView => " + e.getMessage());
             return (ViewGroup) view;
         }
     }

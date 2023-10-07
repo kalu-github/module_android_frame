@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 
-import lib.kalu.frame.mvvm.util.MvpUtil;
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 
 /**
  * @author zhanghang
@@ -84,7 +84,7 @@ public abstract class BaseFragment<M extends BaseModel, V extends BaseView, VM e
         try {
             return super.getDefaultViewModelCreationExtras();
         } catch (Exception e) {
-            MvpUtil.logE("BaseFragment => getDefaultViewModelCreationExtras => " + e.getMessage());
+            MvvmUtil.logE("BaseFragment => getDefaultViewModelCreationExtras => " + e.getMessage());
             return new MutableCreationExtras();
         }
     }
