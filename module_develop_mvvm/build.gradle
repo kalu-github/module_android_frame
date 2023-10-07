@@ -36,6 +36,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        jniLibs {
+            excludes += ['META-INF/**', 'okhttp3/**', 'kotlin/**', 'org/**']
+        }
+        resources {
+            excludes += ['DebugProbesKt.bin', 'androidsupportmultidexversion.txt', 'META-INF/**', 'okhttp3/**', 'kotlin/**', 'org/**']
+        }
+    }
 }
 
 dependencies {
