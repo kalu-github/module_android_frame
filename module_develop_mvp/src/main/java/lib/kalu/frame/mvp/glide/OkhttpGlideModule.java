@@ -18,7 +18,7 @@ public class OkhttpGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
         OkHttpClient okHttpClient = OkhttpGlideClient.getHttpClient();
-        OkhttpUrlLoader.Factory factory = new OkhttpUrlLoader.Factory(okHttpClient);
+        OkhttpGlideUrlLoader.Factory factory = new OkhttpGlideUrlLoader.Factory(okHttpClient);
         registry.replace(GlideUrl.class, InputStream.class, factory);
     }
 }

@@ -24,7 +24,7 @@ import okhttp3.ResponseBody;
 /**
  * Fetches an {@link InputStream} using the okhttp library.
  */
-final class OkhttpStreamFetcher implements DataFetcher<InputStream>, okhttp3.Callback {
+final class OkhttpGlideStreamFetcher implements DataFetcher<InputStream>, okhttp3.Callback {
     private static final String TAG = "OkHttpFetcher";
     private final Call.Factory client;
     private final GlideUrl url;
@@ -37,7 +37,7 @@ final class OkhttpStreamFetcher implements DataFetcher<InputStream>, okhttp3.Cal
 
     // Public API.
     @SuppressWarnings("WeakerAccess")
-    public OkhttpStreamFetcher(Call.Factory client, GlideUrl url) {
+    public OkhttpGlideStreamFetcher(Call.Factory client, GlideUrl url) {
         this.client = client;
         this.url = url;
     }
