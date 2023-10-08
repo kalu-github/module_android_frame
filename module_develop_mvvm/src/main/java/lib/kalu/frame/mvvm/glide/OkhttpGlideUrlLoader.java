@@ -16,13 +16,13 @@ import okhttp3.OkHttpClient;
 /**
  * A simple model loader for fetching media over http/https using OkHttp.
  */
-final class OkhttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
+final class OkhttpGlideUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
     private final Call.Factory client;
 
     // Public API.
     @SuppressWarnings("WeakerAccess")
-    public OkhttpUrlLoader(@NonNull Call.Factory client) {
+    public OkhttpGlideUrlLoader(@NonNull Call.Factory client) {
         this.client = client;
     }
 
@@ -34,11 +34,11 @@ final class OkhttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
     @Override
     public LoadData<InputStream> buildLoadData(
             @NonNull GlideUrl model, int width, int height, @NonNull Options options) {
-        return new LoadData<>(model, new OkhttpStreamFetcher(client, model));
+        return new LoadData<>(model, new OkhttpGlideStreamFetcher(client, model));
     }
 
     /**
-     * The default factory for {@link OkhttpUrlLoader}s.
+     * The default factory for {@link OkhttpGlideUrlLoader}s.
      */
     // Public API.
     @SuppressWarnings("WeakerAccess")
@@ -76,7 +76,7 @@ final class OkhttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
         @NonNull
         @Override
         public ModelLoader<GlideUrl, InputStream> build(MultiModelLoaderFactory multiFactory) {
-            return new OkhttpUrlLoader(client);
+            return new OkhttpGlideUrlLoader(client);
         }
 
         @Override

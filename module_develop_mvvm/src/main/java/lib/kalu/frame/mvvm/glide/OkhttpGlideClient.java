@@ -12,7 +12,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import lib.kalu.frame.mvvm.interceptor.OkhttpInterceptorStandard;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 
@@ -25,7 +24,7 @@ final class OkhttpGlideClient {
                 .readTimeout(10, TimeUnit.SECONDS)
                 .connectionPool(new ConnectionPool(10, 60, TimeUnit.MINUTES))
                 .retryOnConnectionFailure(false)
-                .addInterceptor(new OkhttpInterceptorStandard())  //打印请求日志，可有可无
+                .addInterceptor(new OkhttpGlideInterceptor())
                 .sslSocketFactory(getSSLSocketFactory(), getX509TrustManager())
                 .hostnameVerifier(getHostnameVerifier());
         return builder.build();

@@ -1,4 +1,4 @@
-package lib.kalu.frame.mvp.glide;
+package lib.kalu.frame.mvvm.glide;
 
 import android.util.Log;
 
