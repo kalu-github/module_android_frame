@@ -1,11 +1,13 @@
 package lib.kalu.frame.mvp.impl;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.View;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import lib.kalu.frame.mvp.util.MvpUtil;
@@ -14,10 +16,34 @@ import lib.kalu.frame.mvp.util.MvpUtil;
 public interface BaseViewFocusable extends BaseViewFindViewById {
 
     default void setFocusable(@IdRes int id, boolean hasFocus) {
+        setFocusable(id, hasFocus, false);
+    }
+
+    default void setFocusable(@IdRes int id, boolean hasFocus, boolean isFindViewByIdToActivity) {
         try {
-            View view = findViewById(id);
-            view.setFocusable(hasFocus);
+            if (isFindViewByIdToActivity) {
+                // activity
+                if (this instanceof Activity) {
+                    Activity activity = (Activity) this;
+                    View view = activity.findViewById(id);
+                    view.setFocusable(hasFocus);
+                }
+                // fragment
+                else if (this instanceof Fragment && null != ((Fragment) this).getView()) {
+                    Fragment fragment = (Fragment) this;
+                    View view = fragment.getActivity().findViewById(id);
+                    view.setFocusable(hasFocus);
+                }
+                // fail
+                else {
+                    throw new RuntimeException("findViewById => error");
+                }
+            } else {
+                View view = findViewById(id);
+                view.setFocusable(hasFocus);
+            }
         } catch (Exception e) {
+            MvpUtil.logE("BaseViewFocusable => setFocusable => " + e.getMessage());
         }
     }
 
