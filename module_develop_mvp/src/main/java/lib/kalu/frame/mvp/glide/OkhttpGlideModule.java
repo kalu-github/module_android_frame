@@ -18,7 +18,6 @@ import java.io.InputStream;
 
 import okhttp3.OkHttpClient;
 
-@GlideModule
 public class OkhttpGlideModule extends AppGlideModule {
 
     @Override
