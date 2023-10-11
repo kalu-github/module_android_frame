@@ -21,6 +21,11 @@ import okhttp3.OkHttpClient;
 public class OkhttpGlideModule extends AppGlideModule {
 
     @Override
+    public boolean isManifestParsingEnabled() {
+        return false;
+    }
+
+    @Override
     public void registerComponents(Context context, Glide glide, Registry registry) {
         OkHttpClient okHttpClient = OkhttpGlideClient.getHttpClient();
         OkhttpGlideUrlLoader.Factory factory = new OkhttpGlideUrlLoader.Factory(okHttpClient);
