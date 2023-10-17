@@ -1,12 +1,21 @@
-package lib.kalu.frame.mvvm.util;
+package lib.kalu.frame.mvp.util;
 
 import androidx.annotation.NonNull;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-public final class FileUtils {
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public final class FileUtil {
 
 //    public static boolean saveFile(String url, String toPath) {
 //        try {
@@ -33,7 +42,7 @@ public final class FileUtils {
             file.createNewFile();
             return file;
         } catch (Exception e) {
-            MvvmUtil.logE("checkFile => " + e.getMessage());
+            MvpUtil.logE("FileUtils => checkFile => " + e.getMessage());
             return null;
         }
     }
@@ -49,7 +58,7 @@ public final class FileUtils {
             fileOutputStream.close();
             return true;
         } catch (Exception e) {
-            MvvmUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("FileUtils => saveFile => " + e.getMessage());
             return false;
         }
     }
@@ -72,7 +81,47 @@ public final class FileUtils {
             inputStream.close();
             return true;
         } catch (Exception e) {
-            MvvmUtil.logE("saveFile => " + e.getMessage());
+            MvpUtil.logE("FileUtils => saveFile => " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean download(@NonNull String savePath, @NonNull String fileUrl) {
+
+        try {
+            MvpUtil.logE("FileUtil => download => savePath = " + savePath + ", fileUrl = " + fileUrl);
+            File file = new File(savePath);
+            if (file.exists())
+                throw new IllegalArgumentException("file warning: exists");
+            URL url = new URL(fileUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            // 获取文件的长度
+            int responseCode = connection.getResponseCode();
+            if (responseCode != 200)
+                throw new Exception("responseCode error: " + responseCode);
+            // 创建输入流
+            InputStream input = new BufferedInputStream(url.openStream());
+            // 创建输出流
+            OutputStream output = new FileOutputStream(savePath);
+            // 缓存大小
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+            // 关闭流
+            output.flush();
+            output.close();
+            input.close();
+            MvpUtil.logE("FileUtil => download => succ");
+            return true;
+        } catch (IllegalArgumentException e) {
+            MvpUtil.logE("FileUtil => download => " + e.getMessage());
+            return true;
+        } catch (Exception e) {
+            MvpUtil.logE("FileUtil => download => " + e.getMessage());
             return false;
         }
     }
