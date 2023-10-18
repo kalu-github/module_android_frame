@@ -38,4 +38,35 @@ public interface BaseViewSelected extends BaseViewFindViewById {
             MvpUtil.logE("BaseViewSelected => setSelected => " + e.getMessage());
         }
     }
+
+    default boolean isSelected(@NonNull View view) {
+        try {
+            if (null == view)
+                throw new Exception("view is null");
+            return view.isSelected();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewSelected => isSelected => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default boolean isSelected(@IdRes int id) {
+        try {
+            View viewById = findViewById(id);
+            return isSelected(viewById);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewSelected => isSelected => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default boolean isSelected(@NonNull View view, @IdRes int id) {
+        try {
+            View viewById = view.findViewById(id);
+            return isSelected(viewById);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewSelected => setSelected => " + e.getMessage());
+            return false;
+        }
+    }
 }
