@@ -91,8 +91,10 @@ public final class FileUtil {
         try {
             MvpUtil.logE("FileUtil => download => savePath = " + savePath + ", fileUrl = " + fileUrl);
             File file = new File(savePath);
-            if (file.exists())
-                throw new IllegalArgumentException("file warning: exists");
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
             URL url = new URL(fileUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -116,9 +118,6 @@ public final class FileUtil {
             output.close();
             input.close();
             MvpUtil.logE("FileUtil => download => succ");
-            return true;
-        } catch (IllegalArgumentException e) {
-            MvpUtil.logE("FileUtil => download => " + e.getMessage());
             return true;
         } catch (Exception e) {
             MvpUtil.logE("FileUtil => download => " + e.getMessage());
