@@ -30,7 +30,7 @@ public class XmlPullParserUtil {
                     switch (eventType) {
                         case XmlPullParser.START_TAG://开始解析
                             if (!name.equals(nodeName))
-                                throw new Exception("name warning: not equals " + name);
+                                throw new Exception("name warning: not equals " + nodeName);
                             String value = parser.getAttributeValue(null, keyName);
                             MvpUtil.logE("XmlPullParserUtil => parser => noteName = " + name + ", keyName = " + keyName + ", value = " + value);
                             if (null == value || value.length() == 0){
