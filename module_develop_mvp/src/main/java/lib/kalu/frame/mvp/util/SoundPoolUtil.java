@@ -2,17 +2,32 @@ package lib.kalu.frame.mvp.util;
 
 import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.media.SoundPool;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import androidx.annotation.NonNull;
 
 import java.io.File;
+import java.util.HashMap;
 
 public final class SoundPoolUtil {
 
     private static int mSoundId = -1;
     private static SoundPool mSoundPlayer = null;
+
+    private static Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1999) {
+                unload();
+            }
+        }
+    };
 
     private static void checkNull() {
         try {
@@ -41,6 +56,10 @@ public final class SoundPoolUtil {
         } catch (Exception e) {
             MvpUtil.logE("SoundPoolUtil => build => " + e.getMessage());
         }
+    }
+
+    public static boolean isPlaying() {
+        return mSoundId != -1;
     }
 
     public static void unload() {
@@ -105,6 +124,9 @@ public final class SoundPoolUtil {
             if (mSoundId != -1) {
                 mSoundPlayer.unload(mSoundId);
             }
+            long duraing = getDuraing(filePath);
+            if (duraing <= 0)
+                throw new Exception("duraing error: " + duraing);
             mSoundId = mSoundPlayer.load(filePath, 1);
             mSoundPlayer.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
@@ -117,11 +139,40 @@ public final class SoundPoolUtil {
                         //第五个参数loop 为音频重复播放次数，0为值播放一次，-1为无限循环，其他值为播放loop+1次
                         //第六个参数 rate为播放的速率，范围0.5-2.0(0.5为一半速率，1.0为正常速率，2.0为两倍速率)
                         soundPool.play(mSoundId, 1, 1, 1, 0, 1);
+                        mHandler.sendEmptyMessageDelayed(1999, duraing);
                     }
                 }
             });
         } catch (Exception e) {
             MvpUtil.logE("SoundPoolUtil => start => " + e.getMessage());
+        }
+    }
+
+    public static long getDuraing(String filePath) {
+        try {
+            if (null == filePath || filePath.length() == 0)
+                throw new Exception("filePath error: " + filePath);
+            File file = new File(filePath);
+            if (!file.exists())
+                throw new Exception("file error: not exists");
+            android.media.MediaMetadataRetriever mmr = new android.media.MediaMetadataRetriever();
+//            HashMap<String, String> headers = null;
+//            if (headers == null) {
+//                headers = new HashMap<String, String>();
+//                headers.put("User-Agent", "Mozilla/5.0 (Linux; U; Android 4.4.2; zh-CN; MW-KW-001 Build/JRO03C) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 UCBrowser/1.0.0.001 U4/0.8.0 Mobile Safari/533.1");
+//            }
+            mmr.setDataSource(filePath);
+            String data = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            mmr.release();
+            if (null == data || data.length() == 0)
+                throw new Exception("data error: " + data);
+            long duration = Long.parseLong(data);
+            if (duration <= 0L)
+                throw new Exception("duration error: " + duration);
+            return duration;
+        } catch (Exception e) {
+            MvpUtil.logE("SoundPoolUtil => getDuraing => " + e.getMessage());
+            return 0L;
         }
     }
 }
