@@ -18,6 +18,7 @@ public class XmlPullParserUtil {
             if (null == keyName || keyName.length() == 0)
                 throw new Exception("keyName error: " + keyName);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true); // 设置是否支持XML命名空间。
             XmlPullParser parser = factory.newPullParser();
             parser.setInput(new StringReader(data));
             int eventType = parser.getEventType();
@@ -33,10 +34,9 @@ public class XmlPullParserUtil {
                                 throw new Exception("name warning: not equals " + nodeName);
                             String value = parser.getAttributeValue(null, keyName);
                             MvpUtil.logE("XmlPullParserUtil => parser => noteName = " + name + ", keyName = " + keyName + ", value = " + value);
-                            if (null == value || value.length() == 0){
+                            if (null == value || value.length() == 0) {
                                 return null;
-                            }
-                            else{
+                            } else {
                                 return value;
                             }
                     }

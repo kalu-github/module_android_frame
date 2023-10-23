@@ -18,6 +18,7 @@ public class XmlPullParserUtil {
             if (null == keyName || keyName.length() == 0)
                 throw new Exception("keyName error: " + keyName);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true); // 设置是否支持XML命名空间。
             XmlPullParser parser = factory.newPullParser();
             parser.setInput(new StringReader(data));
             int eventType = parser.getEventType();
