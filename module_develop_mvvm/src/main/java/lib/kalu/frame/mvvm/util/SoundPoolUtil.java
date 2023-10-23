@@ -95,6 +95,7 @@ public final class SoundPoolUtil {
             if (mSoundId == -1)
                 throw new Exception("mSoundId error: " + mSoundId);
             mSoundPlayer.stop(mSoundId);
+            unload();
         } catch (Exception e) {
             MvvmUtil.logE("SoundPoolUtil => stop => " + e.getMessage());
         }
