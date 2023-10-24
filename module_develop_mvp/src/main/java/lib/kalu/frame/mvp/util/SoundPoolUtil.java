@@ -26,7 +26,7 @@ public final class SoundPoolUtil {
                 if (null != mOnSoundPoolChangeListener) {
                     mOnSoundPoolChangeListener.onComplete();
                 }
-                unload();
+                unload(true);
             }
         }
     };
@@ -65,6 +65,10 @@ public final class SoundPoolUtil {
     }
 
     public static void unload() {
+        unload(false);
+    }
+
+    public static void unload(@NonNull boolean removeListener) {
         try {
             if (null == mSoundPlayer)
                 throw new Exception("mSoundPlayer error: null");
@@ -74,7 +78,9 @@ public final class SoundPoolUtil {
                 mSoundPlayer.unload(mSoundId);
             }
             mSoundId = -1;
-            mOnSoundPoolChangeListener = null;
+            if (removeListener) {
+                mOnSoundPoolChangeListener = null;
+            }
         } catch (Exception e) {
             MvpUtil.logE("SoundPoolUtil => unload => " + e.getMessage());
         }
