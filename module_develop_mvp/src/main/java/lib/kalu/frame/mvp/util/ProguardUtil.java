@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,30 +12,27 @@ import java.util.Random;
 
 public final class ProguardUtil {
 
-    /**
-     * @param dicts  字典样本
-     * @param length 字典行数
-     * @param output 输出混淆文件路径
-     */
-    public static void generateProguard(@NonNull List<String> dicts, @NonNull long length, @NonNull String output) {
-        List<String> unicodeList = new ArrayList(dicts);
-        List<String> outputList = new ArrayList<String>();
-        Collections.sort(unicodeList);
-        File file = new File(output);
-        if (file.exists()) {
-            System.out.println("文件已存在，删除");
-            file.delete();
-        } else {
-            System.out.println("文件不存在");
-        }
-
-        String encoding = "UTF-8";
-        int repeatCount = 0;
-
+    public static boolean genProguard(@NonNull List<String> data, @NonNull String filePath, @NonNull long maxLength) {
         try {
+            // step1
+            if (maxLength <= 0)
+                throw new Exception("maxLength error: " + maxLength);
+            if (null == filePath || filePath.length() == 0)
+                throw new Exception("filePath error: " + filePath);
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+            // step2
+            List<String> unicodeList = new ArrayList(data);
+            Collections.sort(unicodeList);
+            List<String> outputList = new ArrayList<>();
+            String encoding = "UTF-8";
+            int repeatCount = 0;
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             int i = 0;
-            while (i < length) {
+            while (i <= maxLength) {
                 String tmp = "";
                 int width = new Random().nextInt(7) + 4;
                 for (int j = 0; j < width; j++) {
@@ -44,7 +42,7 @@ public final class ProguardUtil {
                     i++;
                     outputList.add(tmp);
                     fileOutputStream.write(tmp.getBytes(encoding));
-                    if (i < length) {
+                    if (i <= maxLength) {
                         //最后一行不输入回车
                         fileOutputStream.write('\n');
                     }
@@ -60,8 +58,10 @@ public final class ProguardUtil {
             }
             fileOutputStream.flush();
             fileOutputStream.close();
+            return true;
         } catch (Exception e) {
-            MvpUtil.logE("ProguardUtil => generateProguard => " + e.getMessage());
+            MvpUtil.logE("ProguardUtil => genProguard => " + e.getMessage());
+            return false;
         }
     }
 

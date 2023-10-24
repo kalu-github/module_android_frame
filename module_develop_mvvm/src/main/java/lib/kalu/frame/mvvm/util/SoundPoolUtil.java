@@ -115,15 +115,13 @@ public final class SoundPoolUtil {
 
     public static void start(@NonNull String filePath) {
         checkNull();
+        stop();
         try {
             if (null == filePath || filePath.length() == 0)
                 throw new Exception("filePath error: " + filePath);
             File file = new File(filePath);
             if (!file.exists() || file.isDirectory())
                 throw new Exception("file error: null");
-            if (mSoundId != -1) {
-                mSoundPlayer.unload(mSoundId);
-            }
             long duraing = getDuraing(filePath);
             if (duraing <= 0)
                 throw new Exception("duraing error: " + duraing);
