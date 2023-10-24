@@ -23,7 +23,10 @@ public final class SoundPoolUtil {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1999) {
-                unload();
+                if (null != mOnSoundPoolChangeListener) {
+                    mOnSoundPoolChangeListener.onComplete();
+                }
+                unload(true);
             }
         }
     };
@@ -62,6 +65,10 @@ public final class SoundPoolUtil {
     }
 
     public static void unload() {
+        unload(false);
+    }
+
+    public static void unload(@NonNull boolean removeListener) {
         try {
             if (null == mSoundPlayer)
                 throw new Exception("mSoundPlayer error: null");
@@ -71,6 +78,9 @@ public final class SoundPoolUtil {
                 mSoundPlayer.unload(mSoundId);
             }
             mSoundId = -1;
+            if (removeListener) {
+                mOnSoundPoolChangeListener = null;
+            }
         } catch (Exception e) {
             MvvmUtil.logE("SoundPoolUtil => unload => " + e.getMessage());
         }
@@ -122,9 +132,12 @@ public final class SoundPoolUtil {
             File file = new File(filePath);
             if (!file.exists() || file.isDirectory())
                 throw new Exception("file error: null");
-            long duraing = getDuraing(filePath);
-            if (duraing <= 0)
-                throw new Exception("duraing error: " + duraing);
+            long fileDuration = getDuration(filePath);
+            if (fileDuration <= 0)
+                throw new Exception("fileDuration error: " + fileDuration);
+            if (null != mOnSoundPoolChangeListener) {
+                mOnSoundPoolChangeListener.onStart(filePath, fileDuration);
+            }
             mSoundId = mSoundPlayer.load(filePath, 1);
             mSoundPlayer.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
@@ -136,17 +149,23 @@ public final class SoundPoolUtil {
                         //第四个参数priority 为流的优先级，值越大优先级高，影响当同时播放数量超出了最大支持数时SoundPool对该流的处理
                         //第五个参数loop 为音频重复播放次数，0为值播放一次，-1为无限循环，其他值为播放loop+1次
                         //第六个参数 rate为播放的速率，范围0.5-2.0(0.5为一半速率，1.0为正常速率，2.0为两倍速率)
+                        if (null != mOnSoundPoolChangeListener) {
+                            mOnSoundPoolChangeListener.onLoadComplete(filePath, fileDuration);
+                        }
                         soundPool.play(mSoundId, 1, 1, 1, 0, 1);
-                        mHandler.sendEmptyMessageDelayed(1999, duraing);
+                        mHandler.sendEmptyMessageDelayed(1999, fileDuration);
                     }
                 }
             });
         } catch (Exception e) {
             MvvmUtil.logE("SoundPoolUtil => start => " + e.getMessage());
+            if (null != mOnSoundPoolChangeListener) {
+                mOnSoundPoolChangeListener.onError(e.getMessage());
+            }
         }
     }
 
-    public static long getDuraing(String filePath) {
+    public static long getDuration(String filePath) {
         try {
             if (null == filePath || filePath.length() == 0)
                 throw new Exception("filePath error: " + filePath);
@@ -169,8 +188,26 @@ public final class SoundPoolUtil {
                 throw new Exception("duration error: " + duration);
             return duration;
         } catch (Exception e) {
-            MvvmUtil.logE("SoundPoolUtil => getDuraing => " + e.getMessage());
+            MvvmUtil.logE("SoundPoolUtil => getDuration => " + e.getMessage());
             return 0L;
         }
+    }
+
+    /****************/
+
+    private static OnSoundPoolChangeListener mOnSoundPoolChangeListener;
+
+    public static void setOnSoundPoolChangeListener(@NonNull OnSoundPoolChangeListener listener) {
+        mOnSoundPoolChangeListener = listener;
+    }
+
+    public interface OnSoundPoolChangeListener {
+        void onComplete();
+
+        void onError(@NonNull String msg);
+
+        void onStart(@NonNull String filePath, @NonNull long fileDuration);
+
+        void onLoadComplete(@NonNull String filePath, @NonNull long fileDuration);
     }
 }
