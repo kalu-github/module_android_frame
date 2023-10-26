@@ -188,8 +188,38 @@ public interface BaseViewRecyclerView {
 
     default void notifyItemRangeInserted(@NonNull View viewGroup, @IdRes int id, @NonNull int position, int length) {
         try {
-            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            RecyclerView recyclerView = viewGroup.findViewById(id);
             recyclerView.getAdapter().notifyItemRangeInserted(position, length);
+        } catch (Exception e) {
+            MvvmUtil.logE("BaseViewRecyclerView => notifyItemRangeInserted => " + e.getMessage());
+        }
+    }
+
+    default void notifyItemRangeInserted(@IdRes int id, int length) {
+        try {
+            RecyclerView recyclerView = ((BaseView) this).findViewById(id);
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+            int itemCount = adapter.getItemCount();
+            int position = itemCount - 1;
+            if (position < 0) {
+                position = 0;
+            }
+            adapter.notifyItemRangeInserted(position, length);
+        } catch (Exception e) {
+            MvvmUtil.logE("BaseViewRecyclerView => notifyItemRangeInserted => " + e.getMessage());
+        }
+    }
+
+    default void notifyItemRangeInserted(@NonNull View viewGroup, @IdRes int id, int length) {
+        try {
+            RecyclerView recyclerView = viewGroup.findViewById(id);
+            RecyclerView.Adapter adapter = recyclerView.getAdapter();
+            int itemCount = adapter.getItemCount();
+            int position = itemCount - 1;
+            if (position < 0) {
+                position = 0;
+            }
+            adapter.notifyItemRangeInserted(position, length);
         } catch (Exception e) {
             MvvmUtil.logE("BaseViewRecyclerView => notifyItemRangeInserted => " + e.getMessage());
         }
