@@ -44,10 +44,16 @@ public final class ProguardUtil {
             // step3
             Collections.shuffle(result);
             FileOutputStream fos = new FileOutputStream(file);
-            for (String s : result) {
+            int size = result.size();
+            for (int i = 0; i < size; i++) {
+                String s = result.get(i);
+                if (null == s || s.length() == 0)
+                    continue;
                 byte[] bytes = s.getBytes("UTF-8");
                 fos.write(bytes);
-                fos.write('\n');
+                if (i + 1 < size) {
+                    fos.write('\n');
+                }
             }
             fos.flush();
             fos.close();
