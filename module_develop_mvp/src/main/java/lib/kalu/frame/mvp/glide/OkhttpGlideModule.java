@@ -44,13 +44,17 @@ public class OkhttpGlideModule extends AppGlideModule {
             filesGlide.mkdir();
         }
         String diskCacheFolder = filesGlide.getAbsolutePath();
-        DiskLruCacheFactory diskLruCacheFactory = new DiskLruCacheFactory(diskCacheFolder, 200 * 1024 * 1024);
-        builder.setDiskCache(diskLruCacheFactory);
-        int size = initMemorySizeMB() * 1024 * 1024;
-        builder.setMemoryCache(new LruResourceCache(size));
+        int diskSizeMB = initDiskSizeMB();
+        builder.setDiskCache(new DiskLruCacheFactory(diskCacheFolder, diskSizeMB * 1024 * 1024));
+        int memorySizeMB = initMemorySizeMB();
+        builder.setMemoryCache(new LruResourceCache(memorySizeMB * 1024 * 1024));
     }
 
     protected int initMemorySizeMB() {
-        return 100;
+        return 200;
+    }
+
+    protected int initDiskSizeMB() {
+        return 200;
     }
 }
