@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntRange;
@@ -42,9 +43,15 @@ public class OkhttpGlideUtil {
                         .priority(Priority.LOW)
                         .diskCacheStrategy(DiskCacheStrategy.DATA) //缓存原始图片数据
                         .skipMemoryCache(skipMemoryCache); //跳过内存缓存
-                Drawable drawable = context.getResources().getDrawable(defatltRes);
-                if (null != drawable) {
-                    requestOptions.error(drawable).placeholder(drawable);
+
+                if (defatltRes != 0) {
+                    try {
+                        Drawable drawable = context.getResources().getDrawable(defatltRes);
+                        if (null != drawable) {
+                            requestOptions.error(drawable).placeholder(drawable);
+                        }
+                    } catch (Exception e) {
+                    }
                 }
                 mRequestOptionMaps.put(key, requestOptions);
             }
@@ -100,6 +107,61 @@ public class OkhttpGlideUtil {
                     Glide.get(context).clearMemory();
                 }
             });
+        }
+    }
+
+    public static void load(@NonNull ImageView imageView, String url) {
+        check(imageView, url, 0, 40, true);
+    }
+
+    public static void load(@NonNull ImageView imageView, String url, @NonNull boolean skipMemoryCache) {
+        check(imageView, url, 0, 40, skipMemoryCache);
+    }
+
+    public static void load(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes) {
+        check(imageView, url, defatltRes, 40, true);
+    }
+
+    public static void load(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality) {
+        check(imageView, url, defatltRes, encodeQuality, true);
+    }
+
+    public static void load(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+        check(imageView, url, defatltRes, encodeQuality, skipMemoryCache);
+    }
+
+    private static void check(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+        try {
+            if (null == imageView)
+                throw new Exception("imageView error: null");
+            imageView.setImageDrawable(null);
+            if (null == url || url.length() == 0)
+                throw new Exception("url error: " + url);
+            Context context = imageView.getContext();
+            if (null == context)
+                throw new Exception("context error: null");
+            Context applicationContext = context.getApplicationContext();
+            if (null == applicationContext)
+                throw new Exception("applicationContext error: null");
+            into(context, imageView, url, defatltRes, encodeQuality, skipMemoryCache);
+        } catch (Exception e) {
+            MvvmUtil.logE("OkhttpGlideUtil => check => " + e.getMessage());
+        }
+    }
+
+    private static void into(@NonNull Context context, @NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+
+        try {
+            RequestOptions requestOptions = getRequestOptions(context, defatltRes, encodeQuality, skipMemoryCache);
+            if (null == requestOptions)
+                throw new Exception("requestOptions error: null");
+//            // 圆角
+//            float v = context.getResources().getDimension(R.dimen.dp_4);
+//            GlideRoundTransform transform = new GlideRoundTransform(context, v);
+//            options.transform(transform);
+            Glide.with(context).load(url.trim()).apply(requestOptions).into(imageView);
+        } catch (Exception e) {
+            MvvmUtil.logE("OkhttpGlideUtil => into => " + e.getMessage());
         }
     }
 }
