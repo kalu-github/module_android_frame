@@ -51,7 +51,7 @@ public class OkhttpGlideModule extends AppGlideModule {
     }
 
     protected int initMemorySizeMB() {
-        return 200;
+        return 40;
     }
 
     protected int initDiskSizeMB() {
