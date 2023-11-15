@@ -10,12 +10,15 @@ import android.widget.ImageView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.HashMap;
 
@@ -24,46 +27,6 @@ import lib.kalu.frame.mvp.util.MvpUtil;
 public class OkhttpGlideUtil {
 
     private static final HashMap<String, RequestOptions> mRequestOptionMaps = new HashMap<>();
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    protected static final RequestOptions getRequestOptions(@NonNull Context context, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
-        try {
-            StringBuilder builder = new StringBuilder();
-            builder.append(defatltRes);
-            builder.append(encodeQuality);
-            builder.append(skipMemoryCache);
-            String key = builder.toString();
-            boolean containsKey = mRequestOptionMaps.containsKey(key);
-            if (!containsKey) {
-                RequestOptions requestOptions = new RequestOptions()
-                        .dontAnimate()
-                        .dontTransform()
-                        .encodeQuality(encodeQuality)
-                        .format(DecodeFormat.PREFER_RGB_565)
-                        .priority(Priority.LOW)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA) //缓存原始图片数据
-                        .skipMemoryCache(skipMemoryCache); //跳过内存缓存
-
-                if (defatltRes != 0) {
-                    try {
-                        Drawable drawable = context.getResources().getDrawable(defatltRes);
-                        if (null != drawable) {
-                            requestOptions.error(drawable).placeholder(drawable);
-                        }
-                    } catch (Exception e) {
-                    }
-                }
-                mRequestOptionMaps.put(key, requestOptions);
-            }
-            RequestOptions requestOptions = mRequestOptionMaps.get(key);
-            if (null == requestOptions)
-                throw new Exception("requestOptions error: null");
-            return requestOptions;
-        } catch (Exception e) {
-            MvpUtil.logE("OkhttpGlideUtil => getRequestOptions => " + e.getMessage());
-            return null;
-        }
-    }
 
     public static final void resumeRequests(Context context) {
         Glide.with(context).resumeRequests();
@@ -130,11 +93,27 @@ public class OkhttpGlideUtil {
         check(imageView, url, defatltRes, encodeQuality, skipMemoryCache);
     }
 
-    private static void check(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+    private static void init(@NonNull ImageView imageView, @DrawableRes int defatltRes) {
         try {
             if (null == imageView)
                 throw new Exception("imageView error: null");
             imageView.setImageDrawable(null);
+            if (defatltRes == 0)
+                throw new Exception("defatltRes error: " + defatltRes);
+            Drawable drawable = imageView.getResources().getDrawable(defatltRes);
+            if (null == drawable)
+                throw new Exception("drawable error: null");
+            imageView.setImageDrawable(drawable);
+        } catch (Exception e) {
+            MvpUtil.logE("OkhttpGlideUtil => init => " + e.getMessage());
+        }
+    }
+
+    private static void check(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+        init(imageView, defatltRes);
+        try {
+            if (null == imageView)
+                throw new Exception("imageView error: null");
             if (null == url || url.length() == 0)
                 throw new Exception("url error: " + url);
             Context context = imageView.getContext();
@@ -143,7 +122,7 @@ public class OkhttpGlideUtil {
             Context applicationContext = context.getApplicationContext();
             if (null == applicationContext)
                 throw new Exception("applicationContext error: null");
-            into(context, imageView, url, defatltRes, encodeQuality, skipMemoryCache);
+            into(applicationContext, imageView, url, defatltRes, encodeQuality, skipMemoryCache);
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => check => " + e.getMessage());
         }
@@ -152,6 +131,10 @@ public class OkhttpGlideUtil {
     private static void into(@NonNull Context context, @NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
 
         try {
+            if (null == imageView)
+                throw new Exception("imageView error: null");
+            if (null == url || url.length() == 0)
+                throw new Exception("url error: " + url);
             RequestOptions requestOptions = getRequestOptions(context, defatltRes, encodeQuality, skipMemoryCache);
             if (null == requestOptions)
                 throw new Exception("requestOptions error: null");
@@ -159,9 +142,50 @@ public class OkhttpGlideUtil {
 //            float v = context.getResources().getDimension(R.dimen.dp_4);
 //            GlideRoundTransform transform = new GlideRoundTransform(context, v);
 //            options.transform(transform);
-            Glide.with(context).load(url.trim()).apply(requestOptions).into(imageView);
+//            Glide.with(context).load(url).apply(requestOptions).into(imageView);
+            Glide.with(context).asDrawable().load(url).apply(requestOptions).into(imageView);
+
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => into => " + e.getMessage());
+        }
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    protected static final RequestOptions getRequestOptions(@NonNull Context context, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+        try {
+            StringBuilder builder = new StringBuilder();
+            builder.append(defatltRes);
+            builder.append(encodeQuality);
+            builder.append(skipMemoryCache);
+            String key = builder.toString();
+            boolean containsKey = mRequestOptionMaps.containsKey(key);
+            if (!containsKey) {
+                RequestOptions requestOptions = new RequestOptions()
+                        .dontAnimate()
+                        .dontTransform()
+                        .encodeQuality(encodeQuality)
+                        .format(DecodeFormat.PREFER_RGB_565)
+                        .priority(Priority.LOW)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA) //缓存原始图片数据
+                        .skipMemoryCache(skipMemoryCache); //跳过内存缓存
+                try {
+                    if (defatltRes == 0)
+                        throw new Exception();
+                    Drawable drawable = context.getResources().getDrawable(defatltRes);
+                    if (null != drawable) {
+                        requestOptions.error(drawable).placeholder(drawable);
+                    }
+                } catch (Exception e) {
+                }
+                mRequestOptionMaps.put(key, requestOptions);
+            }
+            RequestOptions requestOptions = mRequestOptionMaps.get(key);
+            if (null == requestOptions)
+                throw new Exception("requestOptions error: null");
+            return requestOptions;
+        } catch (Exception e) {
+            MvpUtil.logE("OkhttpGlideUtil => getRequestOptions => " + e.getMessage());
+            return null;
         }
     }
 }
