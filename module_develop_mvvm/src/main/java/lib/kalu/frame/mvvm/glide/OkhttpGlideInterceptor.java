@@ -1,36 +1,83 @@
 package lib.kalu.frame.mvvm.glide;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import lib.kalu.frame.mvvm.util.MvvmUtil;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-final class OkhttpGlideInterceptor implements Interceptor {
+public final class OkhttpGlideInterceptor implements Interceptor {
 
-    private final String TAG = "module_glide";
+    protected static final String EXT = ".skipProgressListener=false";
 
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        long timeMillis = System.currentTimeMillis();
-        try {
-            Request request = chain.request();
-            String url = request.url().toString();
-            logE("request[" + timeMillis + "] => url = " + url);
-            Response response = chain.proceed(request);
-            logE("response[" + timeMillis + "] => result = ok");
-            return response;
-        } catch (Exception e) {
-            logE("response[" + timeMillis + "] => result = " + e.getMessage());
-            throw e;
+    private static final Map<String, OkhttpGlideProgressListener> LISTENER_MAP = new HashMap<>();
+
+    public static OkhttpGlideProgressListener getListener(@NonNull String url) {
+        if (null == url || url.length() == 0)
+            return null;
+        return LISTENER_MAP.get(url);
+    }
+
+    public static void putListener(@NonNull String url, @NonNull OkhttpGlideProgressListener listener) {
+        if (null == listener)
+            return;
+        if (null == url || url.length() == 0)
+            return;
+        LISTENER_MAP.put(url, listener);
+    }
+
+    public static void removeListener(@NonNull String url) {
+        if (null == url || url.length() == 0)
+            return;
+        LISTENER_MAP.remove(url);
+    }
+
+    public static void removeListener(@NonNull OkhttpGlideProgressListener listener) {
+        if (null == listener)
+            return;
+        Set<Map.Entry<String, OkhttpGlideProgressListener>> entrySet = LISTENER_MAP.entrySet();
+        if (null == entrySet)
+            return;
+        for (Map.Entry<String, OkhttpGlideProgressListener> entry : entrySet) {
+            if (null == entry)
+                continue;
+            OkhttpGlideProgressListener value = entry.getValue();
+            if (null == value)
+                continue;
+            if (value == listener) {
+                String key = entry.getKey();
+                LISTENER_MAP.remove(key);
+                break;
+            }
         }
     }
 
-    private void logE(@NonNull String s) {
-        Log.e(TAG, s);
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        try {
+            Request request = chain.request();
+            Response response;
+            String url = request.url().toString();
+            if (url.endsWith(EXT)) {
+                int length = url.length();
+                int newLength = length - EXT.length();
+                String newUrl = url.substring(0, newLength);
+                Request newRequest = request.newBuilder().url(newUrl).build();
+                response = chain.proceed(newRequest);
+            } else {
+                response = chain.proceed(request);
+            }
+            Response newResponse = response.newBuilder().body(new OkhttpGlideProgressResponseBody(url, response.body())).build();
+            return newResponse;
+        } catch (Exception e) {
+            MvvmUtil.logE("OkhttpGlideInterceptor => intercept => " + e.getMessage());
+            throw e;
+        }
     }
 }

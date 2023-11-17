@@ -3,6 +3,7 @@ package lib.kalu.frame.mvp.glide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.cache.SafeKeyGenerator;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.EmptySignature;
 
 import java.io.File;
@@ -120,23 +122,27 @@ public class OkhttpGlideUtil {
     }
 
     public static void load(@NonNull ImageView imageView, String url) {
-        check(imageView, url, 0, 40, true);
+        check(imageView, url, 0, 40, true, null);
+    }
+
+    public static void load(@NonNull ImageView imageView, @NonNull String url, @NonNull OkhttpGlideProgressListener listener) {
+        check(imageView, url, 0, 40, true, listener);
     }
 
     public static void load(@NonNull ImageView imageView, String url, @NonNull boolean skipMemoryCache) {
-        check(imageView, url, 0, 40, skipMemoryCache);
+        check(imageView, url, 0, 40, skipMemoryCache, null);
     }
 
     public static void load(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes) {
-        check(imageView, url, defatltRes, 40, true);
+        check(imageView, url, defatltRes, 40, true, null);
     }
 
     public static void load(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality) {
-        check(imageView, url, defatltRes, encodeQuality, true);
+        check(imageView, url, defatltRes, encodeQuality, true, null);
     }
 
     public static void load(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
-        check(imageView, url, defatltRes, encodeQuality, skipMemoryCache);
+        check(imageView, url, defatltRes, encodeQuality, skipMemoryCache, null);
     }
 
     private static void init(@NonNull ImageView imageView, @DrawableRes int defatltRes) {
@@ -155,7 +161,7 @@ public class OkhttpGlideUtil {
         }
     }
 
-    private static void check(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+    private static void check(@NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache, @NonNull OkhttpGlideProgressListener listener) {
         init(imageView, defatltRes);
         try {
             if (null == imageView)
@@ -168,13 +174,13 @@ public class OkhttpGlideUtil {
             Context applicationContext = context.getApplicationContext();
             if (null == applicationContext)
                 throw new Exception("applicationContext error: null");
-            into(applicationContext, imageView, url, defatltRes, encodeQuality, skipMemoryCache);
+            into(applicationContext, imageView, url, defatltRes, encodeQuality, skipMemoryCache, listener);
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => check => " + e.getMessage());
         }
     }
 
-    private static void into(@NonNull Context context, @NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache) {
+    private static void into(@NonNull Context context, @NonNull ImageView imageView, String url, @DrawableRes int defatltRes, @IntRange(from = 10, to = 100) int encodeQuality, @NonNull boolean skipMemoryCache, @NonNull OkhttpGlideProgressListener listener) {
 
         try {
             if (null == imageView)
@@ -189,7 +195,16 @@ public class OkhttpGlideUtil {
 //            GlideRoundTransform transform = new GlideRoundTransform(context, v);
 //            options.transform(transform);
 //            Glide.with(context).load(url).apply(requestOptions).into(imageView);
-            Glide.with(context).asDrawable().load(url).apply(requestOptions).into(imageView);
+            if (null == listener) {
+                Glide.with(context).asDrawable().load(url).apply(requestOptions).into(imageView);
+            } else {
+                StringBuilder builder = new StringBuilder();
+                builder.append(url);
+                builder.append(OkhttpGlideInterceptor.EXT);
+                String newUrl = builder.toString();
+                OkhttpGlideInterceptor.putListener(newUrl, listener);
+                Glide.with(context).asDrawable().load(newUrl).apply(requestOptions).into(imageView);
+            }
 
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => into => " + e.getMessage());
