@@ -14,7 +14,9 @@ import okhttp3.Response;
 
 public final class OkhttpGlideInterceptor implements Interceptor {
 
-    protected static final String EXT = ".skipProgressListener=false";
+    protected static final String HEADER_PROGRESS = "progress";
+    protected static final String HEADER_PROGRESS_OK = "1";
+    protected static final String HEADER_PROGRESS_NO = "0";
 
     private static final Map<String, OkhttpGlideProgressListener> LISTENER_MAP = new HashMap<>();
 
@@ -62,19 +64,15 @@ public final class OkhttpGlideInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         try {
             Request request = chain.request();
-            Response response;
-            String url = request.url().toString();
-            if (url.endsWith(EXT)) {
-                int length = url.length();
-                int newLength = length - EXT.length();
-                String newUrl = url.substring(0, newLength);
-                Request newRequest = request.newBuilder().url(newUrl).build();
-                response = chain.proceed(newRequest);
+            String header = request.header(HEADER_PROGRESS);
+            if (null == header || header.equals(HEADER_PROGRESS_NO)) {
+                return chain.proceed(request);
             } else {
-                response = chain.proceed(request);
+                String url = request.url().toString();
+                Response response = chain.proceed(request);
+                Response newResponse = response.newBuilder().body(new OkhttpGlideProgressResponseBody(url, response.body())).build();
+                return newResponse;
             }
-            Response newResponse = response.newBuilder().body(new OkhttpGlideProgressResponseBody(url, response.body())).build();
-            return newResponse;
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideInterceptor => intercept => " + e.getMessage());
             throw e;

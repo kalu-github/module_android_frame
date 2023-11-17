@@ -2,8 +2,6 @@ package lib.kalu.frame.mvp.glide;
 
 import androidx.annotation.NonNull;
 
-import java.io.IOException;
-
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -57,25 +55,34 @@ final class OkhttpGlideProgressResponseBody extends ResponseBody {
         }
 
         @Override
-        public long read(Buffer sink, long byteCount) throws IOException {
-            long bytesRead = super.read(sink, byteCount);
-            long fullLength = responseBody.contentLength();
-            if (bytesRead == -1) {
-                totalBytesRead = fullLength;
-            } else {
-                totalBytesRead += bytesRead;
+        public long read(Buffer sink, long byteCount) {
+            try {
+                long bytesRead = super.read(sink, byteCount);
+                long fullLength = responseBody.contentLength();
+                if (bytesRead == -1) {
+                    totalBytesRead = fullLength;
+                } else {
+                    totalBytesRead += bytesRead;
+                }
+                int progress = (int) (100f * totalBytesRead / fullLength);
+                if (mOkhttpGlideProgressListener != null && progress != currentProgress) {
+                    mOkhttpGlideProgressListener.onProgress(progress);
+                }
+                if (mOkhttpGlideProgressListener != null && totalBytesRead == fullLength) {
+                    mOkhttpGlideProgressListener.onComplete();
+                    OkhttpGlideInterceptor.removeListener(mOkhttpGlideProgressListener);
+                    mOkhttpGlideProgressListener = null;
+                }
+                currentProgress = progress;
+                return bytesRead;
+            } catch (Exception e) {
+                if (mOkhttpGlideProgressListener != null) {
+                    mOkhttpGlideProgressListener.onError(e);
+                    OkhttpGlideInterceptor.removeListener(mOkhttpGlideProgressListener);
+                    mOkhttpGlideProgressListener = null;
+                }
+                return 0L;
             }
-            int progress = (int) (100f * totalBytesRead / fullLength);
-            if (mOkhttpGlideProgressListener != null && progress != currentProgress) {
-                mOkhttpGlideProgressListener.onProgress(progress);
-            }
-            if (mOkhttpGlideProgressListener != null && totalBytesRead == fullLength) {
-                mOkhttpGlideProgressListener.onComplete();
-                OkhttpGlideInterceptor.removeListener(mOkhttpGlideProgressListener);
-                mOkhttpGlideProgressListener = null;
-            }
-            currentProgress = progress;
-            return bytesRead;
         }
     }
 }

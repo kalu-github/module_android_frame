@@ -1,6 +1,5 @@
 package com.kalu.develop.frame;
 
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,20 +7,15 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-
-import java.io.File;
-
-import lib.kalu.frame.mvp.glide.OkhttpGlideInterceptor;
 import lib.kalu.frame.mvp.glide.OkhttpGlideProgressListener;
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 /**
  * @author zhanghang
@@ -34,37 +28,30 @@ public class LoadingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+        MvpUtil.setLogger(true);
 
-        test1();
-//        test2();
-
-        findViewById(R.id.image_show).setOnClickListener(new View.OnClickListener() {
+        String url = "https://pic4.zhimg.com/80/v2-362dbf74dd1f8339071a41c5c8bc468f_1440w.webp";
+        findViewById(R.id.button_src1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                test0();
+                test1(url);
+            }
+        });
+        findViewById(R.id.button_src2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                test2(url);
+            }
+        });
+        findViewById(R.id.button_src3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                test3(url);
             }
         });
     }
 
-    private void test0() {
-        String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
-        String cacheAbsolutePath = GlideUtil.getCacheAbsolutePath(getApplicationContext(), url);
-        Toast.makeText(getApplicationContext(), "=> " + cacheAbsolutePath, Toast.LENGTH_SHORT).show();
-        if (null != cacheAbsolutePath && cacheAbsolutePath.length() > 0) {
-            ImageView imageView2 = findViewById(R.id.image_src2);
-            imageView2.setImageURI(Uri.parse(cacheAbsolutePath));
-        }
-    }
-
-    private void test1() {
-        String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
-        ImageView imageView = findViewById(R.id.image_src1);
-        GlideUtil.load(imageView, url);
-    }
-
-    private void test2() {
-
-        String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
+    private void test1(@NonNull String url) {
         ImageView imageView = findViewById(R.id.image_src1);
         GlideUtil.load(imageView, url, new OkhttpGlideProgressListener() {
             @Override
@@ -78,9 +65,35 @@ public class LoadingActivity extends AppCompatActivity {
             }
 
             @Override
+            public void onError(@NonNull Exception e) {
+                Log.d("TAG", "onError: " + e.getMessage());
+            }
+
+            @Override
             public void onProgress(int progress) {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView textView = findViewById(R.id.text_src1);
+                        textView.setText(progress + "%");
+                    }
+                });
                 Log.d("TAG", "onProgress: " + progress);
             }
         });
+    }
+
+    private void test2(@NonNull String url) {
+        ImageView imageView = findViewById(R.id.image_src2);
+        GlideUtil.load(imageView, url);
+    }
+
+    private void test3(@NonNull String url) {
+        String cacheAbsolutePath = GlideUtil.getCacheAbsolutePath(getApplicationContext(), url);
+        Toast.makeText(getApplicationContext(), "=> " + cacheAbsolutePath, Toast.LENGTH_SHORT).show();
+        if (null != cacheAbsolutePath && cacheAbsolutePath.length() > 0) {
+            ImageView imageView2 = findViewById(R.id.image_src3);
+            imageView2.setImageURI(Uri.parse(cacheAbsolutePath));
+        }
     }
 }

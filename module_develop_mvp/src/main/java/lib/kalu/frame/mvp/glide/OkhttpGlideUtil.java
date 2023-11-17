@@ -3,7 +3,6 @@ package lib.kalu.frame.mvp.glide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
@@ -16,14 +15,24 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.Options;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.bitmap_recycle.ArrayPool;
+import com.bumptech.glide.load.engine.bitmap_recycle.LruArrayPool;
+import com.bumptech.glide.load.engine.cache.MemorySizeCalculator;
 import com.bumptech.glide.load.engine.cache.SafeKeyGenerator;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.Headers;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.BaseRequestOptions;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.EmptySignature;
+import com.bumptech.glide.util.Util;
 
 import java.io.File;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.util.HashMap;
 
 import lib.kalu.frame.mvp.util.MvpUtil;
@@ -101,14 +110,18 @@ public class OkhttpGlideUtil {
                 }
                 directory = filesGlide;
             }
-            OkhttpGlideDataCacheKey dataCacheKey = new OkhttpGlideDataCacheKey(new GlideUrl(url), EmptySignature.obtain());
+            OkhttpGlideDataCacheKey dataCacheKey = new OkhttpGlideDataCacheKey(new OkhttpGlideUrl(url), EmptySignature.obtain());
             SafeKeyGenerator safeKeyGenerator = new SafeKeyGenerator();
             String safeKey = safeKeyGenerator.getSafeKey(dataCacheKey);
-            DiskLruCache diskLruCache = DiskLruCache.open(directory, 1, 1, Integer.MAX_VALUE);
-            DiskLruCache.Value lruValue = diskLruCache.get(safeKey);
-            if (lruValue == null)
-                throw new Exception("lruValue error: null");
-            File file = lruValue.getFile(0);
+            if (null == safeKey || safeKey.length() == 0)
+                throw new Exception("safeKey error: " + safeKey);
+            StringBuilder builder = new StringBuilder();
+            builder.append(safeKey);
+            builder.append(".0");
+            String resultKey = builder.toString();
+            if (null == resultKey || resultKey.length() == 0)
+                throw new Exception("resultKey error: " + resultKey);
+            File file = new File(directory, resultKey);
             if (null == file || !file.exists())
                 throw new Exception("file error: null");
             String absolutePath = file.getAbsolutePath();
@@ -195,17 +208,12 @@ public class OkhttpGlideUtil {
 //            GlideRoundTransform transform = new GlideRoundTransform(context, v);
 //            options.transform(transform);
 //            Glide.with(context).load(url).apply(requestOptions).into(imageView);
-            if (null == listener) {
-                Glide.with(context).asDrawable().load(url).apply(requestOptions).into(imageView);
-            } else {
-                StringBuilder builder = new StringBuilder();
-                builder.append(url);
-                builder.append(OkhttpGlideInterceptor.EXT);
-                String newUrl = builder.toString();
-                OkhttpGlideInterceptor.putListener(newUrl, listener);
-                Glide.with(context).asDrawable().load(newUrl).apply(requestOptions).into(imageView);
-            }
-
+            LazyHeaders lazyHeaders = new LazyHeaders.Builder()
+                    .addHeader(OkhttpGlideInterceptor.HEADER_PROGRESS, null != listener ? OkhttpGlideInterceptor.HEADER_PROGRESS_OK : OkhttpGlideInterceptor.HEADER_PROGRESS_NO)
+                    .build();
+            OkhttpGlideUrl glideUrl = new OkhttpGlideUrl(url, lazyHeaders);
+            OkhttpGlideInterceptor.putListener(url, listener);
+            Glide.with(context).asDrawable().load(glideUrl).apply(requestOptions).into(imageView);
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => into => " + e.getMessage());
         }

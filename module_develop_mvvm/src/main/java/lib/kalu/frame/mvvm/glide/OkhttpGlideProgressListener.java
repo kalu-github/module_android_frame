@@ -10,5 +10,7 @@ public interface OkhttpGlideProgressListener {
 
     void onComplete();
 
+    void onError(@NonNull Exception e);
+
     void onProgress(@NonNull int progress);
 }
