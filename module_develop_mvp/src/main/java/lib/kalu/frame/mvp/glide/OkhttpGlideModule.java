@@ -60,10 +60,6 @@ public class OkhttpGlideModule extends AppGlideModule {
         builder.setDiskCacheExecutor(GlideExecutor.newDiskCacheExecutor());
         //设置日志级别
         builder.setLogLevel(Log.VERBOSE);
-        //设置全局选项
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.format(DecodeFormat.PREFER_RGB_565);
-        builder.setDefaultRequestOptions(requestOptions);
     }
 
     protected int initBitmapSizeMB() {

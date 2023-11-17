@@ -8,14 +8,12 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
-import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.load.engine.executor.GlideExecutor;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.io.InputStream;
@@ -60,10 +58,6 @@ public class OkhttpGlideModule extends AppGlideModule {
         builder.setDiskCacheExecutor(GlideExecutor.newDiskCacheExecutor());
         //设置日志级别
         builder.setLogLevel(Log.VERBOSE);
-        //设置全局选项
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.format(DecodeFormat.PREFER_RGB_565);
-        builder.setDefaultRequestOptions(requestOptions);
     }
 
     protected int initBitmapSizeMB() {
