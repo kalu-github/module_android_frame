@@ -32,13 +32,15 @@ public class OkhttpGlideUtil {
 
     public static final void resumeRequests(Context context) {
         Glide.with(context).resumeRequests();
+        Glide.with(context).resumeRequestsRecursive();
     }
 
     public static final void pauseRequests(Context context) {
         Glide.with(context).pauseAllRequests();
+        Glide.with(context).pauseAllRequestsRecursive();
     }
 
-    public static final void clearAll(@NonNull Context context) {
+    public static final void clear(@NonNull Context context) {
         try {
             if (null == context)
                 throw new Exception("context error: null");
