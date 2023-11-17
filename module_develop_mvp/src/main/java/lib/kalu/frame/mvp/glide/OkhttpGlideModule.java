@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool;
 import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -41,13 +42,19 @@ public class OkhttpGlideModule extends AppGlideModule {
         String absolutePath = filesDir.getAbsolutePath();
         File filesGlide = new File(absolutePath, "glide");
         if (null == filesGlide || !filesGlide.exists()) {
-            filesGlide.mkdir();
+            filesGlide.mkdirs();
         }
         String diskCacheFolder = filesGlide.getAbsolutePath();
         int diskSizeMB = initDiskSizeMB();
         builder.setDiskCache(new DiskLruCacheFactory(diskCacheFolder, diskSizeMB * 1024 * 1024));
         int memorySizeMB = initMemorySizeMB();
         builder.setMemoryCache(new LruResourceCache(memorySizeMB * 1024 * 1024));
+        int bitmapSizeMB = initBitmapSizeMB();
+        builder.setBitmapPool(new LruBitmapPool(bitmapSizeMB * 1024 * 1024));
+    }
+
+    protected int initBitmapSizeMB() {
+        return 10;
     }
 
     protected int initMemorySizeMB() {

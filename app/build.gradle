@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    namespace 'com.kalu.develop.frame'
     compileSdkVersion 31
     buildToolsVersion "31.0.0"
 
@@ -14,24 +16,15 @@ android {
     }
     buildTypes {
         release {
-            signingConfig null
             zipAlignEnabled true
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig null
             zipAlignEnabled false
             shrinkResources false
             minifyEnabled false
-        }
-    }
-
-    android.applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def date = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08"))
-            outputFileName = "develop" + "_${variant.mergedFlavor.versionName}_${date}_signed.apk"
         }
     }
 
@@ -39,20 +32,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.kalu.develop.frame'
 }
 
 dependencies {
 
-    // aar
-//    api files('libs/lib_frame_mvvm_release_20220121.aar')
+//    api project(path: ':module_develop_mvp')
+    api files('libs/lib_frame_mvp_release_20231117.aar')
+
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
 
     // core
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.4.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-
-    // rxjava
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 }

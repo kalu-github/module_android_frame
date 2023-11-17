@@ -13,10 +13,15 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.cache.SafeKeyGenerator;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.EmptySignature;
 
+import java.io.File;
 import java.util.HashMap;
 
 import lib.kalu.frame.mvvm.util.MvvmUtil;
@@ -67,6 +72,48 @@ public class OkhttpGlideUtil {
                     Glide.get(context).clearMemory();
                 }
             });
+        }
+    }
+
+    public static final String getCacheAbsolutePath(@NonNull Context context, @NonNull String url) {
+        return getCacheAbsolutePath(context, null, url);
+    }
+
+    public static final String getCacheAbsolutePath(@NonNull Context context, @NonNull File directory, @NonNull String url) {
+        try {
+            if (null == context)
+                throw new Exception("context error: null");
+            if (null == url || url.length() == 0)
+                throw new Exception("url error: " + url);
+            if (null == directory) {
+                File filesDir = context.getFilesDir();
+                if (null == filesDir || !filesDir.exists()) {
+                    filesDir.mkdirs();
+                }
+                String absolutePath = filesDir.getAbsolutePath();
+                File filesGlide = new File(absolutePath, "glide");
+                if (null == filesGlide || !filesGlide.exists()) {
+                    filesGlide.mkdirs();
+                }
+                directory = filesGlide;
+            }
+            OkhttpGlideDataCacheKey dataCacheKey = new OkhttpGlideDataCacheKey(new GlideUrl(url), EmptySignature.obtain());
+            SafeKeyGenerator safeKeyGenerator = new SafeKeyGenerator();
+            String safeKey = safeKeyGenerator.getSafeKey(dataCacheKey);
+            DiskLruCache diskLruCache = DiskLruCache.open(directory, 1, 1, Integer.MAX_VALUE);
+            DiskLruCache.Value lruValue = diskLruCache.get(safeKey);
+            if (lruValue == null)
+                throw new Exception("lruValue error: null");
+            File file = lruValue.getFile(0);
+            if (null == file || !file.exists())
+                throw new Exception("file error: null");
+            String absolutePath = file.getAbsolutePath();
+            if (null == absolutePath || absolutePath.length() == 0)
+                throw new Exception("absolutePath error: " + absolutePath);
+            return absolutePath;
+        } catch (Exception e) {
+            MvvmUtil.logE("OkhttpGlideUtil => getCacheAbsolutePath => " + e.getMessage());
+            return null;
         }
     }
 
@@ -162,7 +209,7 @@ public class OkhttpGlideUtil {
                         .dontTransform()
                         .encodeQuality(encodeQuality)
                         .format(DecodeFormat.PREFER_RGB_565)
-                        .priority(Priority.LOW)
+                        .priority(Priority.IMMEDIATE)
                         .diskCacheStrategy(DiskCacheStrategy.DATA) //缓存原始图片数据
                         .skipMemoryCache(skipMemoryCache); //跳过内存缓存
                 try {

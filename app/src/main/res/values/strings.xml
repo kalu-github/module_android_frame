@@ -1,14 +1,4 @@
 <resources>
 
-    <string name="dialog_exit_title">确定要退出IS轮播吗？</string>
-    <string name="dialog_exit_sure">退出</string>
-    <string name="dialog_exit_cancle">继续看</string>
-
-    <string name="player_error">\"节目暂未开播, 敬请期待\"</string>
-    <string name="player_start">"高清节目电视轮播"</string>
-
-    <string name="widget_details_current">当前节目</string>
-    <string name="widget_details_next">下一节目</string>
-    <string name="widget_details_tip_keycode1">上下键换频道</string>
-    <string name="widget_details_tip_keycode2">左键出节目单</string>
+    <string name="app_name">test</string>
 </resources>
