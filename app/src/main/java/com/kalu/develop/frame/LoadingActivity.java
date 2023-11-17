@@ -35,25 +35,34 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        test();
-        String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
-//        ImageView imageView = findViewById(R.id.image_src1);
-//        GlideUtil.load(imageView, url);
+        test1();
+//        test2();
 
         findViewById(R.id.image_show).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String cacheAbsolutePath = GlideUtil.getCacheAbsolutePath(getApplicationContext(), url);
-                Toast.makeText(getApplicationContext(), "=> " + cacheAbsolutePath, Toast.LENGTH_SHORT).show();
-                if(null != cacheAbsolutePath && cacheAbsolutePath.length()>0) {
-                    ImageView imageView2 = findViewById(R.id.image_src2);
-                    imageView2.setImageURI(Uri.parse(cacheAbsolutePath));
-                }
+                test0();
             }
         });
     }
 
-    private void test(){
+    private void test0() {
+        String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
+        String cacheAbsolutePath = GlideUtil.getCacheAbsolutePath(getApplicationContext(), url);
+        Toast.makeText(getApplicationContext(), "=> " + cacheAbsolutePath, Toast.LENGTH_SHORT).show();
+        if (null != cacheAbsolutePath && cacheAbsolutePath.length() > 0) {
+            ImageView imageView2 = findViewById(R.id.image_src2);
+            imageView2.setImageURI(Uri.parse(cacheAbsolutePath));
+        }
+    }
+
+    private void test1() {
+        String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
+        ImageView imageView = findViewById(R.id.image_src1);
+        GlideUtil.load(imageView, url);
+    }
+
+    private void test2() {
 
         String url = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
         ImageView imageView = findViewById(R.id.image_src1);
@@ -73,40 +82,5 @@ public class LoadingActivity extends AppCompatActivity {
                 Log.d("TAG", "onProgress: " + progress);
             }
         });
-
-//        String imgUrl = "https://image.baidu.com/search/down?tn=download&word=download&ie=utf8&fr=detail&url=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2020-02-04%2F5e3962782e8b2.jpg&thumburl=https%3A%2F%2Fimg2.baidu.com%2Fit%2Fu%3D1814561676%2C2470063876%26fm%3D253%26fmt%3Dauto%26app%3D138%26f%3DJPEG%3Fw%3D750%26h%3D500";
-//        OkhttpGlideInterceptor.addListener(imgUrl, new OkhttpGlideProgressListener() {
-//            @Override
-//            public void onProgress(int progress) {
-//                new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getApplicationContext(), "progress => "+progress, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Log.d("TAG", "onProgress: " + progress);
-//            }
-//        });
-//
-//        SimpleTarget<Drawable> simpleTarge = new SimpleTarget<Drawable>() {
-//            @Override
-//            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                Log.d("TAG", "onResourceReady: ");
-//                OkhttpGlideInterceptor.removeListener(imgUrl);
-//                ImageView imageView = findViewById(R.id.image_src1);
-//                imageView.setImageDrawable(resource);
-//            }
-//
-//            @Override
-//            public void onStart() {
-//                super.onStart();
-//                Log.d("TAG", "onStart: ");
-//            }
-//        };
-//        GlideApp.with(this)
-//                .load(imgUrl)
-//                .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用缓存
-//                .skipMemoryCache(true)
-//                .into(simpleTarge);
     }
 }
