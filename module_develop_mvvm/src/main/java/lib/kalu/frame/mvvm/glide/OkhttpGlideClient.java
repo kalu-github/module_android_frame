@@ -22,7 +22,7 @@ final class OkhttpGlideClient {
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
-                .connectionPool(new ConnectionPool(10, 60, TimeUnit.MINUTES))
+                .connectionPool(new ConnectionPool(100, 30, TimeUnit.SECONDS))
                 .retryOnConnectionFailure(false)
                 .addInterceptor(new OkhttpGlideInterceptor())
                 .sslSocketFactory(getSSLSocketFactory(), getX509TrustManager())
