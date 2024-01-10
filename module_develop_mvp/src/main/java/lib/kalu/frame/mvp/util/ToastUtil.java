@@ -57,6 +57,7 @@ public final class ToastUtil {
                     mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
                 } else {
                     mToast.setText(msg);
+                    mToast.setDuration(Toast.LENGTH_SHORT);
                 }
                 mToast.show();
             } else {
