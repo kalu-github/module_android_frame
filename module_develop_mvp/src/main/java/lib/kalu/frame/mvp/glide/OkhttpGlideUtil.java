@@ -184,10 +184,7 @@ public class OkhttpGlideUtil {
             Context context = imageView.getContext();
             if (null == context)
                 throw new Exception("context error: null");
-            Context applicationContext = context.getApplicationContext();
-            if (null == applicationContext)
-                throw new Exception("applicationContext error: null");
-            into(applicationContext, imageView, url, defatltRes, encodeQuality, skipMemoryCache, listener);
+            into(context, imageView, url, defatltRes, encodeQuality, skipMemoryCache, listener);
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => check => " + e.getMessage());
         }
