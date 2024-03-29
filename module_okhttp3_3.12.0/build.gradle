@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+//    compileOnly 'androidx.appcompat:appcompat:1.4.0'
+    compileOnly 'org.robolectric:android-all:13-robolectric-9030017'
+    compileOnly files('libs/jsr305-3.0.2.jar')
+    compileOnly files('libs/conscrypt-openjdk-uber-2.5.2.jar')
+    compileOnly files('libs/animal-sniffer-annotations-1.23.jar')
+}

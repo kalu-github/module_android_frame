@@ -38,9 +38,9 @@ public final class ApkUtil {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             // 8.0
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                MvpUtil.logE("ApkUtil => installApk => android8.0");
+                MvvmUtil.logE("ApkUtil => installApk => android8.0");
                 boolean canRequestPackageInstalls = context.getPackageManager().canRequestPackageInstalls();
-                MvpUtil.logE("ApkUtil => installApk => android8.0 => canRequestPackageInstalls = " + canRequestPackageInstalls);
+                MvvmUtil.logE("ApkUtil => installApk => android8.0 => canRequestPackageInstalls = " + canRequestPackageInstalls);
                 if (canRequestPackageInstalls) {
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -52,12 +52,12 @@ public final class ApkUtil {
             }
             // 7.0
             else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                MvpUtil.logE("ApkUtil => installApk => android7.0");
+                MvvmUtil.logE("ApkUtil => installApk => android7.0");
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setDataAndType(FileProvider.getUriForFile(context, applicationId + AUTHORITY, file), PACKAGE_ARCHIVE);
             } else {
-                MvpUtil.logE("ApkUtil => installApk => android6.0");
+                MvvmUtil.logE("ApkUtil => installApk => android6.0");
                 intent.addCategory(Intent.CATEGORY_DEFAULT);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -66,7 +66,7 @@ public final class ApkUtil {
             context.startActivity(intent);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("ApkUtil => installApk => " + e.getMessage());
+            MvvmUtil.logE("ApkUtil => installApk => " + e.getMessage());
             return false;
         }
     }
