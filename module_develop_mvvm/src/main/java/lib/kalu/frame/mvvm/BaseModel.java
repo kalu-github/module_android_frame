@@ -29,7 +29,7 @@ public abstract class BaseModel {
         init();
     }
 
-    private final void init() {
+    private void init() {
         Log.d("BaseModel", "init =>");
     }
 
@@ -37,7 +37,7 @@ public abstract class BaseModel {
 
     private final Map<String, BaseLiveData> mMap = new HashMap<>(1);
 
-    private final <T> BaseLiveData<T> create(@NonNull String key) {
+    private <T> BaseLiveData<T> create(@NonNull String key) {
         boolean contains = mMap.containsKey(key);
         if (!contains) {
             BaseLiveData<T> tBaseLiveData = new BaseLiveData<>();
@@ -58,17 +58,18 @@ public abstract class BaseModel {
     }
 
     /***********************/
+
     private final HashMap<Integer, List<Disposable>> mDisposables = new HashMap<>();
 
 
     @Keep
     public final void addDisposable(@NonNull Disposable disposable) {
-        addDisposable(false, (Integer.MIN_VALUE - 100), disposable);
+        addDisposable(false, Integer.MIN_VALUE, disposable);
     }
 
     @Keep
     public final void addDisposable(@NonNull boolean remove, @NonNull Disposable disposable) {
-        addDisposable(remove, (Integer.MIN_VALUE - 100), disposable);
+        addDisposable(remove, Integer.MIN_VALUE, disposable);
     }
 
     @Keep
