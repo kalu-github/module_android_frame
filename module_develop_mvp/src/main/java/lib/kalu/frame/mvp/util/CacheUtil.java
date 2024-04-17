@@ -16,7 +16,7 @@ import java.io.OutputStreamWriter;
  */
 public final class CacheUtil {
 
-    public static final boolean setCache(Context context, String key, String value) {
+    public static boolean put(Context context, String key, String value) {
 
 
         boolean result;
@@ -68,7 +68,7 @@ public final class CacheUtil {
         return result;
     }
 
-    public static final String getCache(Context context, String key) {
+    public static String get(Context context, String key) {
 
         FileInputStream in = null;
         BufferedReader reader = null;

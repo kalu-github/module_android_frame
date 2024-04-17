@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import org.json.JSONObject;
 
 import lib.kalu.frame.mvp.impl.BaseViewActivity;
+import lib.kalu.frame.mvp.impl.BaseViewCache;
 import lib.kalu.frame.mvp.impl.BaseViewClip;
 import lib.kalu.frame.mvp.impl.BaseViewContext;
 import lib.kalu.frame.mvp.impl.BaseViewDescendantFocusability;
@@ -26,6 +27,7 @@ import lib.kalu.frame.mvp.impl.BaseViewLoading;
 import lib.kalu.frame.mvp.impl.BaseViewMargin;
 import lib.kalu.frame.mvp.impl.BaseViewPadding;
 import lib.kalu.frame.mvp.impl.BaseViewProcess;
+import lib.kalu.frame.mvp.impl.BaseViewRaw;
 import lib.kalu.frame.mvp.impl.BaseViewRecyclerView;
 import lib.kalu.frame.mvp.impl.BaseViewResources;
 import lib.kalu.frame.mvp.impl.BaseViewSelected;
@@ -65,7 +67,9 @@ public interface BaseView extends BaseViewContext,
         BaseViewMargin,
         BaseViewPadding,
         BaseViewRecyclerView,
-        BaseViewLoading {
+        BaseViewLoading,
+        BaseViewRaw,
+        BaseViewCache {
 
     default <T> T getPresenter() {
         throw new IllegalArgumentException("not implements method getPresenter()");
