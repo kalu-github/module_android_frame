@@ -17,18 +17,18 @@ import java.util.Date;
 
 import lib.kalu.frame.mvp.context.FrameContext;
 
-public class FrameCrash implements Thread.UncaughtExceptionHandler {
+public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private static Thread.UncaughtExceptionHandler mDefalutCrashHandler;
 
     private static class Singleton {
-        public static final FrameCrash INSTNCE = new FrameCrash();
+        public static final CrashHandler INSTNCE = new CrashHandler();
     }
 
-    public FrameCrash() {
+    public CrashHandler() {
     }
 
-    public static FrameCrash getInstance() {
+    public static CrashHandler getInstance() {
         return Singleton.INSTNCE;
     }
 
@@ -78,16 +78,19 @@ public class FrameCrash implements Thread.UncaughtExceptionHandler {
      */
     private final File saveException(Context context, Throwable e, Thread t) {
 
-        File parent = FrameContext.getApplicationContext().getFilesDir();
-        File file = new File(parent, "crash");
-        if (!file.exists()) {
-            file.mkdirs();
+        File cacheDir = context.getExternalCacheDir();
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs();
+        }
+        File crashDir = new File(cacheDir, "crash");
+        if (!crashDir.exists()) {
+            crashDir.mkdirs();
         }
 
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String time = format.format(date);
-        File crashFile = new File(file, time);
+        File crashFile = new File(crashDir, time);
 
         PrintWriter printWriter = null;
         try {
