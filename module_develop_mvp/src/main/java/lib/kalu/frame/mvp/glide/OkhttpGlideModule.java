@@ -38,16 +38,15 @@ public class OkhttpGlideModule extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-        File filesDir = context.getFilesDir();
-        if (null == filesDir || !filesDir.exists()) {
-            filesDir.mkdirs();
+        File cacheDir = context.getExternalCacheDir();
+        if (!cacheDir.exists()) {
+            cacheDir.mkdirs();
         }
-        String absolutePath = filesDir.getAbsolutePath();
-        File filesGlide = new File(absolutePath, "glide");
-        if (null == filesGlide || !filesGlide.exists()) {
-            filesGlide.mkdirs();
+        File glideDir = new File(cacheDir, "glide");
+        if (!glideDir.exists()) {
+            glideDir.mkdirs();
         }
-        String diskCacheFolder = filesGlide.getAbsolutePath();
+        String diskCacheFolder = glideDir.getAbsolutePath();
         int diskSizeMB = initDiskSizeMB();
         builder.setDiskCache(new DiskLruCacheFactory(diskCacheFolder, diskSizeMB * 1024 * 1024));
         int memorySizeMB = initMemorySizeMB();
