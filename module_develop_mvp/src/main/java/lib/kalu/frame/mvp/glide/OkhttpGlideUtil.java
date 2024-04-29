@@ -88,27 +88,26 @@ public class OkhttpGlideUtil {
         }
     }
 
-    public static final String getCacheAbsolutePath(@NonNull Context context, @NonNull String url) {
-        return getCacheAbsolutePath(context, null, url);
+    public static final String getPath(@NonNull Context context, @NonNull String url) {
+        return getPath(context, null, url);
     }
 
-    public static final String getCacheAbsolutePath(@NonNull Context context, @NonNull File directory, @NonNull String url) {
+    public static final String getPath(@NonNull Context context, @NonNull File directory, @NonNull String url) {
         try {
             if (null == context)
                 throw new Exception("context error: null");
             if (null == url || url.length() == 0)
                 throw new Exception("url error: " + url);
             if (null == directory) {
-                File filesDir = context.getFilesDir();
-                if (null == filesDir || !filesDir.exists()) {
-                    filesDir.mkdirs();
+                File cacheDir = context.getExternalCacheDir();
+                if (!cacheDir.exists()) {
+                    cacheDir.mkdirs();
                 }
-                String absolutePath = filesDir.getAbsolutePath();
-                File filesGlide = new File(absolutePath, "glide");
-                if (null == filesGlide || !filesGlide.exists()) {
-                    filesGlide.mkdirs();
+                File glideDir = new File(cacheDir, "glide");
+                if (!glideDir.exists()) {
+                    glideDir.mkdirs();
                 }
-                directory = filesGlide;
+                directory = glideDir;
             }
             OkhttpGlideDataCacheKey dataCacheKey = new OkhttpGlideDataCacheKey(new OkhttpGlideUrl(url), EmptySignature.obtain());
             SafeKeyGenerator safeKeyGenerator = new SafeKeyGenerator();
@@ -129,7 +128,7 @@ public class OkhttpGlideUtil {
                 throw new Exception("absolutePath error: " + absolutePath);
             return absolutePath;
         } catch (Exception e) {
-            MvpUtil.logE("OkhttpGlideUtil => getCacheAbsolutePath => " + e.getMessage());
+            MvpUtil.logE("OkhttpGlideUtil => getPath => " + e.getMessage());
             return null;
         }
     }
