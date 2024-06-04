@@ -70,61 +70,60 @@
 }
 
 # 保护Base**
--keep class lib.kalu.frame.mvp.BaseActivity {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseActivityKillProcess {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseApplication {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseApplicationKillProcess {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseDialogFragment {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseFragment {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseFragmentPagerAdapter {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseFragmentStatePagerAdapter {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseModel {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BasePresenter {
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseView {
-    public <fields>;
-    public <methods>;
-}
-
-#-keep public class * extends BaseActivity
-#-keep public class * extends BaseActivityKillProcess
-#-keep class lib.kalu.frame.mvp.BaseActivity {*;}
-#-keep class lib.kalu.frame.mvp.BaseActivityKillProcess {*;}
-#-keep class lib.kalu.frame.mvp.BaseApplication {*;}
-#-keep class lib.kalu.frame.mvp.BaseApplicationKillProcess {*;}
-#-keep class lib.kalu.frame.mvp.BaseDialogFragment {*;}
-#-keep class lib.kalu.frame.mvp.BaseFragment {*;}
-#-keep class lib.kalu.frame.mvp.BaseFragmentPagerAdapter {*;}
-#-keep class lib.kalu.frame.mvp.BaseFragmentStatePagerAdapter {*;}
-#-keep class lib.kalu.frame.mvp.BaseModel {*;}
-#-keep class lib.kalu.frame.mvp.BasePresenter {*;}
-#-keep class lib.kalu.frame.mvp.BaseView {*;}
+#-keep class lib.kalu.frame.mvp.BaseActivity {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseActivityKillProcess {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseApplication {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseApplicationKillProcess {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseDialogFragment {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseFragment {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseFragmentPagerAdapter {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseFragmentStatePagerAdapter {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseModel {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BasePresenter {
+#    public <fields>;
+#    public <methods>;
+#}
+#-keep class lib.kalu.frame.mvp.BaseView {
+#    public <fields>;
+#    public <methods>;
+#}
+-keep public class * extends BaseActivity
+-keep public class * extends BaseActivityKillProcess
+-keep class lib.kalu.frame.mvp.BaseActivity {*;}
+-keep class lib.kalu.frame.mvp.BaseActivityKillProcess {*;}
+-keep class lib.kalu.frame.mvp.BaseApplication {*;}
+-keep class lib.kalu.frame.mvp.BaseApplicationKillProcess {*;}
+-keep class lib.kalu.frame.mvp.BaseDialogFragment {*;}
+-keep class lib.kalu.frame.mvp.BaseFragment {*;}
+-keep class lib.kalu.frame.mvp.BaseFragmentPagerAdapter {*;}
+-keep class lib.kalu.frame.mvp.BaseFragmentStatePagerAdapter {*;}
+-keep class lib.kalu.frame.mvp.BaseModel {*;}
+-keep class lib.kalu.frame.mvp.BasePresenter {*;}
+-keep class lib.kalu.frame.mvp.BaseView {*;}
