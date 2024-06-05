@@ -42,6 +42,19 @@ android {
     tasks.withType(JavaCompile) {
         options.compilerArgs += ["-g", "-parameters"]
     }
+
+    packagingOptions {
+        jniLibs {
+            excludes += ['META-INF/**', 'okhttp3/**', 'kotlin/**', 'org/**', 'assets/test.html']
+        }
+        resources {
+            excludes += ['DebugProbesKt.bin', 'androidsupportmultidexversion.txt', 'META-INF/**', 'okhttp3/**', 'kotlin/**', 'org/**', 'assets/test.html']
+        }
+    }
+
+    configurations {
+//        all*.exclude group: 'META-INF', module: 'appcompat-resources'
+    }
 }
 
 dependencies {
@@ -55,8 +68,6 @@ dependencies {
     api files('libs/gson-2.10.1.jar')
     // okhttp
     api files('libs/okhttp-3.12.0.jar')
-//    api files('libs/conscrypt-openjdk-uber-2.5.2.jar')
-//    api files('libs/animal-sniffer-annotations-1.23.jar')
     // retrofit
     api files('libs/retrofit-2.9.0.jar')
     api files('libs/rxjava-2.2.21.jar')
