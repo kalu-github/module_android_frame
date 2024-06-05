@@ -1,9 +1,9 @@
 # 禁止开启
 # 检测并移除没有用到的类，变量，方法和属性；
 # -dontshrink
-# 优化代码，非入口节点类会加上private/static/final, 在字节码级别执行优化，让应用运行的更快。。
+# 优化代码，非入口节点类会加上private/static/final, 没有用到的参数会被删除，一些方法可能会变成内联代码
 # -dontoptimize
-# 增大反编译难度，类和类成员会被随机命名，除非用keep保护。
+# 使用短又没有语义的名字重命名非入口类的类名，变量名，方法名。入口类的名字保持不变。
 # -dontobfuscate
 # 是否允许改变作用域(Android private、protected自动变public问题解决)
 # -allowaccessmodification
@@ -15,7 +15,7 @@
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
 # 混淆时是否记录日志, 混淆后类名的映射关系
 -verbose
-# 预校验代码是否符合Java1.6或者更高的规范, Android不需要preverify，去掉这一步能够加快混淆速度。
+# 预校验代码是否符合Java1.6或者更高的规范(唯一一个与入口类不相关的步骤)
 -dontpreverify
 # 忽略警告 不忽略可能打包不成功
 -ignorewarnings
@@ -30,7 +30,6 @@
 
 # 保护主动抛出异常
 #-keepattributes Exceptions
-# 保护主动抛出的异常代码行号
 -keepattributes Exceptions,SourceFile,LineNumberTable
 
 # 保护泛型
