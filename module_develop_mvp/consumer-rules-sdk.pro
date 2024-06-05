@@ -19,7 +19,10 @@
 }
 
 # 保护util
--keep class lib.kalu.frame.mvp.util.** {*;}
+-keep class lib.kalu.frame.mvp.util.** {
+    public <fields>;
+    public <methods>;
+}
 
 # 保护crash
 -keep class lib.kalu.frame.mvp.crash.CrashHandler {
@@ -112,6 +115,10 @@
     public <methods>;
 }
 -keep class lib.kalu.frame.mvp.BaseView {
+    public <fields>;
+    public <methods>;
+}
+-keep class lib.kalu.frame.mvp.impl.** {
     public <fields>;
     public <methods>;
 }

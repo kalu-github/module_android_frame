@@ -20,7 +20,7 @@
 # 忽略警告 不忽略可能打包不成功
 -ignorewarnings
 # 代码混淆压缩比，在0~7之间，默认为5，一般不做修改
--optimizationpasses 5
+-optimizationpasses 7
 # 混合时不使用大小写混合，混合后的类名为小写
 -dontusemixedcaseclassnames
 # 指定不去忽略非公共的库类。
