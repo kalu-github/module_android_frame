@@ -6,6 +6,15 @@
 -keep class lib.kalu.frame.mvp.http.BaseClient{
     public <fields>;
     public <methods>;
+    protected int initMaxRequests();
+    protected int initMaxRequestsPerHost();
+    protected int initReadTimeout();
+    protected int initWriteTimeout();
+    protected java.lang.String initBaseUrl();
+    protected *** initInterceptor();
+    protected boolean initProxy();
+    public *** getApiService(***);
+    public *** getHttpClient();
 }
 
 # 保护bean

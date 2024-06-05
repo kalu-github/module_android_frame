@@ -31,7 +31,7 @@ public class Demo {
                             s = object.toString();
                         } catch (Exception e) {
                         }
-                        return DemoClient.getDemoClient().getDemoApi().testApi1(s);
+                        return DemoClient.getHttpClient().getApiService(DemoApi.class).testApi1(s);
                     }
                 })
                 .flatMap(new Function<RequestBean<Object>, Observable<RequestBean<Object>>>() {
@@ -45,7 +45,7 @@ public class Demo {
                             s = object.toString();
                         } catch (Exception e) {
                         }
-                        return DemoClient.getDemoClient().getDemoApi().testApi2(s);
+                        return DemoClient.getHttpClient().getApiService(DemoApi.class).testApi2(s);
                     }
                 })
                 .doOnNext(new Consumer<RequestBean<Object>>() {

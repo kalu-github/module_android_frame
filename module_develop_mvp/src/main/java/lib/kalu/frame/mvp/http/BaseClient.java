@@ -10,13 +10,12 @@ import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import lib.kalu.frame.mvp.interceptor.OkhttpInterceptorStandard;
 import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -57,6 +56,20 @@ public abstract class BaseClient {
             })
             .build();
 
+    protected BaseClient() {
+        // 最大并发请求数为
+        mOkHttpClient.dispatcher().setMaxRequests(initMaxRequests());
+        // 每个主机最大请求数
+        mOkHttpClient.dispatcher().setMaxRequestsPerHost(initMaxRequestsPerHost());
+        // 发起请求
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(initBaseUrl())
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(mGson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
     protected int initMaxRequests() {
         return 64;
     }
@@ -69,29 +82,9 @@ public abstract class BaseClient {
         return 10;
     }
 
-    protected int initWriteTimeout() {
+    public int initWriteTimeout() {
         return 10;
     }
-
-    protected BaseClient() {
-        // 最大并发请求数为
-        mOkHttpClient.dispatcher().setMaxRequests(initMaxRequests());
-        // 每个主机最大请求数
-        mOkHttpClient.dispatcher().setMaxRequestsPerHost(initMaxRequestsPerHost());
-        // retrofit
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(initApi())
-                .client(mOkHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(mGson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-    }
-
-    protected final <T> T getApiService(Class<T> apiService) {
-        return mRetrofit.create(apiService);
-    }
-
-    protected abstract String initApi();
 
     protected Interceptor initInterceptor() {
         return null;
@@ -100,4 +93,19 @@ public abstract class BaseClient {
     protected boolean initProxy() {
         return false;
     }
+
+    private final HashMap<String, Object> mApiService = new HashMap<>();
+
+    public final <T> T getApiService(Class<T> apiService) {
+        String simpleName = apiService.getSimpleName();
+        Object o = mApiService.get(mApiService);
+        if (null == o) {
+            o = mRetrofit.create(apiService);
+            mApiService.put(simpleName, o);
+        }
+
+        return (T) o;
+    }
+
+    protected abstract String initBaseUrl();
 }
