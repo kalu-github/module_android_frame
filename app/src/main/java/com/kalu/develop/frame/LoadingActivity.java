@@ -89,7 +89,7 @@ public class LoadingActivity extends AppCompatActivity {
     }
 
     private void test3(@NonNull String url) {
-        String cacheAbsolutePath = GlideUtil.getCacheAbsolutePath(getApplicationContext(), url);
+        String cacheAbsolutePath = GlideUtil.getPath(getApplicationContext(), url);
         Toast.makeText(getApplicationContext(), "=> " + cacheAbsolutePath, Toast.LENGTH_SHORT).show();
         if (null != cacheAbsolutePath && cacheAbsolutePath.length() > 0) {
             ImageView imageView2 = findViewById(R.id.image_src3);
