@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import lib.kalu.frame.mvp.glide.OkhttpGlideProgressListener;
+import lib.kalu.frame.mvp.logcat.LogcatDumper;
 import lib.kalu.frame.mvp.util.MvpUtil;
 
 /**
@@ -23,6 +24,18 @@ import lib.kalu.frame.mvp.util.MvpUtil;
  * @date :2022-01-17
  */
 public class LoadingActivity extends AppCompatActivity {
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogcatDumper.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        LogcatDumper.stop();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

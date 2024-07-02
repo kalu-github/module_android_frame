@@ -37,7 +37,7 @@ android {
 dependencies {
 
 //    api project(path: ':module_develop_mvp')
-    api files('libs/lib_frame_mvp_release_20240605.aar')
+    api files('libs/lib_frame_mvp_release_20240702.aar')
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.15.1'

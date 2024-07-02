@@ -13,7 +13,9 @@
     <uses-permission
         android:name="android.permission.LOCAL_MAC_ADDRESS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
 
     <application android:allowBackup="false">
         <!-- 默认context -->
@@ -32,6 +34,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths_upgrade" />
         </provider>
+        <!-- 抓日志logcat -->
+        <service
+            android:name="lib.kalu.frame.mvp.logcat.LogcatService"
+            android:exported="false" />
     </application>
 
 </manifest>

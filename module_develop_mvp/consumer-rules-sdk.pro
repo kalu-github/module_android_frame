@@ -2,6 +2,12 @@
 # 保护核心
 -dontwarn lib.kalu.frame.mvp.**
 
+# logcat
+-keep class lib.kalu.frame.mvp.logcat.LogcatDumper {
+    public <fields>;
+    public <methods>;
+}
+
 # 保护BaseClient
 -keep class lib.kalu.frame.mvp.http.BaseClient{
     public <fields>;
