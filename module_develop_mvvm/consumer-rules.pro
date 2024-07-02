@@ -455,7 +455,7 @@
 #    public <fields>;
 #    public <methods>;
 #}
-#-keep class lib.kalu.frame.mvp.crash.CrashHandler {
+#-keep class lib.kalu.frame.mvp.logcat.CrashHandler {
 #    public <fields>;
 #    public <methods>;
 #}

@@ -2,18 +2,25 @@ package lib.kalu.frame.mvp.logcat;
 
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import lib.kalu.frame.mvp.context.FrameContext;
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 final class LogcatHelper {
 
@@ -28,24 +35,21 @@ final class LogcatHelper {
     }
 
     private LogcatHelper() {
-        release();
-        check();
     }
 
     private void check() {
-        mLogDumper = new LogDumper();
+        if (null == mLogDumper) {
+            mLogDumper = new LogDumper();
+        }
     }
 
     public void start() {
         try {
-            boolean running = isRunning();
-            if (running)
-                throw new Exception("warning: running false");
-            boolean alive = isAlive();
-            if (alive)
-                throw new Exception("warning: alive true");
+            release();
+            check();
             mLogDumper.start();
         } catch (Exception e) {
+            MvpUtil.logE("LogcatHelper => start => " + e.getMessage());
         }
     }
 
@@ -59,6 +63,7 @@ final class LogcatHelper {
                 throw new Exception("warning: alive false");
             mLogDumper.stopLogs();
         } catch (Exception e) {
+            MvpUtil.logE("LogcatHelper => stop => " + e.getMessage());
         }
     }
 
@@ -75,6 +80,7 @@ final class LogcatHelper {
                 throw new Exception("error: mLogDumper null");
             return mLogDumper.isRunning();
         } catch (Exception e) {
+            MvpUtil.logE("LogcatHelper => isRunning => " + e.getMessage());
             return false;
         }
     }
@@ -85,6 +91,7 @@ final class LogcatHelper {
                 throw new Exception("error: mLogDumper null");
             return mLogDumper.isAlive();
         } catch (Exception e) {
+            MvpUtil.logE("LogcatHelper => isAlive => " + e.getMessage());
             return false;
         }
     }
@@ -176,6 +183,24 @@ final class LogcatHelper {
 
                 FileOutputStream fileOutputStream = new FileOutputStream(file2);
                 out = new OutputStreamWriter(fileOutputStream, "UTF-8");
+
+                // 版本
+                try {
+                    PackageManager pm = context.getPackageManager();
+                    PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
+                    out.write("版本: " + packageInfo.versionName + "_" + packageInfo.versionCode + "\n");
+                } catch (Exception e1) {
+                    out.write("版本: null" + "\n");
+                }
+                // 系统
+                out.write("系统: " + Build.VERSION.RELEASE + "_" + Build.VERSION.SDK_INT + "\n");
+                // 机型
+                out.write("机型: " + Build.BOARD + "_" + Build.MANUFACTURER + "\n");
+                // 型号
+                out.write("型号: " + Build.MODEL + "\n");
+                // 内容
+                out.write("-----------------------------" + "\n" + "\n");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

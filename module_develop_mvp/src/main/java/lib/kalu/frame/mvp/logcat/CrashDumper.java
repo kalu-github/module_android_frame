@@ -1,4 +1,4 @@
-package lib.kalu.frame.mvp.crash;
+package lib.kalu.frame.mvp.logcat;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -17,18 +17,18 @@ import java.util.Date;
 
 import lib.kalu.frame.mvp.context.FrameContext;
 
-public class CrashHandler implements Thread.UncaughtExceptionHandler {
+public class CrashDumper implements Thread.UncaughtExceptionHandler {
 
     private static Thread.UncaughtExceptionHandler mDefalutCrashHandler;
 
     private static class Singleton {
-        public static final CrashHandler INSTNCE = new CrashHandler();
+        public static final CrashDumper INSTNCE = new CrashDumper();
     }
 
-    public CrashHandler() {
+    public CrashDumper() {
     }
 
-    public static CrashHandler getInstance() {
+    public static CrashDumper getInstance() {
         return Singleton.INSTNCE;
     }
 

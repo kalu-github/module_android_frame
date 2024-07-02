@@ -7,6 +7,10 @@
     public <fields>;
     public <methods>;
 }
+-keep class lib.kalu.frame.mvp.logcat.CrashDumper {
+    public <fields>;
+    public <methods>;
+}
 
 # 保护BaseClient
 -keep class lib.kalu.frame.mvp.http.BaseClient{
@@ -35,12 +39,6 @@
 
 # 保护util
 -keep class lib.kalu.frame.mvp.util.** {
-    public <fields>;
-    public <methods>;
-}
-
-# 保护crash
--keep class lib.kalu.frame.mvp.crash.CrashHandler {
     public <fields>;
     public <methods>;
 }
