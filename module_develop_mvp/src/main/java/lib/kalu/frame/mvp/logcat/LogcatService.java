@@ -56,11 +56,11 @@ public final class LogcatService extends Service {
             }
 
             if (FLAG_LOGCAT_DELETE_ALL.equals(logFlag)) {
-                LogcatHelper.getInstance().deleteAllLog();
+                LogcatHelper.getInstance().deleteLogAll();
             }
 
             if (FLAG_LOGCAT_DELETE_TODAY.equals(logFlag)) {
-                LogcatHelper.getInstance().deleteTodayLog();
+                LogcatHelper.getInstance().deleteLogToday();
             }
         }
         return START_NOT_STICKY;

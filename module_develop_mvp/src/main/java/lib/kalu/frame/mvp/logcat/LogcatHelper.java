@@ -102,7 +102,7 @@ final class LogcatHelper {
         }
     }
 
-    public void deleteAllLog() {
+    public void deleteLogAll() {
         try {
             Context context = FrameContext.getApplicationContext();
             File dir = context.getFilesDir();
@@ -121,7 +121,7 @@ final class LogcatHelper {
         }
     }
 
-    public void deleteTodayLog() {
+    public void deleteLogToday() {
         try {
             Context context = FrameContext.getApplicationContext();
             File dir = context.getFilesDir();
