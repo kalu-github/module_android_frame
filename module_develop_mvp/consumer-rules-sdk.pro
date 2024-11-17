@@ -85,15 +85,6 @@
 }
 
 # 保护Base**
--keep class lib.kalu.frame.mvp.BaseActivity {
-    public <init>(...);
-    public <fields>;
-    public <methods>;
-}
--keep class lib.kalu.frame.mvp.BaseActivityKillProcess {
-    public <fields>;
-    public <methods>;
-}
 -keep class lib.kalu.frame.mvp.BaseApplication {
     public <fields>;
     public <methods>;
@@ -118,14 +109,29 @@
     public <fields>;
     public <methods>;
 }
--keep class lib.kalu.frame.mvp.BaseModel {
+-keep class lib.kalu.frame.mvp.BaseActivity {
     public <fields>;
     public <methods>;
+}
+-keep class lib.kalu.frame.mvp.BaseActivityKillProcess {
+    public <fields>;
+    public <methods>;
+}
+-keep class lib.kalu.frame.mvp.BaseModel {
+    public <init>(...);
+    public <fields>;
+    public <methods>;
+}
+-keep class * extends lib.kalu.frame.mvp.BaseModel  {
+      public <init>(...);
 }
 -keep class lib.kalu.frame.mvp.BasePresenter {
     public <init>(...);
     public <fields>;
     public <methods>;
+}
+-keep class * extends lib.kalu.frame.mvp.BasePresenter  {
+      public <init>(...);
 }
 -keep class lib.kalu.frame.mvp.BaseView {
     public <fields>;

@@ -62,18 +62,18 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     }
 
     @Override
-    public final P getPresenter() throws Exception {
+    public final P getPresenter() {
         try {
             if (null == mP)
                 throw new IllegalArgumentException("mP error: null");
             return mP;
         } catch (Exception e) {
             MvpUtil.logE("BaseActivity => getPresenter => " + e.getMessage());
-            throw e;
+            return null;
         }
     }
 
-    private P initPresenter() throws Exception {
+    private P initPresenter() {
         try {
             Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
@@ -82,17 +82,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
             return (P) constructorP.newInstance(this);
         } catch (Exception e) {
             MvpUtil.logE("BaseActivity => initPresenter => " + e.getMessage());
-            try {
-                throw e;
-            } catch (NoSuchMethodException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (InvocationTargetException ex) {
-                throw new RuntimeException(ex);
-            }
+            return null;
         }
     }
 

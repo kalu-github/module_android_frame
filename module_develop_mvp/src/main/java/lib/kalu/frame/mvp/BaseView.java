@@ -73,8 +73,8 @@ public interface BaseView extends BaseViewContext,
         BaseViewCache,
         BaseViewViewGroup {
 
-    default <T> T getPresenter() throws Exception {
-        throw new IllegalArgumentException("not implements method getPresenter()");
+    default <T> T getPresenter() {
+        return null;
     }
 
     default void onCall(@NonNull int code, @NonNull JSONObject object) {
