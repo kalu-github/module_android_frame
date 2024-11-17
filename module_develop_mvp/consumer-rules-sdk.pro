@@ -24,12 +24,11 @@
     protected *** initInterceptor();
     protected boolean initProxy();
     public *** getApiService(***);
-    public *** getHttpClient();
 }
 
 # 保护bean
 -keep class lib.kalu.frame.mvp.bean.** {*;}
--keep class * extends lib.kalu.frame.mvp.bean {*;}
+-keep class * extends lib.kalu.frame.mvp.bean.** {*;}
 
 # 保护FrameContext
 -keep class lib.kalu.frame.mvp.context.FrameContext {
@@ -87,6 +86,7 @@
 
 # 保护Base**
 -keep class lib.kalu.frame.mvp.BaseActivity {
+    public <init>(...);
     public <fields>;
     public <methods>;
 }

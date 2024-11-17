@@ -62,7 +62,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
     }
 
     @Override
-    public final P getPresenter() {
+    public final P getPresenter() throws Exception {
         try {
             if (null == mP)
                 throw new IllegalArgumentException("mP error: null");
@@ -73,7 +73,7 @@ public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> 
         }
     }
 
-    private P initPresenter() {
+    private P initPresenter() throws Exception {
         try {
             Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];

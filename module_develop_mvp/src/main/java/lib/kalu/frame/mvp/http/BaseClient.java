@@ -82,7 +82,7 @@ public abstract class BaseClient {
         return 10;
     }
 
-    public int initWriteTimeout() {
+    protected int initWriteTimeout() {
         return 10;
     }
 
