@@ -27,6 +27,7 @@ import com.bumptech.glide.load.model.Headers;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.BaseRequestOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.EmptySignature;
 import com.bumptech.glide.util.Util;
 
@@ -209,7 +210,12 @@ public class OkhttpGlideUtil {
                     .build();
             OkhttpGlideUrl glideUrl = new OkhttpGlideUrl(url, lazyHeaders);
             OkhttpGlideInterceptor.putListener(url, listener);
-            Glide.with(context).asDrawable().load(glideUrl).apply(requestOptions).into(imageView);
+            Glide.with(context)
+                    .asDrawable()
+                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .load(glideUrl)
+                    .apply(requestOptions)
+                    .into(imageView);
         } catch (Exception e) {
             MvpUtil.logE("OkhttpGlideUtil => into => " + e.getMessage());
         }
