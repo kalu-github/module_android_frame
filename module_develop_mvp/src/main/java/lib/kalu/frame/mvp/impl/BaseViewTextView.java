@@ -11,10 +11,21 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+
 import lib.kalu.frame.mvp.BaseView;
 
 @Keep
 public interface BaseViewTextView {
+
+    default String getText(@NonNull View view, @IdRes int id) {
+        try {
+            TextView textView = view.findViewById(id);
+            return textView.getText().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     default void setText(@NonNull View view, @IdRes int id, @StringRes int res) {
         try {
