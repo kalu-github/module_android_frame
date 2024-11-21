@@ -17,6 +17,63 @@ import lib.kalu.frame.mvp.BaseView;
 @Keep
 public interface BaseViewTextView {
 
+    default void appendText(@NonNull View view, @IdRes int id, @NonNull CharSequence str) {
+        try {
+            TextView textView = view.findViewById(id);
+            String string = textView.getText().toString();
+            textView.setText(string + str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    default void appendText(@IdRes int id, @NonNull CharSequence str) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            String string = textView.getText().toString();
+            textView.setText(string + str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    default void backspaceText(@NonNull View view, @IdRes int id) {
+        try {
+            TextView textView = view.findViewById(id);
+            String string = textView.getText().toString();
+            String substring = string.substring(0, string.length());
+            textView.setText(substring);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    default void backspaceText(@IdRes int id) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            String string = textView.getText().toString();
+            String substring = string.substring(0, string.length());
+            textView.setText(substring);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    default void clearText(@NonNull View view, @IdRes int id) {
+        try {
+            TextView textView = view.findViewById(id);
+            textView.setText("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    default void clearText( @IdRes int id) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            textView.setText("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     default String getText(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
