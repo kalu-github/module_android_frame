@@ -3,12 +3,12 @@ apply plugin: 'com.android.library'
 android {
 
     namespace 'lib.kalu.frame.mvp'
-    compileSdkVersion 31
-    buildToolsVersion "31.0.0"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 31
+        targetSdkVersion 30
     }
 
     libraryVariants.all { variant ->
