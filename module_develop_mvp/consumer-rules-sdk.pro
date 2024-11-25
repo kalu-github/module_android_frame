@@ -61,10 +61,6 @@
 }
 
 # 保护interceptor
--keep class lib.kalu.frame.mvp.interceptor.OkhttpImpl {
-    public <fields>;
-    public <methods>;
-}
 -keep class lib.kalu.frame.mvp.interceptor.OkhttpInterceptor {
     public <fields>;
     public <methods>;
