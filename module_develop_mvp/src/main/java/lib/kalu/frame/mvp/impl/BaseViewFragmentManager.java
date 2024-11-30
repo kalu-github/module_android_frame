@@ -114,7 +114,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.remove(fragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitNow();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => removeFragment => " + e.getMessage());
@@ -178,11 +178,11 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.show(fragment);
-            fragmentTransaction.commit();
-            View view = fragment.getView();
-            if (null == view)
-                throw new Exception("warning: view null");
-            view.setVisibility(View.VISIBLE);
+            fragmentTransaction.commitNow();
+//            View view = fragment.getView();
+//            if (null == view)
+//                throw new Exception("warning: view null");
+//            view.setVisibility(View.VISIBLE);
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => showFragment => " + e.getMessage());
@@ -245,12 +245,12 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManagerTransaction();
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
-            View view = fragment.getView();
-            if (null == view)
-                throw new Exception("warning: view null");
-            view.setVisibility(View.INVISIBLE);
+//            View view = fragment.getView();
+//            if (null == view)
+//                throw new Exception("warning: view null");
+//            view.setVisibility(View.INVISIBLE);
             fragmentTransaction.hide(fragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitNow();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => hideFragment => " + e.getMessage());
@@ -284,7 +284,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.replace(containerViewId, fragment);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitNow();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => replaceFragment => " + e.getMessage());
@@ -349,7 +349,7 @@ public interface BaseViewFragmentManager extends BaseViewContext {
             if (null == fragmentTransaction)
                 throw new Exception("fragmentTransaction is null");
             fragmentTransaction.add(containerViewId, fragment, tag);
-            fragmentTransaction.commit();
+            fragmentTransaction.commitNow();
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragmentManger => addFragment => " + e.getMessage());
