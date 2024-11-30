@@ -14,9 +14,11 @@ import lib.kalu.frame.mvp.util.MvpUtil;
 @Keep
 public interface BaseViewFragment extends BaseViewContext {
 
-    default boolean isFragmentVisible() {
+    default boolean isFragmentVisible(@Nullable Fragment fragment) {
         try {
-            return ((Fragment) this).isVisible();
+            if (null == fragment)
+                throw new Exception("error: fragment null");
+            return fragment.isVisible();
         } catch (Exception e) {
             MvpUtil.logE("BaseViewFragment => isFragmentVisible => " + e.getMessage());
             return false;
