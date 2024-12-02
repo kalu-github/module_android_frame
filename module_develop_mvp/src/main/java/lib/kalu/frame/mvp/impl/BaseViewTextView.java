@@ -74,6 +74,16 @@ public interface BaseViewTextView {
         }
     }
 
+    default String getText(@IdRes int id) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            return textView.getText().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     default String getText(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
