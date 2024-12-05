@@ -77,11 +77,11 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
             return mP;
         } catch (Exception e) {
             MvpUtil.logE("BaseFragment => getPresenter => " + e.getMessage());
-            throw e;
+            return null;
         }
     }
 
-    private P initPresenter() {
+    private P initPresenter() throws Exception {
         try {
             Class<V> clazzV = (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             Class<P> clazzP = (Class<P>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
