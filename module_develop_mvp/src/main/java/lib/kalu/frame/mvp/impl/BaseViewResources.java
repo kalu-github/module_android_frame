@@ -2,6 +2,7 @@ package lib.kalu.frame.mvp.impl;
 
 import android.content.Context;
 
+import androidx.annotation.ArrayRes;
 import androidx.annotation.Keep;
 import androidx.annotation.StringRes;
 
@@ -22,6 +23,16 @@ public interface BaseViewResources extends BaseViewContext {
         try {
             Context context = getContext();
             return context.getResources().getString(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    default String[] getStringArray(@ArrayRes int id) {
+        try {
+            Context context = getContext();
+            return context.getResources().getStringArray(id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

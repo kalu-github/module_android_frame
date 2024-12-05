@@ -26,6 +26,7 @@ public interface BaseViewTextView {
             e.printStackTrace();
         }
     }
+
     default void appendText(@IdRes int id, @NonNull CharSequence str) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
@@ -46,6 +47,7 @@ public interface BaseViewTextView {
             e.printStackTrace();
         }
     }
+
     default void backspaceText(@IdRes int id) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
@@ -65,22 +67,13 @@ public interface BaseViewTextView {
             e.printStackTrace();
         }
     }
-    default void clearText( @IdRes int id) {
+
+    default void clearText(@IdRes int id) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setText("");
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    default String getText(@IdRes int id) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            return textView.getText().toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
