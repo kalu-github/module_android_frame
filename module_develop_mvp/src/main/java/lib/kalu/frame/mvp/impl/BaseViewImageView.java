@@ -3,6 +3,7 @@ package lib.kalu.frame.mvp.impl;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +20,15 @@ import lib.kalu.frame.mvp.util.MvpUtil;
 @Keep
 public interface BaseViewImageView {
 
+    default void setImageFile(@NonNull ImageView imageView, @NonNull String path) {
+        try {
+            if (null == imageView)
+                throw new Exception("imageView is null");
+            imageView.setImageURI(Uri.parse(path));
+        } catch (Exception e) {
+            MvpUtil.logE("setImageResource => setImageFile => " + e.getMessage());
+        }
+    }
 
     default void setImageResource(@NonNull ImageView imageView, @DrawableRes int drawable) {
         try {
