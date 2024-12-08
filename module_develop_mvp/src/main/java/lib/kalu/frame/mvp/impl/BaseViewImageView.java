@@ -20,13 +20,22 @@ import lib.kalu.frame.mvp.util.MvpUtil;
 @Keep
 public interface BaseViewImageView {
 
+    default void setImageFile(@IdRes int id, @NonNull String path) {
+        try {
+            ImageView imageView = ((BaseView) this).findViewById(id);
+            setImageFile(imageView, path);
+        } catch (Exception e) {
+            MvpUtil.logE("setImageFile => " + e.getMessage());
+        }
+    }
+
     default void setImageFile(@NonNull ImageView imageView, @NonNull String path) {
         try {
             if (null == imageView)
                 throw new Exception("imageView is null");
             imageView.setImageURI(Uri.parse(path));
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageFile => " + e.getMessage());
+            MvpUtil.logE("setImageFile => " + e.getMessage());
         }
     }
 
@@ -36,7 +45,7 @@ public interface BaseViewImageView {
                 throw new Exception("imageView is null");
             imageView.setImageResource(drawable);
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+            MvpUtil.logE("setImageResource => " + e.getMessage());
         }
     }
 
@@ -45,7 +54,7 @@ public interface BaseViewImageView {
             ImageView imageView = ((BaseView) this).findViewById(id);
             setImageResource(imageView, drawable);
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+            MvpUtil.logE("setImageResource => " + e.getMessage());
         }
     }
 
@@ -56,7 +65,7 @@ public interface BaseViewImageView {
             ImageView imageView = view.findViewById(id);
             setImageResource(imageView, drawable);
         } catch (Exception e) {
-            MvpUtil.logE("setImageResource => setImageResource => " + e.getMessage());
+            MvpUtil.logE("setImageResource => " + e.getMessage());
         }
     }
 
