@@ -119,7 +119,7 @@ public interface BaseViewImageView {
     default void setImageBackground(@IdRes int id, @NonNull Drawable drawable) {
         try {
             ImageView imageView = ((BaseView) this).findViewById(id);
-            imageView.setBackground(drawable);
+            imageView.setBackgroundDrawable(drawable);
         } catch (Exception e) {
             e.printStackTrace();
         }
