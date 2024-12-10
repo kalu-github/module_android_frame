@@ -1,12 +1,18 @@
 package lib.kalu.frame.mvp.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -134,5 +140,36 @@ public class ScreenshotUtil {
             }
         }
         return null;
+    }
+
+    public static Bitmap screenShot(@NonNull final Activity activity) {
+        return screenShot(activity, false);
+    }
+
+    public static Bitmap screenShot(@NonNull final Activity activity, boolean isDeleteStatusBar) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setDrawingCacheEnabled(true);
+        decorView.setWillNotCacheDrawing(false);
+        Bitmap bmp = decorView.getDrawingCache();
+        if (bmp == null) return null;
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Bitmap ret;
+        if (isDeleteStatusBar) {
+            Resources resources = activity.getResources();
+            int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+            int statusBarHeight = resources.getDimensionPixelSize(resourceId);
+            ret = Bitmap.createBitmap(
+                    bmp,
+                    0,
+                    statusBarHeight,
+                    dm.widthPixels,
+                    dm.heightPixels - statusBarHeight
+            );
+        } else {
+            ret = Bitmap.createBitmap(bmp, 0, 0, dm.widthPixels, dm.heightPixels);
+        }
+        decorView.destroyDrawingCache();
+        return ret;
     }
 }
