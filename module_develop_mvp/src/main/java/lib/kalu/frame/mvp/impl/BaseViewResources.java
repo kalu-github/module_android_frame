@@ -9,17 +9,7 @@ import androidx.annotation.StringRes;
 @Keep
 public interface BaseViewResources extends BaseViewContext {
 
-    default String getString(@StringRes int id, Object... formatArgs) {
-        try {
-            Context context = getContext();
-            return context.getResources().getString(id, formatArgs);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    default String getString(@StringRes int id) {
+    default String getStringValue(@StringRes int id) {
         try {
             Context context = getContext();
             return context.getResources().getString(id);
@@ -29,7 +19,17 @@ public interface BaseViewResources extends BaseViewContext {
         }
     }
 
-    default String[] getStringArray(@ArrayRes int id) {
+    default String getStringValue(@StringRes int id, Object... formatArgs) {
+        try {
+            Context context = getContext();
+            return context.getResources().getString(id, formatArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    default String[] getStringArrayValue(@ArrayRes int id) {
         try {
             Context context = getContext();
             return context.getResources().getStringArray(id);
