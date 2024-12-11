@@ -34,6 +34,7 @@ public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> 
         } catch (Exception e) {
             MvpUtil.logE("BaseFragment => onDestroyView => " + e.getMessage());
         }
+        hideLoading();
         super.onDestroyView();
     }
 
