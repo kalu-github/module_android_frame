@@ -96,10 +96,9 @@ public interface BaseViewWindow extends BaseViewContext {
             ViewGroup rootView = getRootView();
             if (null == rootView)
                 throw new Exception("rootView is null");
-
             if (blur) {
                 Bitmap drawable2Bitmap = ImageUtil.drawable2Bitmap(drawable);
-                Bitmap bitmap = ImageUtil.fastBlur(rootView.getContext(), drawable2Bitmap, 0.5f, 10f);
+                Bitmap bitmap = ImageUtil.stackBlur(drawable2Bitmap, 25);
                 rootView.setBackground(new BitmapDrawable(bitmap));
             } else {
                 rootView.setBackground(drawable);
