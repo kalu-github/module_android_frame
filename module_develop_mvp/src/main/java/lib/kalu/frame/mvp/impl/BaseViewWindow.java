@@ -1,6 +1,8 @@
 package lib.kalu.frame.mvp.impl;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
+import lib.kalu.frame.mvp.util.ImageUtil;
 import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
@@ -35,7 +38,7 @@ public interface BaseViewWindow extends BaseViewContext {
         }
     }
 
-    default boolean setWindowBackgroundColorRes(@ColorRes int color) {
+    default boolean setWindowColorRes(@ColorRes int color) {
         try {
             ViewGroup rootView = getRootView();
             if (null == rootView)
@@ -43,17 +46,16 @@ public interface BaseViewWindow extends BaseViewContext {
             Context context = rootView.getContext();
             if (null == context)
                 throw new Exception("context is null");
-            int col = context.getResources().getColor(color);
-            ColorDrawable drawable = new ColorDrawable(col);
-            setWindowBackgroundDrawable(drawable);
+            ColorDrawable drawable = new ColorDrawable(context.getResources().getColor(color));
+            setWindowBackground(drawable);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundColorRes => " + e.getMessage());
+            MvpUtil.logE("BaseViewWindow => setWindowColorRes => " + e.getMessage());
             return false;
         }
     }
 
-    default boolean setWindowBackgroundColor(@ColorInt int color) {
+    default boolean setWindowColor(@ColorInt int color) {
         try {
             ViewGroup rootView = getRootView();
             if (null == rootView)
@@ -62,27 +64,16 @@ public interface BaseViewWindow extends BaseViewContext {
             if (null == context)
                 throw new Exception("context is null");
             ColorDrawable drawable = new ColorDrawable(color);
-            setWindowBackgroundDrawable(drawable);
+            setWindowBackground(drawable);
             return true;
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundColor => " + e.getMessage());
+            MvpUtil.logE("BaseViewWindow => setWindowColor => " + e.getMessage());
             return false;
         }
     }
 
-    default boolean setWindowBackgroundDrawable(@Nullable Drawable drawable) {
-        try {
-            if (null == drawable)
-                throw new Exception("drawable is null");
-            ViewGroup rootView = getRootView();
-            if (null == rootView)
-                throw new Exception("rootView is null");
-            rootView.setBackground(drawable);
-            return true;
-        } catch (Exception e) {
-            MvpUtil.logE("BaseViewWindow => setWindowBackgroundDrawable => " + e.getMessage());
-            return false;
-        }
+    default boolean setWindowBackground(@Nullable Drawable drawable) {
+        return setWindowBackground(drawable, false);
     }
 
     default boolean setBackgroundResource(@DrawableRes int res) {
@@ -94,6 +85,28 @@ public interface BaseViewWindow extends BaseViewContext {
             return true;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewWindow => setBackgroundResource => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default boolean setWindowBackground(@Nullable Drawable drawable, boolean blur) {
+        try {
+            if (null == drawable)
+                throw new Exception("drawable is null");
+            ViewGroup rootView = getRootView();
+            if (null == rootView)
+                throw new Exception("rootView is null");
+
+            if (blur) {
+                Bitmap drawable2Bitmap = ImageUtil.drawable2Bitmap(drawable);
+                Bitmap bitmap = ImageUtil.fastBlur(rootView.getContext(), drawable2Bitmap, 0.5f, 10f);
+                rootView.setBackground(new BitmapDrawable(bitmap));
+            } else {
+                rootView.setBackground(drawable);
+            }
+            return true;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewWindow => setWindowBackground => " + e.getMessage());
             return false;
         }
     }
