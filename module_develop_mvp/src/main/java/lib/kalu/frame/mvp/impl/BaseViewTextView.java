@@ -80,7 +80,7 @@ public interface BaseViewTextView {
             if (length == 0)
                 throw new Exception("error: text.length() == 0");
             if (length == 1) {
-                textView.getEditableText().clear();
+                textView.setText("");
             } else {
                 CharSequence charSequence = text.subSequence(0, --length);
                 textView.setText(charSequence);
@@ -112,7 +112,7 @@ public interface BaseViewTextView {
         try {
             if (null == textView)
                 throw new Exception("error: textView null");
-            textView.getEditableText().clear();
+            textView.setText("");
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => clearTextInput => Exception => " + e.getMessage());
         }
