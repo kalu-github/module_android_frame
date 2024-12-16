@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import lib.kalu.frame.mvp.BaseView;
+import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
 public interface BaseViewTextView {
@@ -23,7 +24,7 @@ public interface BaseViewTextView {
             String string = textView.getText().toString();
             textView.setText(string + str);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => appendText => Exception => " + e.getMessage());
         }
     }
 
@@ -33,7 +34,7 @@ public interface BaseViewTextView {
             String string = textView.getText().toString();
             textView.setText(string + str);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => appendText => Exception => " + e.getMessage());
         }
     }
 
@@ -51,7 +52,7 @@ public interface BaseViewTextView {
                 textView.setText(substring);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => backspaceText => Exception => " + e.getMessage());
         }
     }
 
@@ -69,7 +70,7 @@ public interface BaseViewTextView {
                 textView.setText(substring);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => backspaceText => Exception => " + e.getMessage());
         }
     }
 
@@ -78,7 +79,7 @@ public interface BaseViewTextView {
             TextView textView = view.findViewById(id);
             textView.setText("");
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => clearText => Exception => " + e.getMessage());
         }
     }
 
@@ -87,7 +88,29 @@ public interface BaseViewTextView {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setText("");
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => clearText => Exception => " + e.getMessage());
+        }
+    }
+
+    default boolean isTextEmpty(@NonNull View view, @IdRes int id) {
+        try {
+            TextView textView = view.findViewById(id);
+            CharSequence text = textView.getText();
+            return text.length() == 0;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => isTextEmpty => Exception => " + e.getMessage());
+            return true;
+        }
+    }
+
+    default boolean isTextEmpty(@IdRes int id) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            CharSequence text = textView.getText();
+            return text.length() == 0;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => isTextEmpty => Exception => " + e.getMessage());
+            return true;
         }
     }
 
@@ -96,7 +119,7 @@ public interface BaseViewTextView {
             TextView textView = view.findViewById(id);
             return textView.getText().toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => getText => Exception => " + e.getMessage());
             return null;
         }
     }
@@ -106,7 +129,7 @@ public interface BaseViewTextView {
             TextView textView = view.findViewById(id);
             textView.setText(res);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
         }
     }
 
@@ -115,7 +138,7 @@ public interface BaseViewTextView {
             TextView textView = view.findViewById(id);
             textView.setText(str);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
         }
     }
 
@@ -124,7 +147,7 @@ public interface BaseViewTextView {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setText(str);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
         }
     }
 
@@ -133,7 +156,7 @@ public interface BaseViewTextView {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setText(res);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
         }
     }
 
@@ -142,7 +165,7 @@ public interface BaseViewTextView {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setTextColor(color);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setTextColor => Exception => " + e.getMessage());
         }
     }
 
@@ -153,7 +176,7 @@ public interface BaseViewTextView {
             int color = context.getResources().getColor(res);
             textView.setTextColor(color);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setTextColorRes => Exception => " + e.getMessage());
         }
     }
 
@@ -162,7 +185,7 @@ public interface BaseViewTextView {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setTextSize(dimen);
         } catch (Exception e) {
-            e.printStackTrace();
+            MvpUtil.logE("BaseViewTextView => setTextSize => Exception => " + e.getMessage());
         }
     }
 }
