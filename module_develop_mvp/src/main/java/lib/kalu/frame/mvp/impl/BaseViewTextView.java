@@ -18,116 +18,163 @@ import lib.kalu.frame.mvp.util.MvpUtil;
 @Keep
 public interface BaseViewTextView {
 
-    default void appendText(@NonNull View view, @IdRes int id, @NonNull CharSequence str) {
+    default void appendTextInput(@NonNull View view, @IdRes int id, @NonNull CharSequence value) {
         try {
             TextView textView = view.findViewById(id);
-            String string = textView.getText().toString();
-            textView.setText(string + str);
+            appendTextInput(textView, value);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => appendText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => appendTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void appendText(@IdRes int id, @NonNull CharSequence str) {
+    default void appendTextInput(@IdRes int id, @NonNull CharSequence value) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
-            String string = textView.getText().toString();
-            textView.setText(string + str);
+            appendTextInput(textView, value);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => appendText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => appendTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void backspaceText(@NonNull View view, @IdRes int id) {
+    default void appendTextInput(@NonNull TextView textView, @NonNull CharSequence value) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            if (null == value)
+                throw new Exception("error: value null");
+            if (value.length() == 0)
+                throw new Exception("error: value.length() == 0");
+            String data = textView.getText().toString();
+            textView.setText(data + value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => appendTextInput => Exception => " + e.getMessage());
+        }
+    }
+
+    default void backspaceTextInput(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
-            String string = textView.getText().toString();
-            int length = string.length();
+            backspaceTextInput(textView);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => backspaceTextInput => Exception => " + e.getMessage());
+        }
+    }
+
+    default void backspaceTextInput(@IdRes int id) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            backspaceTextInput(textView);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => backspaceTextInput => Exception => " + e.getMessage());
+        }
+    }
+
+    default void backspaceTextInput(@NonNull TextView textView) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            CharSequence text = textView.getText();
+            if (null == text)
+                throw new Exception("error: text null");
+            int length = text.length();
             if (length == 0)
-                throw new Exception("warning: length == 0");
+                throw new Exception("error: text.length() == 0");
             if (length == 1) {
-                textView.setText("");
+                textView.getEditableText().clear();
             } else {
-                String substring = string.substring(0, --length);
-                textView.setText(substring);
+                CharSequence charSequence = text.subSequence(0, --length);
+                textView.setText(charSequence);
             }
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => backspaceText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => backspaceTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void backspaceText(@IdRes int id) {
-        try {
-            TextView textView = ((BaseView) this).findViewById(id);
-            String string = textView.getText().toString();
-            int length = string.length();
-            if (length == 0)
-                throw new Exception("warning: length == 0");
-            if (length == 1) {
-                textView.setText("");
-            } else {
-                String substring = string.substring(0, --length);
-                textView.setText(substring);
-            }
-        } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => backspaceText => Exception => " + e.getMessage());
-        }
-    }
-
-    default void clearText(@NonNull View view, @IdRes int id) {
+    default void clearTextInput(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
-            textView.setText("");
+            clearTextInput(textView);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => clearText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => clearTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void clearText(@IdRes int id) {
+    default void clearTextInput(@IdRes int id) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
-            textView.setText("");
+            clearTextInput(textView);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => clearText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => clearTextInput => Exception => " + e.getMessage());
+        }
+    }
+
+    default void clearTextInput(@NonNull TextView textView) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            textView.getEditableText().clear();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => clearTextInput => Exception => " + e.getMessage());
         }
     }
 
     default boolean isTextEmpty(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
-            CharSequence text = textView.getText();
-            return text.length() == 0;
+            return isTextEmpty(textView);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => isTextEmpty => Exception => " + e.getMessage());
-            return true;
+            return false;
         }
     }
 
     default boolean isTextEmpty(@IdRes int id) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
-            CharSequence text = textView.getText();
-            return text.length() == 0;
+            return isTextEmpty(textView);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => isTextEmpty => Exception => " + e.getMessage());
-            return true;
+            return false;
         }
     }
 
-    default String getTextInput(@NonNull View view, @IdRes int id) {
+    default boolean isTextEmpty(@NonNull TextView textView) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            CharSequence text = textView.getText();
+            return null == text || text.length() == 0;
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => isTextEmpty => Exception => " + e.getMessage());
+            return false;
+        }
+    }
+
+    default CharSequence getTextInput(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
-            return textView.getText().toString();
+            return getTextInput(textView);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
             return null;
         }
     }
 
-    default String getTextInput(@IdRes int id) {
+    default CharSequence getTextInput(@IdRes int id) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
-            return textView.getText().toString();
+            return getTextInput(textView);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
+            return null;
+        }
+    }
+
+    default CharSequence getTextInput(@NonNull TextView textView) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            return textView.getText();
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
             return null;
@@ -137,25 +184,26 @@ public interface BaseViewTextView {
     default void setTextInput(@NonNull View view, @IdRes int id, @StringRes int res) {
         try {
             TextView textView = view.findViewById(id);
-            textView.setText(res);
+            String value = textView.getResources().getString(res);
+            setTextInput(textView, value);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void setTextInput(@NonNull View view, @IdRes int id, @NonNull CharSequence str) {
+    default void setTextInput(@NonNull View view, @IdRes int id, @NonNull CharSequence value) {
         try {
             TextView textView = view.findViewById(id);
-            textView.setText(str);
+            setTextInput(textView, value);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void setTextInput(@IdRes int id, @NonNull CharSequence str) {
+    default void setTextInput(@IdRes int id, @NonNull CharSequence value) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
-            textView.setText(str);
+            setTextInput(textView, value);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
@@ -164,11 +212,27 @@ public interface BaseViewTextView {
     default void setTextInput(@IdRes int id, @StringRes int res) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
-            textView.setText(res);
+            String value = textView.getResources().getString(res);
+            setTextInput(textView, value);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
+
+    default void setTextInput(@NonNull TextView textView, @NonNull CharSequence value) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            if (null == value)
+                throw new Exception("error: value null");
+            if (value.length() == 0)
+                throw new Exception("error: value.length() == 0");
+            textView.setText(value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
+        }
+    }
+
 
     default void setTextColor(@IdRes int id, @ColorInt int color) {
         try {
