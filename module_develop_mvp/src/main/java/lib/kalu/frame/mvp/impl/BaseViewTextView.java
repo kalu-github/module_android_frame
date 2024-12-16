@@ -114,49 +114,59 @@ public interface BaseViewTextView {
         }
     }
 
-    default String getText(@NonNull View view, @IdRes int id) {
+    default String getTextInput(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
             return textView.getText().toString();
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => getText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
             return null;
         }
     }
 
-    default void setText(@NonNull View view, @IdRes int id, @StringRes int res) {
+    default String getTextInput(@IdRes int id) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            return textView.getText().toString();
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
+            return null;
+        }
+    }
+
+    default void setTextInput(@NonNull View view, @IdRes int id, @StringRes int res) {
         try {
             TextView textView = view.findViewById(id);
             textView.setText(res);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void setText(@NonNull View view, @IdRes int id, @NonNull CharSequence str) {
+    default void setTextInput(@NonNull View view, @IdRes int id, @NonNull CharSequence str) {
         try {
             TextView textView = view.findViewById(id);
             textView.setText(str);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void setText(@IdRes int id, @NonNull CharSequence str) {
+    default void setTextInput(@IdRes int id, @NonNull CharSequence str) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setText(str);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
 
-    default void setText(@IdRes int id, @StringRes int res) {
+    default void setTextInput(@IdRes int id, @StringRes int res) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
             textView.setText(res);
         } catch (Exception e) {
-            MvpUtil.logE("BaseViewTextView => setText => Exception => " + e.getMessage());
+            MvpUtil.logE("BaseViewTextView => setTextInput => Exception => " + e.getMessage());
         }
     }
 
