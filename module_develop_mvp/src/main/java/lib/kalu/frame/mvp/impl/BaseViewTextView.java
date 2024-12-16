@@ -41,8 +41,15 @@ public interface BaseViewTextView {
         try {
             TextView textView = view.findViewById(id);
             String string = textView.getText().toString();
-            String substring = string.substring(0, string.length());
-            textView.setText(substring);
+            int length = string.length();
+            if (length == 0)
+                throw new Exception("warning: length == 0");
+            if (length == 1) {
+                textView.setText("");
+            } else {
+                String substring = string.substring(0, --length);
+                textView.setText(substring);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,8 +59,15 @@ public interface BaseViewTextView {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
             String string = textView.getText().toString();
-            String substring = string.substring(0, string.length());
-            textView.setText(substring);
+            int length = string.length();
+            if (length == 0)
+                throw new Exception("warning: length == 0");
+            if (length == 1) {
+                textView.setText("");
+            } else {
+                String substring = string.substring(0, --length);
+                textView.setText(substring);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
