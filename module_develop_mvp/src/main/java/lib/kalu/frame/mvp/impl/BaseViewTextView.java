@@ -174,10 +174,13 @@ public interface BaseViewTextView {
         try {
             if (null == textView)
                 throw new Exception("error: textView null");
-            return textView.getText();
+            CharSequence text = textView.getText();
+            if (null == text)
+                throw new Exception("warning: text null");
+            return text;
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
-            return null;
+            return "";
         }
     }
 
