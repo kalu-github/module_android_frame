@@ -150,7 +150,7 @@ public interface BaseViewTextView {
         }
     }
 
-    default CharSequence getTextInput(@NonNull View view, @IdRes int id) {
+    default String getTextInput(@NonNull View view, @IdRes int id) {
         try {
             TextView textView = view.findViewById(id);
             return getTextInput(textView);
@@ -160,7 +160,7 @@ public interface BaseViewTextView {
         }
     }
 
-    default CharSequence getTextInput(@IdRes int id) {
+    default String getTextInput(@IdRes int id) {
         try {
             TextView textView = ((BaseView) this).findViewById(id);
             return getTextInput(textView);
@@ -170,14 +170,14 @@ public interface BaseViewTextView {
         }
     }
 
-    default CharSequence getTextInput(@NonNull TextView textView) {
+    default String getTextInput(@NonNull TextView textView) {
         try {
             if (null == textView)
                 throw new Exception("error: textView null");
             CharSequence text = textView.getText();
             if (null == text)
                 throw new Exception("warning: text null");
-            return text;
+            return String.valueOf(text);
         } catch (Exception e) {
             MvpUtil.logE("BaseViewTextView => getTextInput => Exception => " + e.getMessage());
             return "";
