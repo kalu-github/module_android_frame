@@ -236,6 +236,57 @@ public interface BaseViewTextView {
         }
     }
 
+    default void setTextHint(@NonNull View view, @IdRes int id, @StringRes int res) {
+        try {
+            TextView textView = view.findViewById(id);
+            String value = textView.getResources().getString(res);
+            setTextHint(textView, value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => setTextHint => Exception => " + e.getMessage());
+        }
+    }
+
+    default void setTextHint(@NonNull View view, @IdRes int id, @NonNull CharSequence value) {
+        try {
+            TextView textView = view.findViewById(id);
+            setTextHint(textView, value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => setTextHint => Exception => " + e.getMessage());
+        }
+    }
+
+    default void setTextHint(@IdRes int id, @NonNull CharSequence value) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            setTextHint(textView, value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => setTextHint => Exception => " + e.getMessage());
+        }
+    }
+
+    default void setTextHint(@IdRes int id, @StringRes int res) {
+        try {
+            TextView textView = ((BaseView) this).findViewById(id);
+            String value = textView.getResources().getString(res);
+            setTextHint(textView, value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => setTextHint => Exception => " + e.getMessage());
+        }
+    }
+
+    default void setTextHint(@NonNull TextView textView, @NonNull CharSequence value) {
+        try {
+            if (null == textView)
+                throw new Exception("error: textView null");
+            if (null == value)
+                throw new Exception("error: value null");
+            if (value.length() == 0)
+                throw new Exception("error: value.length() == 0");
+            textView.setHint(value);
+        } catch (Exception e) {
+            MvpUtil.logE("BaseViewTextView => setTextHint => Exception => " + e.getMessage());
+        }
+    }
 
     default void setTextColor(@IdRes int id, @ColorInt int color) {
         try {
