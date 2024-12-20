@@ -2,6 +2,7 @@ package lib.kalu.frame.mvp.impl;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
@@ -14,11 +15,44 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
+import java.nio.ByteBuffer;
+
 import lib.kalu.frame.mvp.BaseView;
 import lib.kalu.frame.mvp.util.MvpUtil;
 
 @Keep
 public interface BaseViewImageView {
+
+    default void setImageByteBuffer(@IdRes int id, @NonNull ByteBuffer byteBuffer) {
+        try {
+            if (null == byteBuffer)
+                throw new Exception("error: byteBuffer null");
+            ImageView imageView = ((BaseView) this).findViewById(id);
+            if(null == imageView)
+                throw new Exception("error: imageView null");
+            setImageByteBuffer(imageView, byteBuffer);
+        } catch (Exception e) {
+            MvpUtil.logE("setImageByteBuffer => " + e.getMessage());
+        }
+    }
+
+    default void setImageByteBuffer(@NonNull ImageView imageView, ByteBuffer byteBuffer) {
+        try {
+            if (null == byteBuffer)
+                throw new Exception("error: byteBuffer null");
+            if (null == imageView)
+                throw new Exception("error: imageView null");
+            byteBuffer.rewind();
+            int remaining = byteBuffer.remaining();
+            byte[] byteArray = new byte[remaining];
+            byteBuffer.get(byteArray);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            MvpUtil.logE("setImageByteBuffer => " + e.getMessage());
+        }
+    }
+
 
     default void setImageFile(@IdRes int id, @NonNull String path) {
         try {
